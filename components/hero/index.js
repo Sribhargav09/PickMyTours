@@ -25,28 +25,31 @@ const index = () => {
   return (
     <section className="masthead -type-3 z-5">
       <div className="masthead__bg">
-        {tours && tours?.data?.map((tour) => {
-          return tour.gallery?.map((photo) => {
+      {tours && tours.data && <img alt="image" src={tours.data[tours.data.length-1].gallery[0]} className="js-lazy" />}
+
+        {/* //{tours && tours?.data?.map((tour) => {
+          //return tour.gallery.slice(0, 0)?.map((photo) => {
             //return {photo}
-            return <img alt="image" src={photo} className="js-lazy" />
+            return <img alt="image" src={tour.gallery[0]} className="js-lazy" />
 
             // <img alt="image" src={currentTab == 'Tours' ? photo : `/img/banners/${currentTab == 'Holyday Rentals' ? 'rental' : currentTab.toLowerCase()}.png`} className="js-lazy" />
-          })
-        }
-        )}
+          //})
+        //}
+        )} */}
       </div>
       <div className="container">
         <div className="row justify-center">
           <div className="col-auto">
             <div className="text-center">
-              {/* {tours && tours?.data?.slice(0, 1).map((tour) => { */}
-               <div style={{cursor:'pointer'}} onClick={() => Router.push(`tour/tour-single/${tours.data[0]?._id}`)}>
+               {tours && tours?.data?.slice(0,1).map((tour, index) => { 
+                
+               return <div style={{cursor:'pointer'}} onClick={() => Router.push(`tour/tour-single/${tour._id}`)}>
                 
                 <h1
                   className="text-60 lg:text-40 md:text-30 text-white"
                   data-aos="fade-up"
                 >
-                  {tours.data[0].name}
+                  {tour.name}
                 </h1>
 
                   <p
@@ -54,10 +57,10 @@ const index = () => {
                     data-aos="fade-up"
                     data-aos-delay="100"
                   >
-                   {tours.data[0].price} - {tours.data[0].location}
+                   {tour.price} - {tour.location}
                   </p></div>
-              {/* } */}
-              {/* )} */}
+               } 
+               )}
 
 
             </div>
