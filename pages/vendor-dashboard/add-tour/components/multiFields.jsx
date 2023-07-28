@@ -70,7 +70,7 @@ function MultiFields({ addFieldsToTour, section, fields }) {
                     <div className="row">
                         <div className="col-sm-12">
 
-                            <button className="btn btn-outline-success " onClick={addInputField}>Add New</button>
+                            <button type="button" className="btn btn-outline-success" onClick={addInputField}>Add New</button>
                         </div>
                     </div>
                 </div>

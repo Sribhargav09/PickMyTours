@@ -114,12 +114,18 @@ const TourSingleV1Dynamic = () => {
         })
         response.data.data.departureDetails = departureDetails;
 
+        const itinerarys = [];
+        const itinerarysArray = JSON.parse(response.data.data.itinerarys);
+        itinerarysArray.forEach((h) => {
+          itinerarys.push(h);
+        })
+        response.data.data.itinerarys = itinerarys;
 
 
        setTour(response.data.data);
 //       setTour(toursData.find((item) => item.id == id));
 
-        console.log(includes);
+        console.log(tour);
       })
       .catch(e => {
         console.log(e);
@@ -148,7 +154,7 @@ const TourSingleV1Dynamic = () => {
       <Header11 />
       {/* End Header 1 */}
 
-      <TopBreadCrumb />
+      <TopBreadCrumb name={tour?.name}/>
       {/* End top breadcrumb */}
 
       <section className="pt-40">
@@ -344,7 +350,7 @@ const TourSingleV1Dynamic = () => {
       <section className="border-top-light  mt-40 pt-40">
         <div className="container">
           <h3 className="text-22 fw-500 mb-20">Itinerary</h3>
-          <Itinerary />
+          <Itinerary tourData={tour} />
         </div>
       </section>
       {/* End Itinerary */}
