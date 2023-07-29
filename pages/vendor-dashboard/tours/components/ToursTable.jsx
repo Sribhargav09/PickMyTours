@@ -8,6 +8,8 @@ import { useRouter } from "next/router";
 const ToursTable = ({toursData}) => {
   const [activeTab, setActiveTab] = useState(0);
   const router = useRouter();
+
+  console.log(toursData);
   
   const handleTabClick = (index) => {
     setActiveTab(index);
@@ -60,10 +62,9 @@ const ToursTable = ({toursData}) => {
                       </div>
                     </th>
                     <th>Name</th>
-                    <th>Description</th>
+                    <th>Photo</th>
                     <th>Location</th>
                     <th>Price</th>
-                    <th>Reviwes</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -84,13 +85,11 @@ const ToursTable = ({toursData}) => {
 
                     <td className="text-blue-1 fw-500">{data.name}</td>
 
-                    <td>{data.description.substr(0, 100)}...</td>
+                    <td><img src={data.featurePhoto[0]} /></td>
 
                     <td>{data.location}</td>
 
                     <td>{data.price}</td>
-
-                    <td>{data.reveiw}</td>
 
                     <td><button onClick={() => Router.push(`add-tour/${data?._id}`)}>Edit</button> </td>
 
