@@ -1,5 +1,3 @@
-# PickMyTours
-Introducing PickMyTours, the ultimate travel companion. With a passion for exploration and a talent for crafting unforgettable journeys, let PickMyTours guide you through the world's wonders. Experience personalized itineraries and unparalleled service with PickMyTours. Let's embark on an adventure together!
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
@@ -10,7 +8,7 @@ First, run the development server:
 npm run dev
 # or
 yarn dev
-```npm 
+```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
@@ -36,4 +34,3 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
