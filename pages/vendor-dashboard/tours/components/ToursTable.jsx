@@ -2,6 +2,8 @@ import { use, useEffect, useState } from "react";
 import Pagination from "../../common/Pagination";
 import ActionsButton from "./ActionsButton";
 import { useRouter } from "next/router";
+import Router from "next/router";
+
 
 
 
@@ -16,7 +18,7 @@ const ToursTable = ({toursData}) => {
   };
 
   const tabItems = [
-    "All Booking",
+    "All Tours",
     // "Completed",
     // "Processing",
     // "Confirmed",
@@ -91,7 +93,7 @@ const ToursTable = ({toursData}) => {
 
                     <td>{data.price}</td>
 
-                    <td><button onClick={() => Router.push(`add-tour/${data?._id}`)}>Edit</button> </td>
+                    <td><button onClick={() => Router.push(`add-tour?id=${data?._id}`)}>Edit</button> </td>
 
                     
                   </tr>
