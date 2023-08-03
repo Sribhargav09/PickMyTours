@@ -1,10 +1,9 @@
 import { useState } from "react"
-function MultiFields({ addFieldsToTour, section, fields }) {
+const MultiFields = ({ addFieldsToTour, section, fields })  => {
 
     const [inputFields, setInputFields] = useState(fields);
 
     const addInputField = () => {
-        console.log(fields);
         setInputFields([...inputFields, fields])
 
         addFieldsToTour(section, inputFields);
@@ -22,7 +21,7 @@ function MultiFields({ addFieldsToTour, section, fields }) {
         console.log(name)
         console.log(value)
         const list = [...inputFields];
-        list[index] = {[name]:value};
+        list[index] = { [name]: value };
         console.log(list);
         setInputFields(list);
     }
@@ -32,7 +31,7 @@ function MultiFields({ addFieldsToTour, section, fields }) {
             <div className="row">
                 <div className="col-sm-8">
                     {
-                        inputFields.map((data, index) => {
+                        inputFields && inputFields.map((data, index) => {
                             const { fullName, emailAddress, salary } = data;
                             return (
                                 <div className="row my-3" key={index}>
@@ -40,20 +39,13 @@ function MultiFields({ addFieldsToTour, section, fields }) {
                                     {fields.map((field) => {
                                         let k = Object.keys(field);
                                         return (<div className="col">
-                                            <div className="form-group"> 
+                                            <div className="form-group">
                                                 <input type="text" onChange={(evnt) => handleChange(index, evnt)} value={inputFields[index][k]} name={k} className="form-control" placeholder="write here.." />
                                             </div>
                                         </div>)
                                     }
-                    )}
+                                    )}
 
-
-                                    {/* <div className="col">
-                                        <input type="email" onChange={(evnt) => handleChange(index, evnt)} value={emailAddress} name="emailAddress" className="form-control" placeholder="Email Address" />
-                                    </div>
-                                    <div className="col">
-                                        <input type="text" onChange={(evnt) => handleChange(index, evnt)} value={salary} name="salary" className="form-control" placeholder="Salary" />
-                                    </div> */}
                                     <div className="col">
 
 
