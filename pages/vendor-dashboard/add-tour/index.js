@@ -353,7 +353,7 @@ const index = () => {
           formData.append("languages", JSON.stringify(tour.languages));
         }
 
-        if (key !== 'featurePhoto' && key !== 'gallery') {
+        if (hey !== 'itinerarys' && key !== 'featurePhoto' && key !== 'gallery') {
           formData.append(key, tour[key])
         }
       }
@@ -868,7 +868,12 @@ const index = () => {
                           </div>
                         </div>
 
-
+                            
+                  <div className="d-inline-block pt-30">
+                    <button type="submit" className="button h-50 px-24 -dark-1 bg-blue-1 text-white">
+                      Save Changes <div className="icon-arrow-top-right ml-15" />
+                    </button>
+                  </div>
                       </TabPanel>
                     </div>
                   </Tabs>
@@ -876,11 +881,6 @@ const index = () => {
 
 
 
-                  <div className="d-inline-block pt-30">
-                    <button type="submit" className="button h-50 px-24 -dark-1 bg-blue-1 text-white">
-                      Save Changes <div className="icon-arrow-top-right ml-15" />
-                    </button>
-                  </div>
                 </div>
               </form>
             </div>
