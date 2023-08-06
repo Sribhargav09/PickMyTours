@@ -35,104 +35,131 @@ const TourSingleV1Dynamic = () => {
   const id = router.query.id;
 
   const getFieldsData = (field) => {
-      const fieldData = [];
-        const fieldDataArray = JSON.parse(response.data.data[field]);
-        fieldDataArray.forEach((h) => {
-          fieldData.push(h[fieldData]);
-        })
-      response.data.data[field] = fieldData;
+    const fieldData = [];
+    const fieldDataArray = JSON.parse(response.data.data[field]);
+    fieldDataArray.forEach((h) => {
+      fieldData.push(h[fieldData]);
+    })
+    response.data.data[field] = fieldData;
 
-      return response;
+    return response;
   }
 
   useEffect(() => {
     if (!id) <h1>Loading...</h1>;
     else {
       TourDataService.get(id)
-      .then(response => {
-        
-        const langs = response.data.data.languages[0].split(",");
-        // langs.forEach((lang) => {
-        //   console.log(JSON.parse(lang));
-        // });
-        console.log(response.data.data);
-        const highlights = [];
-        const highlightsArray = JSON.parse(response.data.data.highlights);
-        highlightsArray.forEach((h) => {
-          highlights.push(h.highlight);
+        .then(response => {
+
+          // const langs = response.data.data.languages[0].split(",");
+          // langs.forEach((lang) => {
+          //   console.log(JSON.parse(lang));
+          // });
+          console.log(response.data.data);
+          const highlights = [];
+          if (response.data.data.highlights) {
+            const highlightsArray = JSON.parse(response.data.data.highlights);
+            highlightsArray.forEach((h) => {
+              highlights.push(h.highlight);
+            })
+          }
+          response.data.data.highlights = highlights;
+
+          const includes = [];
+          if (response.data.data.includes) {
+
+            const includesArray = JSON.parse(response.data.data.includes);
+            console.log(includesArray);
+            includesArray.forEach((h) => {
+              includes.push(h.include);
+            })
+          }
+          response.data.data.includes = includes;
+
+          const notIncludes = [];
+
+          if (response.data.data.notIncludes) {
+
+            const notIncludesArray = JSON.parse(response.data.data.notIncludes);
+            notIncludesArray.forEach((h) => {
+              notIncludes.push(h.notInclude);
+            })
+          }
+          response.data.data.notIncludes = notIncludes;
+
+
+          const inclusions = [];
+          if (response.data.data.inclusions) {
+
+            const inclusionsArray = JSON.parse(response.data.data.inclusions);
+            inclusionsArray.forEach((h) => {
+              inclusions.push(h.Inclusion);
+            })
+          }
+          response.data.data.inclusions = inclusions;
+
+          const exclusions = [];
+          if (response.data.data.exclusions) {
+
+            const exclusionsArray = JSON.parse(response.data.data.exclusions);
+            exclusionsArray.forEach((h) => {
+              exclusions.push(h.exclusion);
+            })
+          }
+          response.data.data.exclusions = exclusions;
+
+          const knowThings = [];
+          if (response.data.data.knowThings) {
+
+            const knowThingsArray = JSON.parse(response.data.data.knowThings);
+            knowThingsArray.forEach((h) => {
+              knowThings.push(h.knowThing);
+            })
+          }
+          response.data.data.knowThings = knowThings;
+
+          const informations = [];
+          if (response.data.data.informations) {
+
+            const informationsArray = JSON.parse(response.data.data.informations);
+            informationsArray.forEach((h) => {
+              informations.push(h.information);
+            })
+          }
+          response.data.data.informations = informations;
+
+          const departureDetails = [];
+          if (response.data.data.departureDetails) {
+
+            const departureDetailsArray = JSON.parse(response.data.data.departureDetails);
+            departureDetailsArray.forEach((h) => {
+              departureDetails.push(h.departureDetail);
+            })
+          }
+          response.data.data.departureDetails = departureDetails;
+
+          const itinerarys = [];
+          if (response.data.data.itinerarys) {
+
+            const itinerarysArray = JSON.parse(response.data.data.itinerarys);
+            itinerarysArray.forEach((h) => {
+              itinerarys.push(h);
+            })
+          }
+          response.data.data.itinerarys = itinerarys;
+
+
+          setTour(response.data.data);
+          //       setTour(toursData.find((item) => item.id == id));
+
+          console.log(tour);
         })
-        response.data.data.highlights = highlights;
-
-        const includes = [];
-        const includesArray = JSON.parse(response.data.data.includes);
-        console.log(includesArray);
-        includesArray.forEach((h) => {
-          includes.push(h.include);
-        })
-        response.data.data.includes = includes;
-
-        const notIncludes = [];
-        const notIncludesArray = JSON.parse(response.data.data.notIncludes);
-        notIncludesArray.forEach((h) => {
-          notIncludes.push(h.notInclude);
-        })
-        response.data.data.notIncludes = notIncludes;
-        
-
-        const inclusions = [];
-        const inclusionsArray = JSON.parse(response.data.data.inclusions);
-        inclusionsArray.forEach((h) => {
-          inclusions.push(h.Inclusion);
-        })
-        response.data.data.inclusions = inclusions;
-
-        const exclusions = [];
-        const exclusionsArray = JSON.parse(response.data.data.exclusions);
-        exclusionsArray.forEach((h) => {
-          exclusions.push(h.exclusion);
-        })
-        response.data.data.exclusions = exclusions;
-
-        const knowThings = [];
-        const knowThingsArray = JSON.parse(response.data.data.knowThings);
-        knowThingsArray.forEach((h) => {
-          knowThings.push(h.knowThing);
-        })
-        response.data.data.knowThings = knowThings;
-
-        const informations = [];
-        const informationsArray = JSON.parse(response.data.data.informations);
-        informationsArray.forEach((h) => {
-          informations.push(h.information);
-        })
-        response.data.data.informations = informations;
-
-        const departureDetails = [];
-        const departureDetailsArray = JSON.parse(response.data.data.departureDetails);
-        departureDetailsArray.forEach((h) => {
-          departureDetails.push(h.departureDetail);
-        })
-        response.data.data.departureDetails = departureDetails;
-
-        const itinerarys = [];
-        const itinerarysArray = JSON.parse(response.data.data.itinerarys);
-        itinerarysArray.forEach((h) => {
-          itinerarys.push(h);
-        })
-        response.data.data.itinerarys = itinerarys;
-
-
-       setTour(response.data.data);
-//       setTour(toursData.find((item) => item.id == id));
-
-        console.log(tour);
-      })
-      .catch(e => {
-        console.log(e);
-      });
+        .catch(e => {
+          console.log(e);
+        });
     }
-    
-    return () => {};
+
+    return () => { };
   }, [id]);
 
   return (
@@ -154,7 +181,7 @@ const TourSingleV1Dynamic = () => {
       <Header11 />
       {/* End Header 1 */}
 
-      <TopBreadCrumb name={tour?.name}/>
+      <TopBreadCrumb name={tour?.name} />
       {/* End top breadcrumb */}
 
       <section className="pt-40">
@@ -248,7 +275,7 @@ const TourSingleV1Dynamic = () => {
                 >
                   {tour?.gallery?.map((slide, i) => (
                     <SwiperSlide key={i}>
-                      <img  width={451}
+                      <img width={451}
                         height={450}
                         priority
                         src={slide}
@@ -314,7 +341,7 @@ const TourSingleV1Dynamic = () => {
               {/* End toursnapshot */}
               <div className="border-top-light mt-40 mb-40"></div>
 
-              <Overview tourData={tour}  />
+              <Overview tourData={tour} />
               {/* End  Overview */}
             </div>
             {/* End .col-xl-8 */}
@@ -339,7 +366,7 @@ const TourSingleV1Dynamic = () => {
               </div>
             </div>
             {/* End row */}
-            <ImportantInfo tourData={tour}  />
+            <ImportantInfo tourData={tour} />
           </div>
           {/* End pt-40 */}
         </div>
