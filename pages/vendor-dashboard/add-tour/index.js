@@ -353,7 +353,7 @@ const index = () => {
           formData.append("languages", JSON.stringify(tour.languages));
         }
 
-        if (hey !== 'itinerarys' && key !== 'featurePhoto' && key !== 'gallery') {
+        if (key !== 'itinerarys' && key !== 'featurePhoto' && key !== 'gallery') {
           formData.append(key, tour[key])
         }
       }
