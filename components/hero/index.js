@@ -25,7 +25,7 @@ const index = () => {
   return (
     <section className="masthead -type-3 z-5">
       <div className="masthead__bg">
-      {tours && tours.data && <img alt="image" src={tours.data[tours.data.length-1].gallery[0]} className="js-lazy" />}
+      {tours && tours.data && tours.data.length > 0 && tours.data[tours.data.length-1] && tours.data[tours.data.length-1]?.gallery && <img alt="image" src={tours.data[tours.data.length-1]['gallery'][0] ?? ''} className="js-lazy" />}
 
         {/* //{tours && tours?.data?.map((tour) => {
           //return tour.gallery.slice(0, 0)?.map((photo) => {
