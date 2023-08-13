@@ -12,11 +12,6 @@
   ],
   "rootMainFiles": [],
   "pages": {
-    "/404": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/404.js"
-    ],
     "/_app": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
@@ -27,15 +22,20 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/vendor-dashboard/add-location": [
+    "/vendor-dashboard/add-tour": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/vendor-dashboard/add-location.js"
+      "static/chunks/pages/vendor-dashboard/add-tour.js"
     ],
     "/vendor-dashboard/locations": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/vendor-dashboard/locations.js"
+    ],
+    "/vendor-dashboard/tours": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/vendor-dashboard/tours.js"
     ]
   },
   "ampFirstPages": []

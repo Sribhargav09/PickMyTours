@@ -2,8 +2,8 @@
   "/_document": "pages/_document.js",
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
-  "/vendor-dashboard/add-location": "pages/vendor-dashboard/add-location.js",
-  "/vendor-dashboard/locations": "pages/vendor-dashboard/locations.js",
-  "/vendor-dashboard/offers": "pages/vendor-dashboard/offers.js",
-  "/404": "pages/404.js"
+  "/vendor-dashboard/tours": "pages/vendor-dashboard/tours.js",
+  "/": "pages/index.js",
+  "/vendor-dashboard/add-tour": "pages/vendor-dashboard/add-tour.js",
+  "/vendor-dashboard/locations": "pages/vendor-dashboard/locations.js"
 }

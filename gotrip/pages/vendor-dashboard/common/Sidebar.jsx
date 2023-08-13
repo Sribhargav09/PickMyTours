@@ -15,7 +15,7 @@ const Sidebar = () => {
       icon: "/img/dashboard/sidebar/map.svg",
       title: "Manage Tour",
       links: [
-        { title: "All Tour", href: "#" },
+        { title: "All Tour", href: "/vendor-dashboard/tours" },
         { title: "Add Tour", href: "#" },
         { title: "Recovery", href: "#" },
       ],
