@@ -2,9 +2,29 @@ import Seo from "../../../components/common/Seo";
 import Sidebar from "../common/Sidebar";
 import Header from "../../../components/header/dashboard-header";
 import Footer from "../common/Footer";
+import * as React from 'react';
+import  { useState } from 'react';
+
+
+
 
 const index = () => {
+  
+  const [name, setName] = useState('');
+  const [photo, setPhoto] = useState(null);
+  
+  function validateForm() {
+    
+    if (name.length == 0) {
+      alert(' Name can not be empty')
+      return
+    }
 
+    if (photo.length == 0) {
+      alert('Upload a photo can not be empty')
+      return
+    }
+  }
   
   return (
     <>
@@ -40,9 +60,47 @@ const index = () => {
               
               
                 {/*Form here*/}
-            
+                <div>
+                 <form>
+                   <h2>Set Location</h2>
+                   <div className="col-xl-6">
+                    <div className="form-input ">
+                      <input type="text"  value={name} required  onChange={(e) => setName(e.target.value)}/>
+                      <label className="lh-1 text-16 text-light-1">Name</label>
+                    </div>
+                  </div><br></br>
 
+                  <div className="col-12">
+                     <div className="form-input ">
+                          <textarea rows={3} defaultValue={""} />
+                          <label className="lh-1 text-16 text-light-1">
+                          Description (optional)
+                          </label>
+                     </div>
+                  </div><br></br>
+                  
+                <div className="col-12">
+                  <div className="form-input ">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => setPhoto(e.target.files[0])}
+                          required
+                        />
+                      </div>
+                      </div><br></br>
 
+                  <div className="col-12">
+                    <div className="form-input ">
+                    <button  className="button h-50 px-24 -dark-1 bg-blue-1 text-white" variant="contained" onClick={() => {
+            validateForm()
+          }}>Save Location</button>
+                    </div>
+                  </div>
+
+                 </form>
+              </div>
+                
             </div>
 
             <Footer />
