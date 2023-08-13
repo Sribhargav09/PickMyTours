@@ -68,6 +68,9 @@ let tourSchema = new Schema(
     itinerarys: {
       type: String,
     },
+    itineraryImages: {
+      type: Array
+    }
   },
   {
     collection: "tours",

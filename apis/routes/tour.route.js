@@ -65,7 +65,7 @@ tourExpressRoute
       });
   });
 // Create user
-tourExpressRoute.post("/create-tour",  upload.fields([{ name: 'featurePhoto', maxCount: 1 }, { name: 'gallery', maxCount: 8 }]), (req, res, next) => {
+tourExpressRoute.post("/create-tour",  upload.fields([{ name: 'featurePhoto', maxCount: 1 }, { name: 'gallery', maxCount: 8 }, { name: 'itineraryImages', maxCount: 8 }]), (req, res, next) => {
     
     const url = req.protocol + '://' + req.get('host')
 
@@ -76,6 +76,22 @@ tourExpressRoute.post("/create-tour",  upload.fields([{ name: 'featurePhoto', ma
 
     req.body.featurePhoto = url + '/tours/' + req.files['featurePhoto'][0].filename;
     req.body.gallery = photos;
+
+
+      console.log(req.files);
+    const itineraryPhotos = [];
+    for (var i = 0; i < req.files['itineraryImages'].length; i++) {
+      itineraryPhotos.push(url + '/tours/' + req.files['itineraryImages'][i].filename)
+    }
+    req.body.itineraryPhotos = photos;
+
+
+    
+    // const itineraryFieldsList = JSON.parse(req.body.itinerarys);
+    //   itineraryFieldsList.map((t, index) => {
+
+  //});
+
 
    TourSchema.create(req.body)
     .then((result) => {
