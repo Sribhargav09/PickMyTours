@@ -2,12 +2,30 @@ import Image from "next/image";
 
 const Sidebar = () => {
   const sidebarData = [
+    // {
+    //   icon: "/img/dashboard/sidebar/booking.svg",
+    //   title: "Manage Hotel",
+    //   links: [
+    //     { title: "All Hotel", href: "#" },
+    //     { title: "Add Hotel", href: "#" },
+    //     { title: "Recovery", href: "#" },
+    //   ],
+    // },
     {
-      icon: "/img/dashboard/sidebar/booking.svg",
-      title: "Manage Hotel",
+      icon: "/img/dashboard/sidebar/map.svg",
+      title: "Manage Location",
       links: [
-        { title: "All Hotel", href: "#" },
-        { title: "Add Hotel", href: "#" },
+        { title: "All locations", href: "/vendor-dashboard/locations" },
+        { title: "Add location", href: "/vendor-dashboard/add-location" },
+        { title: "Recovery", href: "#" },
+      ],
+    },
+    {
+      icon: "/img/dashboard/sidebar/map.svg",
+      title: "Manage Offer",
+      links: [
+        { title: "All Offers", href: "/vendor-dashboard/offers" },
+        { title: "Add Offer", href: "/vendor-dashboard/add-offer" },
         { title: "Recovery", href: "#" },
       ],
     },
@@ -15,92 +33,92 @@ const Sidebar = () => {
       icon: "/img/dashboard/sidebar/map.svg",
       title: "Manage Tour",
       links: [
-        { title: "All Tour", href: "#" },
-        { title: "Add Tour", href: "#" },
+        { title: "All Tour", href: "/vendor-dashboard/tours" },
+        { title: "Add Tour", href: "/vendor-dashboard/add-tour" },
         { title: "Recovery", href: "#" },
       ],
     },
-    {
-      icon: "/img/dashboard/sidebar/sneakers.svg",
-      title: "Manage Activity",
-      links: [
-        { title: "All Activity", href: "#" },
-        { title: "Add Activity", href: "#" },
-        { title: "Recovery", href: "#" },
-      ],
-    },
-    {
-      icon: "/img/dashboard/sidebar/house.svg",
-      title: "Manage Holiday Rental",
-      links: [
-        {
-          title: "All Holiday Rental",
-          href: "#",
-        },
-        {
-          title: "Add Holiday Rental",
-          href: "#",
-        },
-        {
-          title: "Recovery",
-          href: "#",
-        },
-      ],
-    },
-    {
-      icon: "/img/dashboard/sidebar/taxi.svg",
-      title: "Manage Car",
-      links: [
-        {
-          title: "All Car",
-          href: "#",
-        },
-        {
-          title: "Add Car",
-          href: "#",
-        },
-        {
-          title: "Recovery",
-          href: "#",
-        },
-      ],
-    },
-    {
-      icon: "/img/dashboard/sidebar/canoe.svg",
-      title: "Manage Cruise",
-      links: [
-        {
-          title: "All Cruise",
-          href: "#",
-        },
-        {
-          title: "Add Cruise",
-          href: "#",
-        },
-        {
-          title: "Recovery",
-          href: "#",
-        },
-      ],
-    },
-    {
-      icon: "/img/dashboard/sidebar/airplane.svg",
-      title: "Manage Flights",
-      links: [
-        {
-          title: "All Flights",
-          href: "#",
-        },
-        {
-          title: "Add Flights",
-          href: "#",
-        },
-        {
-          title: "Recovery",
-          href: "#",
-        },
-      ],
-    },
+    // {
+    //   icon: "/img/dashboard/sidebar/sneakers.svg",
+    //   title: "Manage Activity",
+    //   links: [
+    //     { title: "All Activity", href: "#" },
+    //     { title: "Add Activity", href: "#" },
+    //     { title: "Recovery", href: "#" },
+    //   ],
+    // },
+    // {
+    //   icon: "/img/dashboard/sidebar/house.svg",
+    //   title: "Manage Holiday Rental",
+    //   links: [
+    //     {
+    //       title: "All Holiday Rental",
+    //       href: "#",
+    //     },
+    //     {
+    //       title: "Add Holiday Rental",
+    //       href: "#",
+    //     },
+    //     {
+    //       title: "Recovery",
+    //       href: "#",
+    //     },
+    //   ],
+    // },
+    // {
+    //   icon: "/img/dashboard/sidebar/taxi.svg",
+    //   title: "Manage Car",
+    //   links: [
+    //     {
+    //       title: "All Car",
+    //       href: "#",
+    //     },
+    //     {
+    //       title: "Add Car",
+    //       href: "#",
+    //     },
+    //     {
+    //       title: "Recovery",
+    //       href: "#",
+    //     },
+    //   ],
+    // },
+    // {
+    //   icon: "/img/dashboard/sidebar/canoe.svg",
+    //   title: "Manage Cruise",
+    //   links: [
+    //     {
+    //       title: "All Cruise",
+    //       href: "#",
+    //     },
+    //     {
+    //       title: "Add Cruise",
+    //       href: "#",
+    //     },
+    //     {
+    //       title: "Recovery",
+    //       href: "#",
+    //     },
+    //   ],
+    // },
+    // {
+    //   icon: "/img/dashboard/sidebar/airplane.svg",
+    //   title: "Manage Flights",
+    //   links: [
+    //     {
+    //       title: "All Flights",
+    //       href: "#",
+    //     },
+    //     {
+    //       title: "Add Flights",
+    //       href: "#",
+    //     },
+    //     {
+    //       title: "Recovery",
+    //       href: "#",
+    //     },
+    //   ],
+    // },
   ];
 
   return (

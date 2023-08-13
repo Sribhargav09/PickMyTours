@@ -1,1 +1,0 @@
-(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[924],{48966:function(n,t,o){(window.__NEXT_P=window.__NEXT_P||[]).push(["/vendor-dashboard/add-hotel/components/AttributesTabContent",function(){return o(64998)}])}},function(n){n.O(0,[4998,9774,2888,179],function(){return n(n.s=48966)}),_N_E=n.O()}]);

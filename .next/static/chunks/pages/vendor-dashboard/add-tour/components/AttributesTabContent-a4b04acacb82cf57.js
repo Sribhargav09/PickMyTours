@@ -1,1 +1,0 @@
-(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[6893],{48612:function(n,t,o){(window.__NEXT_P=window.__NEXT_P||[]).push(["/vendor-dashboard/add-tour/components/AttributesTabContent",function(){return o(6210)}])}},function(n){n.O(0,[6210,9774,2888,179],function(){return n(n.s=48612)}),_N_E=n.O()}]);

@@ -1,1 +1,0 @@
-(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[1340],{50615:function(n,o,_){(window.__NEXT_P=window.__NEXT_P||[]).push(["/vendor-dashboard/hotels/components/BookingTable",function(){return _(50183)}])}},function(n){n.O(0,[183,9774,2888,179],function(){return n(n.s=50615)}),_N_E=n.O()}]);
