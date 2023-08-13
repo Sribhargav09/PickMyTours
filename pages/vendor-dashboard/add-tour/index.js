@@ -328,20 +328,22 @@ const index = () => {
     if (tour) {
       e.preventDefault();
 
-    const itineraryFieldsList = itineraryFields;
-    itineraryFieldsList.map((t, index) => {
-      const photos = t.photos;
-      for (const key of Object.keys(photos)) {
-        itineraryFieldsList[index]['photos'] = photos[key];
-      }
-    });
-    setItineraryFields(itineraryFieldsList);
 
-    console.log(itineraryFields);
 
       setTour({ ...tour, 'itinerarys': JSON.stringify(itineraryFields) });
       console.log(tour);
       var formData = new FormData();
+
+      
+      const itineraryFieldsList = itineraryFields;
+      itineraryFieldsList.map((t, index) => {
+        const photos = t.photos;
+        itineraryFieldsList[index]['photos'] = [];
+        for (const key of Object.keys(photos)) {
+          formData.append('itineraryImages', photos[key])
+        }
+      });
+      setItineraryFields(itineraryFieldsList);
       formData.append('itinerarys', JSON.stringify(itineraryFields));
 
       for (const key of Object.keys(tour)) {
@@ -481,6 +483,12 @@ const index = () => {
                           </div>
 
 
+                        </div>
+
+                        <div className="d-inline-block pt-30">
+                          <button onClick={() => setTabIndex(1)} type="button" className="button h-50 px-24 -dark-1 bg-blue-1 text-white">
+                            Next <div className="icon-arrow-top-right ml-15" />
+                          </button>
                         </div>
 
                       </TabPanel>
@@ -636,6 +644,12 @@ const index = () => {
                         </div>
 
 
+                        <div className="d-inline-block pt-30">
+                          <button onClick={() => setTabIndex(2)} type="button" className="button h-50 px-24 -dark-1 bg-blue-1 text-white">
+                            Next <div className="icon-arrow-top-right ml-15" />
+                          </button>
+                        </div>
+
                       </TabPanel>
 
                       <TabPanel
@@ -733,7 +747,12 @@ const index = () => {
                           </div>
                         </div>
 
-
+                        
+                        <div className="d-inline-block pt-30">
+                          <button onClick={() => setTabIndex(3)} type="button" className="button h-50 px-24 -dark-1 bg-blue-1 text-white">
+                            Next <div className="icon-arrow-top-right ml-15" />
+                          </button>
+                        </div>
                       </TabPanel>
 
                       <TabPanel
@@ -868,12 +887,12 @@ const index = () => {
                           </div>
                         </div>
 
-                            
-                  <div className="d-inline-block pt-30">
-                    <button type="submit" className="button h-50 px-24 -dark-1 bg-blue-1 text-white">
-                      Save Changes <div className="icon-arrow-top-right ml-15" />
-                    </button>
-                  </div>
+
+                        <div className="d-inline-block pt-30">
+                          <button type="submit" className="button h-50 px-24 -dark-1 bg-blue-1 text-white">
+                            Save Changes <div className="icon-arrow-top-right ml-15" />
+                          </button>
+                        </div>
                       </TabPanel>
                     </div>
                   </Tabs>

@@ -1,1 +1,0 @@
-(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[8720],{13711:function(n,o,_){(window.__NEXT_P=window.__NEXT_P||[]).push(["/dashboard/db-booking/components/BookingTable",function(){return _(42880)}])}},function(n){n.O(0,[2880,9774,2888,179],function(){return n(n.s=13711)}),_N_E=n.O()}]);
