@@ -2,20 +2,19 @@ import Seo from "../../../components/common/Seo";
 import Sidebar from "../common/Sidebar";
 import Header from "../../../components/header/dashboard-header";
 import Footer from "../common/Footer";
-import BookingTable from "./components/ToursTable";
 import Link from "next/link";
 
-import ToursTable from "./components/ToursTable";
 import { useState, useEffect } from "react";
-import TourDataService from "../../../services/tour.service";
+import LocationDataService from "../../../services/location.service";
+import LocationsTable from "./components/LocationsTable";
 
 const index = () => {
-  const [tours, setTours] = useState([]);
+  const [locations, setLocations] = useState([]);
 
   useEffect(() => {
-    TourDataService.getAll()
+    LocationDataService.getAll()
       .then(response => {
-       setTours(response.data);
+       setLocations(response.data);
         console.log(response.data);
       })
       .catch(e => {
@@ -64,7 +63,7 @@ const index = () => {
 
             <div className="py-30 px-30 rounded-4 bg-white shadow-3">
               {/* table here */}
-              {/* <ToursTable toursData={tours.data} /> */}
+              <LocationsTable locationsData={locations.data} />
               {/* End tabs */}
             </div>
 

@@ -3,16 +3,51 @@ import Pagination from "../../common/Pagination";
 import ActionsButton from "./ActionsButton";
 import { useRouter } from "next/router";
 import Router from "next/router";
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import TourDataService from "../../../../services/tour.service";
 
 
 
 
-const ToursTable = ({toursData}) => {
+const ToursTable = ({ toursData }) => {
   const [activeTab, setActiveTab] = useState(0);
   const router = useRouter();
+  const [id, setId] = useState(null);
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = (id) => {
+    setId(id)
+    setOpen(true);
+  };
+
+  const deleteRecord = () => {
+    TourDataService.delete(id)
+          .then(response => {
+            
+            location.reload();
+            console.log(response.data);
+            setOpen(false);
+
+          })
+          .catch(e => {
+            console.log(e);
+          });
+  }
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+
 
   console.log(toursData);
-  
+
   const handleTabClick = (index) => {
     setActiveTab(index);
   };
@@ -35,9 +70,8 @@ const ToursTable = ({toursData}) => {
           {tabItems.map((item, index) => (
             <div className="col-auto" key={index}>
               <button
-                className={`tabs__button text-18 lg:text-16 text-light-1 fw-500 pb-5 lg:pb-0 js-tabs-button ${
-                  activeTab === index ? "is-tab-el-active" : ""
-                }`}
+                className={`tabs__button text-18 lg:text-16 text-light-1 fw-500 pb-5 lg:pb-0 js-tabs-button ${activeTab === index ? "is-tab-el-active" : ""
+                  }`}
                 onClick={() => handleTabClick(index)}
               >
                 {item}
@@ -72,31 +106,36 @@ const ToursTable = ({toursData}) => {
                 </thead>
                 {/* End theade */}
                 <tbody>
-                  {toursData && toursData.map((data) => { 
-                  return <tr>
-                    <td>
-                      <div className="d-flex items-center">
-                        <div className="form-checkbox ">
-                          <input type="checkbox" name="name" />
-                          <div className="form-checkbox__mark">
-                            <div className="form-checkbox__icon icon-check" />
+                  {toursData && toursData.map((data) => {
+                    return <tr>
+                      <td>
+                        <div className="d-flex items-center">
+                          <div className="form-checkbox ">
+                            <input type="checkbox" name="name" />
+                            <div className="form-checkbox__mark">
+                              <div className="form-checkbox__icon icon-check" />
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </td>
+                      </td>
 
-                    <td className="text-blue-1 fw-500">{data.name}</td>
+                      <td className="text-blue-1 fw-500">{data.name}</td>
 
-                    <td><img src={data.featurePhoto[0]} /></td>
+                      <td><img src={data.featurePhoto[0]} /></td>
 
-                    <td>{data.location}</td>
+                      <td>{data.location}</td>
 
-                    <td>{data.price}</td>
+                      <td>{data.price}</td>
 
-                    <td><button onClick={() => Router.push(`add-tour?id=${data?._id}`)}>Edit</button> </td>
+                      <td>
+                        <button onClick={() => Router.push(`add-tour?id=${data?._id}`)}>Edit</button>
+                        
+                        <button onClick={() => handleClickOpen(data._id)}>Delete</button>
+                        
+                      </td>
 
-                    
-                  </tr>
+
+                    </tr>
                   })}
                   {/* End tr */}
                 </tbody>
@@ -106,6 +145,29 @@ const ToursTable = ({toursData}) => {
           </div>
         </div>
       </div>
+
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Are you sure?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            You want to delete the record
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button class="btn btn-success" onClick={deleteRecord} autoFocus>Yes</Button>
+          <Button class="btn btn-danger" onClick={handleClose}>
+            No
+          </Button>
+        </DialogActions>
+      </Dialog>
       {/* <Pagination /> */}
     </>
   );

@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 
 
+
 const index = () => {
 
   const tabs = [
@@ -32,6 +33,9 @@ const index = () => {
     }
   ];
 
+  
+  const [loading, setLoading] = useState(true);
+
   const [tabIndex, setTabIndex] = useState(0);
 
   const router = useRouter();
@@ -42,80 +46,89 @@ const index = () => {
   }]);
 
   useEffect(() => {
-    if (!id) <h1>Loading...</h1>;
+    if (!id) {
+      //setLoading(false);
+    }
     else {
       TourDataService.get(id)
         .then(response => {
 
-          const langs = response.data.data.languages[0].split(",");
+          //const langs = response.data.data?.languages[0].split(",") ?? [];
           // langs.forEach((lang) => {
           //   console.log(JSON.parse(lang));
           // });
           console.log(response.data.data);
-          const highlights = [];
-          const highlightsArray = JSON.parse(response.data.data.highlights);
-          highlightsArray.forEach((h) => {
-            highlights.push(h.highlight);
-          })
-          response.data.data.highlights = highlights;
+          // const highlights = [];
+          // const highlightsArray = JSON.parse(response.data.data.highlights);
+          // highlightsArray.forEach((h) => {
+          //   highlights.push(h.highlight);
+          // })
+          // response.data.data.highlights = highlights;
 
-          const includes = [];
-          const includesArray = JSON.parse(response.data.data.includes);
-          console.log(includesArray);
-          includesArray.forEach((h) => {
-            includes.push(h.include);
-          })
-          response.data.data.includes = includes;
+          // const includes = [];
+          // const includesArray = JSON.parse(response.data.data.includes);
+          // console.log(includesArray);
+          // includesArray.forEach((h) => {
+          //   includes.push(h.include);
+          // })
+          // response.data.data.includes = includes;
 
-          const notIncludes = [];
-          const notIncludesArray = JSON.parse(response.data.data.notIncludes);
-          notIncludesArray.forEach((h) => {
-            notIncludes.push(h.notInclude);
-          })
-          response.data.data.notIncludes = notIncludes;
+          // const notIncludes = [];
+          // const notIncludesArray = JSON.parse(response.data.data.notIncludes);
+          // notIncludesArray.forEach((h) => {
+          //   notIncludes.push(h.notInclude);
+          // })
+          // response.data.data.notIncludes = notIncludes;
 
 
-          const inclusions = [];
-          const inclusionsArray = JSON.parse(response.data.data.inclusions);
-          inclusionsArray.forEach((h) => {
-            inclusions.push(h.Inclusion);
-          })
-          response.data.data.inclusions = inclusions;
+          // const inclusions = [];
+          // const inclusionsArray = JSON.parse(response.data.data.inclusions);
+          // inclusionsArray.forEach((h) => {
+          //   inclusions.push(h.Inclusion);
+          // })
+          // response.data.data.inclusions = inclusions;
 
-          const exclusions = [];
-          const exclusionsArray = JSON.parse(response.data.data.exclusions);
-          exclusionsArray.forEach((h) => {
-            exclusions.push(h.exclusion);
-          })
-          response.data.data.exclusions = exclusions;
+          // const exclusions = [];
+          // const exclusionsArray = JSON.parse(response.data.data.exclusions);
+          // exclusionsArray.forEach((h) => {
+          //   exclusions.push(h.exclusion);
+          // })
+          // response.data.data.exclusions = exclusions;
 
-          const knowThings = [];
-          const knowThingsArray = JSON.parse(response.data.data.knowThings);
-          knowThingsArray.forEach((h) => {
-            knowThings.push(h.knowThing);
-          })
-          response.data.data.knowThings = knowThings;
+          // const knowThings = [];
+          // const knowThingsArray = JSON.parse(response.data.data.knowThings);
+          // knowThingsArray.forEach((h) => {
+          //   knowThings.push(h.knowThing);
+          // })
+          // response.data.data.knowThings = knowThings;
 
-          const informations = [];
-          const informationsArray = JSON.parse(response.data.data.informations);
-          informationsArray.forEach((h) => {
-            informations.push(h.information);
-          })
-          response.data.data.informations = informations;
+          // const informations = [];
+          // const informationsArray = JSON.parse(response.data.data.informations);
+          // informationsArray.forEach((h) => {
+          //   informations.push(h.information);
+          // })
+          // response.data.data.informations = informations;
 
-          const departureDetails = [];
-          const departureDetailsArray = JSON.parse(response.data.data.departureDetails);
-          departureDetailsArray.forEach((h) => {
-            departureDetails.push(h.departureDetail);
-          })
-          response.data.data.departureDetails = departureDetails;
+          // const departureDetails = [];
+          // const departureDetailsArray = JSON.parse(response.data.data.departureDetails);
+          // departureDetailsArray.forEach((h) => {
+          //   departureDetails.push(h.departureDetail);
+          // })
+          // response.data.data.departureDetails = departureDetails;
 
 
 
           setTour(response.data.data);
+          //setTimeout(() => { setLoading(false)}, 1500);
+
+          setTimeout(() => {
+            setLoading(false)
+            console.log('This will run after 1 second!')
+          }, 1000);
+
           //       setTour(toursData.find((item) => item.id == id));
 
-          console.log(includes);
+          console.log(tour);
         })
         .catch(e => {
           console.log(e);
@@ -334,7 +347,7 @@ const index = () => {
       console.log(tour);
       var formData = new FormData();
 
-      
+
       const itineraryFieldsList = itineraryFields;
       itineraryFieldsList.map((t, index) => {
         const photos = t.photos;
@@ -360,18 +373,33 @@ const index = () => {
         }
       }
       formData.append('featurePhoto', tour.featurePhoto)
-      for (const key of Object.keys(tour.photos)) {
-        formData.append('gallery', tour.photos[key])
+      if (tour.photos) {
+        for (const key of Object.keys(tour.photos)) {
+          formData.append('gallery', tour.photos[key])
+        }
       }
       console.log(formData);
-      TourDataService.create(formData)
-        .then(response => {
-          Router.push("/vendor-dashboard/tours")
-          console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });
+
+      if (id) {
+        TourDataService.update(id, formData)
+          .then(response => {
+            Router.push("/vendor-dashboard/tours")
+            console.log(response.data);
+          })
+          .catch(e => {
+            console.log(e);
+          });
+
+      } else {
+        TourDataService.create(formData)
+          .then(response => {
+            Router.push("/vendor-dashboard/tours")
+            console.log(response.data);
+          })
+          .catch(e => {
+            console.log(e);
+          });
+      }
     }
   }
 
@@ -406,7 +434,8 @@ const index = () => {
             {/* End .row */}
 
             <div className="py-30 px-30 rounded-4 bg-white shadow-3">
-              <form onSubmit={saveTour}>
+              {loading && <h3>LOADING...</h3>}
+              {loading == false && <form onSubmit={saveTour}>
                 <div className="col-xl-10">
 
                   <Tabs
@@ -433,7 +462,7 @@ const index = () => {
                         <div className="row x-gap-20 y-gap-20">
                           <div className="col-12">
                             <div className="form-input ">
-                              <input type="text" name="name" value={tour?.name || ''} onChange={(event) => setTour({ ...tour, name: event.target.value })} required />
+                              <input type="text" name="name" defaultValue={tour?.name || ''} value={tour?.name || ''} onChange={(event) => setTour({ ...tour, name: event.target.value })} required />
                               <label className="lh-1 text-16 text-light-1">Name</label>
                             </div>
                           </div>
@@ -747,7 +776,7 @@ const index = () => {
                           </div>
                         </div>
 
-                        
+
                         <div className="d-inline-block pt-30">
                           <button onClick={() => setTabIndex(3)} type="button" className="button h-50 px-24 -dark-1 bg-blue-1 text-white">
                             Next <div className="icon-arrow-top-right ml-15" />
@@ -901,8 +930,9 @@ const index = () => {
 
 
                 </div>
-              </form>
+              </form>}
             </div>
+
 
             <Footer />
           </div>
