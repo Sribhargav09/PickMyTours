@@ -2,8 +2,6 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/vendor-dashboard/tours": "pages/vendor-dashboard/tours.js",
-  "/": "pages/index.js",
-  "/others-pages/signup": "pages/others-pages/signup.js",
-  "/vendor-dashboard/add-tour": "pages/vendor-dashboard/add-tour.js"
+  "/vendor-dashboard/add-location": "pages/vendor-dashboard/add-location.js",
+  "/vendor-dashboard/locations": "pages/vendor-dashboard/locations.js"
 }

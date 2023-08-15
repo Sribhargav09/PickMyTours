@@ -10,6 +10,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TourDataService from "../../../../services/tour.service";
+import { DeleteOutline, EditOutlined } from "@material-ui/icons";
 
 
 
@@ -128,10 +129,8 @@ const ToursTable = ({ toursData }) => {
                       <td>{data.price}</td>
 
                       <td>
-                        <button onClick={() => Router.push(`add-tour?id=${data?._id}`)}>Edit</button>
-                        
-                        <button onClick={() => handleClickOpen(data._id)}>Delete</button>
-                        
+                        <Button  onClick={() => Router.push(`add-tour?id=${data?._id}`)} endIcon={<EditOutlined />}></Button>
+                        <Button  onClick={() => handleClickOpen(data._id)} endIcon={<DeleteOutline />}></Button>
                       </td>
 
 

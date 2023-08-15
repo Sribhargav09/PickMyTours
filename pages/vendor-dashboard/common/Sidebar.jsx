@@ -13,6 +13,15 @@ const Sidebar = () => {
     // },
     {
       icon: "/img/dashboard/sidebar/map.svg",
+      title: "Manage Users",
+      links: [
+        { title: "All Users", href: "/vendor-dashboard/users" },
+        { title: "Add User", href: "/vendor-dashboard/add-user" },
+        { title: "Recovery", href: "#" },
+      ],
+    },
+    {
+      icon: "/img/dashboard/sidebar/map.svg",
       title: "Manage Location",
       links: [
         { title: "All locations", href: "/vendor-dashboard/locations" },
@@ -35,6 +44,24 @@ const Sidebar = () => {
       links: [
         { title: "All Tour", href: "/vendor-dashboard/tours" },
         { title: "Add Tour", href: "/vendor-dashboard/add-tour" },
+        { title: "Recovery", href: "#" },
+      ],
+    },
+    {
+      icon: "/img/dashboard/sidebar/map.svg",
+      title: "Manage Tour Types",
+      links: [
+        { title: "All Tour Types", href: "/vendor-dashboard/tour-types" },
+        { title: "Add Tour Type", href: "/vendor-dashboard/add-tour-type" },
+        { title: "Recovery", href: "#" },
+      ],
+    },
+    {
+      icon: "/img/dashboard/sidebar/map.svg",
+      title: "Manage Testinomials",
+      links: [
+        { title: "All Testinomials", href: "/vendor-dashboard/testinomials" },
+        { title: "Add Testinomial", href: "/vendor-dashboard/add-testinomial" },
         { title: "Recovery", href: "#" },
       ],
     },

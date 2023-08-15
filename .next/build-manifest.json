@@ -12,11 +12,6 @@
   ],
   "rootMainFiles": [],
   "pages": {
-    "/": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/index.js"
-    ],
     "/_app": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
@@ -27,15 +22,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/others-pages/signup": [
+    "/vendor-dashboard/add-location": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/others-pages/signup.js"
+      "static/chunks/pages/vendor-dashboard/add-location.js"
     ],
-    "/vendor-dashboard/add-tour": [
+    "/vendor-dashboard/locations": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/vendor-dashboard/add-tour.js"
+      "static/chunks/pages/vendor-dashboard/locations.js"
     ]
   },
   "ampFirstPages": []

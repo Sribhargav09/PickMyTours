@@ -68,6 +68,8 @@ const index = () => {
             </div>
 
             <Footer />
+
+            
           </div>
           {/* End .dashboard__content */}
         </div>

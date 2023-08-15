@@ -4,12 +4,50 @@ import ActionsButton from "./ActionsButton";
 import { useRouter } from "next/router";
 import Router from "next/router";
 
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import LocationDataService from "../../../../services/location.service";
+import { DeleteOutline, EditOutlined } from "@material-ui/icons";
+
+
+
 
 
 
 const LocationsTable = ({locationsData}) => {
   const [activeTab, setActiveTab] = useState(0);
   const router = useRouter();
+  const [id, setId] = useState(null);
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = (id) => {
+    setId(id)
+    setOpen(true);
+  };
+
+  const deleteRecord = () => {
+    LocationDataService.delete(id)
+          .then(response => {
+            
+            location.reload();
+            console.log(response.data);
+            setOpen(false);
+
+          })
+          .catch(e => {
+            console.log(e);
+          });
+  }
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+
 
   console.log(locationsData);
   
@@ -87,7 +125,12 @@ const LocationsTable = ({locationsData}) => {
 
                     <td><img width="100px" height="100px" src={data.photo[0]} /></td>
 
-                    <td><button onClick={() => Router.push(`add-tour?id=${data?._id}`)}>Edit</button> </td>
+                    <td>
+                    
+                    <Button  onClick={() => Router.push(`add-location?id=${data?._id}`)} endIcon={<EditOutlined />}></Button>
+                    <Button  onClick={() => handleClickOpen(data._id)} endIcon={<DeleteOutline />}></Button>
+
+                     </td>
 
                     
                   </tr>
@@ -100,6 +143,29 @@ const LocationsTable = ({locationsData}) => {
           </div>
         </div>
       </div>
+
+      
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Are you sure?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            You want to delete the record
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button class="btn btn-success" onClick={deleteRecord} autoFocus>Yes</Button>
+          <Button class="btn btn-danger" onClick={handleClose}>
+            No
+          </Button>
+        </DialogActions>
+      </Dialog>
       {/* <Pagination /> */}
     </>
   );

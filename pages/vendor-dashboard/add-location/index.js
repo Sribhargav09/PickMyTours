@@ -3,8 +3,10 @@ import Sidebar from "../common/Sidebar";
 import Header from "../../../components/header/dashboard-header";
 import Footer from "../common/Footer";
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import LocationDataService from "../../../services/location.service";
+import {  useRouter } from "next/router";
+import Router from "next/router";
 
 
 
@@ -19,20 +21,58 @@ const index = () => {
   const [errors, setErrors] = useState({ name: '', photos: '' });
   const [images, setImages] = useState(null);
 
+  const [loading, setLoading] = useState(true);
 
 
-  function validateForm() {
+  const router = useRouter();
+  const id = router.query.id;
+
+  useEffect(() => {
+    if (!id) {
+      //setLoading(false);
+    }
+    else {
+      LocationDataService.get(id)
+        .then(response => {
+          setName(response.data.data.name);
+          setDescription(response.data.data.description);
+          setPhotos([response.data.data.photo]);
+
+          setTimeout(() => {
+            setLoading(false)
+            console.log('This will run after 1 second!')
+          }, 1000);
+          console.log(location);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
+
+    return () => { };
+  }, [id]);
+
+
+
+  const validateForm = () => {
 
     if (name.length == 0) {
       setErrors({ ...errors, name: ' Name can not be empty' });
     } else if (photos.length == 0) {
       setErrors({ ...errors, photos: 'Upload a photo can not be empty' });
     } else {
-      var formData = new FormData();
-      formData.append('name', name);
-      formData.append('description', description);
-      formData.append('photo', photo);
+      
+      if (id) {
+        LocationDataService.update(id, {name, description})
+          .then(response => {
+            Router.push("/vendor-dashboard/locations")
+            console.log(response.data);
+          })
+          .catch(e => {
+            console.log(e);
+          });
 
+      } else {
       LocationDataService.create(formData)
         .then(response => {
           Router.push("/vendor-dashboard/locations")
@@ -41,6 +81,7 @@ const index = () => {
         .catch(e => {
           console.log(e);
         });
+      }
     }
   }
 
@@ -133,14 +174,14 @@ const index = () => {
                   <h2>Set Location</h2>
                   <div className="col-xl-6">
                     <div className="form-input ">
-                      <input type="text" value={name} required onChange={(e) => setName(e.target.value)} />
+                      <input type="text" name="name" value={name} required onChange={(e) => setName(e.target.value)} />
                       <label className="lh-1 text-16 text-light-1">Name</label>
                     </div>
                   </div><br></br>
 
                   <div className="col-12">
                     <div className="form-input ">
-                      <textarea rows={3} defaultValue={""} value={description} onChange={(e) => setDescription(e.target.value)} />
+                      <textarea name="description" rows={3} defaultValue={""} value={description} onChange={(e) => setDescription(e.target.value)} />
                       <label className="lh-1 text-16 text-light-1">
                         Description (optional)
                       </label>
@@ -161,6 +202,7 @@ const index = () => {
                             </label>
                             <input
                               type="file"
+                              name="photo"
                               id="featurePhotoUpload"
                               accept="image/png, image/jpeg"
                               className="d-none"
