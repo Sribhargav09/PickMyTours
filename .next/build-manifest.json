@@ -22,15 +22,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/vendor-dashboard/add-location": [
+    "/vendor-dashboard/add-tour-type": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/vendor-dashboard/add-location.js"
-    ],
-    "/vendor-dashboard/locations": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/vendor-dashboard/locations.js"
+      "static/chunks/pages/vendor-dashboard/add-tour-type.js"
     ]
   },
   "ampFirstPages": []
