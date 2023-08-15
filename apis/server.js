@@ -21,6 +21,8 @@ mongoDbConnection().then(() => {
     console.log("Could not connected to database : " + err);
   };
 const tourRoute = require("./routes/tour.route");
+const locationRoute = require("./routes/location.route");
+
 const app = express();
 app.use(
   bodyParser.urlencoded({
@@ -33,6 +35,7 @@ app.use(
 app.use(cors());
 // RESTful API root
 app.use("/", tourRoute);
+app.use("/", locationRoute);
 
 app.use(express.static(__dirname +'/public'));
 // PORT

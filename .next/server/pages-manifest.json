@@ -1,9 +1,7 @@
 {
-  "/_document": "pages/_document.js",
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
-  "/vendor-dashboard/tours": "pages/vendor-dashboard/tours.js",
-  "/": "pages/index.js",
-  "/vendor-dashboard/add-tour": "pages/vendor-dashboard/add-tour.js",
+  "/_document": "pages/_document.js",
+  "/vendor-dashboard/add-location": "pages/vendor-dashboard/add-location.js",
   "/vendor-dashboard/locations": "pages/vendor-dashboard/locations.js"
 }
