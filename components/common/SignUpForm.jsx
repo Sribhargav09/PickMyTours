@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { useState ,useEffect} from "react";
 import { TextField, InputLabel, Button, Select, MenuItem } from "@mui/material";
-import SignupDataService from "../../../services/signup.service";
 import {  useRouter } from "next/router";
 import Router from "next/router";
+import signupServer from "../../services/signup.server";
 
 const SignUpForm = () => {
   const [firstName, setFirstName] = useState('');
@@ -19,6 +19,7 @@ const SignUpForm = () => {
   const [images, setImages] = useState(null);
 
   const [loading, setLoading] = useState(true);
+  const [isRegister, setIsRegister] = useState(false);
 
 
   const router = useRouter();
@@ -29,7 +30,7 @@ const SignUpForm = () => {
       //setLoading(false);
     }
     else {
-      SignupDataService.get(id)
+      signupServer.get(id)
         .then(response => {
           setFirstName(response.data.data.firstName);
           setLastName(response.data.data.lastName);
@@ -68,7 +69,7 @@ const SignUpForm = () => {
       setErrors({ ...errors, photos: 'Upload a photo can not be empty' });
     }
     if (id) {
-      SignupDataService.update(id, { firstName, lastName, email, password, phoneNumber, userRole })
+      signupServer.update(id, { firstName, lastName, email, password, phoneNumber, userRole })
         .then(response => {
           Router.push("/vendor-dashboard/add-user")
           console.log(response.data);
@@ -78,9 +79,10 @@ const SignUpForm = () => {
         });
 
     } else {
-      SignupDataService.create({ firstName, lastName, email, password, phone: phoneNumber, role: userRole, photo })
+      signupServer.create({ firstName, lastName, email, password, phone: phoneNumber, role: userRole, photo })
         .then(response => {
-          Router.push("/vendor-dashboard/users")
+          //Router.push("/vendor-dashboard/users")
+          setIsRegister(true);
           console.log(response.data);
         })
         .catch(e => {
@@ -89,7 +91,7 @@ const SignUpForm = () => {
 
     }
     if (id) {
-      SignupDataService.delete(id)
+      signupServer.delete(id)
         .then(response => {
           Router.push('/vendor-dashboard/add-user')
           console.log(response.data);
@@ -149,7 +151,8 @@ const SignUpForm = () => {
   };
 
   return (
-    <form className="row y-gap-20">
+    <>
+    {!isRegister && <form className="row y-gap-20">
       <div className="col-12">
         <h1 className="text-22 fw-500">Welcome back</h1>
         <p className="mt-10">
@@ -299,7 +302,10 @@ const SignUpForm = () => {
         </button>
       </div>
       {/* End .col */}
-    </form>
+    </form>}
+    {!isRegister && <p>Thanks for Signup. <br/>Your account will be activate after approval form our end</p>}
+    </>
+
   );
 };
 
