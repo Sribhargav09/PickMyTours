@@ -5,7 +5,7 @@ import Footer from "../common/Footer";
 import * as React from 'react';
 import { useState ,useEffect} from "react";
 import { TextField, InputLabel, Button, Select, MenuItem } from "@mui/material";
-import UsersDataService from "../../../services/add-user.service";
+import UsersDataService from "../../../services/user.service";
 import {  useRouter } from "next/router";
 import Router from "next/router";
 
@@ -83,9 +83,9 @@ const add = ()=>{
       });
 
   } else {
-  UsersDataService.create(formData)
+  UsersDataService.create({firstName,lastName,email,password,phone:phoneNumber,role:userRole, photo})
     .then(response => {
-      Router.push("/vendor-dashboard/add-user")
+      Router.push("/vendor-dashboard/users")
       console.log(response.data);
     })
     .catch(e => {
@@ -174,9 +174,9 @@ if(id){
           <div className="dashboard__content bg-light-2">
             <div className="row y-gap-20 justify-between items-end pb-60 lg:pb-40 md:pb-32">
               <div className="col-12">
-                <h1 className="text-30 lh-14 fw-600">Add Location</h1>
+                <h1 className="text-30 lh-14 fw-600">Add User</h1>
                 <div className="text-15 text-light-1">
-                  This seciton for adding New Location
+                  This seciton for adding New User
                 </div>
               </div>
               {/* End .col-12 */}
