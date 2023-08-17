@@ -22,6 +22,8 @@ mongoDbConnection().then(() => {
   };
 const tourRoute = require("./routes/tour.route");
 const locationRoute = require("./routes/location.route");
+const userRoute = require("./routes/user.route");
+
 
 const app = express();
 app.use(
@@ -36,6 +38,8 @@ app.use(cors());
 // RESTful API root
 app.use("/", tourRoute);
 app.use("/", locationRoute);
+app.use("/", userRoute);
+
 
 app.use(express.static(__dirname +'/public'));
 // PORT
