@@ -35,7 +35,7 @@ const Header = () => {
                 </Link>
                 {/* End logo */}
 
-                <HeaderSearch />
+                {/* <HeaderSearch /> */}
                 {/* End logo */}
 
                 <div className="header-menu">
@@ -68,9 +68,16 @@ const Header = () => {
 
                 {/* Start btn-group */}
                 <div className="d-flex items-center ml-20 is-menu-opened-hide md:d-none">
+                <Link
+                    href="/others-pages/become-expert"
+                    className="button px-30 fw-400 text-14 -blue-1 bg-blue-1 h-50 text-white"
+                  >
+                    Become An Expert
+                  </Link> 
+                  
                   <Link
                     href="/others-pages/signup"
-                    className="button px-30 fw-400 text-14 -blue-1 bg-blue-1 h-50 text-white"
+                    className="button px-30 fw-400 text-14 -outline-blue-1 h-50 text-blue-1 ml-20"
                   >
                     Sign In / Register
                   </Link>

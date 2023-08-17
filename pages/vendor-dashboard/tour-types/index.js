@@ -3,9 +3,26 @@ import Sidebar from "../common/Sidebar";
 import Header from "../../../components/header/dashboard-header";
 import Footer from "../common/Footer";
 import Link from "next/link";
+import tourTypeService from "../../../services/tour-type.service";
+import { useState, useEffect } from "react";
+import TourTypesTable from "./components/TourTypesTable";
 
 
 const index = () => {
+
+  const [tourTypes, settourTypes] = useState([]);
+
+  useEffect(() => {
+    tourTypeService.getAll()
+      .then(response => {
+       settourTypes(response.data);
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }, [])
+
   
   return (
     <>
@@ -48,7 +65,8 @@ const index = () => {
 
             <div className="py-30 px-30 rounded-4 bg-white shadow-3">
               {/* table here */}
-
+              
+              <TourTypesTable tourTypesData={tourTypes.data} />
 
               {/* End tabs */}
             </div>

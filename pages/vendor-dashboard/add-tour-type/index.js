@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import LocationDataService from "../../../services/location.service";
 import {  useRouter } from "next/router";
 import Router from "next/router";
+import tourTypeService from "../../../services/tour-type.service";
 
 
 
@@ -64,7 +65,7 @@ const index = () => {
     } else {
       
       if (id) {
-        LocationDataService.update(id, {name, description})
+        tourTypeService.update(id, {name, description})
           .then(response => {
             Router.push("/vendor-dashboard/tour-types")
             console.log(response.data);
@@ -74,7 +75,7 @@ const index = () => {
           });
 
       } else {
-      LocationDataService.create(formData)
+        tourTypeService.create({name, description, photo})
         .then(response => {
           Router.push("/vendor-dashboard/tour-types")
           console.log(response.data);
@@ -157,9 +158,9 @@ const index = () => {
           <div className="dashboard__content bg-light-2">
             <div className="row y-gap-20 justify-between items-end pb-60 lg:pb-40 md:pb-32">
               <div className="col-12">
-                <h1 className="text-30 lh-14 fw-600">Add Location</h1>
+                <h1 className="text-30 lh-14 fw-600">Add Tour Type</h1>
                 <div className="text-15 text-light-1">
-                  This seciton for adding New Location
+                  This seciton for adding New Tour Type
                 </div>
               </div>
               {/* End .col-12 */}

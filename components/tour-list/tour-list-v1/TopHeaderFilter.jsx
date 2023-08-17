@@ -1,10 +1,17 @@
+import { useRouter } from "next/router";
+
 const TopHeaderFilter = ({noOfTours, place = 'Hyderabaa'}) => {
+  const router = useRouter();
+  console.log(router.query);
+  const location = router.query.location;
+  const type = router.query.type;
+
   return (
     <>
       <div className="row y-gap-10 items-center justify-between">
         <div className="col-auto">
           <div className="text-18">
-            <span className="fw-500">{noOfTours} tours</span> in {place}
+            <span className="fw-500">{noOfTours} Tours</span> in {location}
           </div>
         </div>
         {/* End .col */}

@@ -25,7 +25,7 @@ const MainMenu = ({ style = "" }) => {
             isActiveParentChaild(homeItems, router.asPath) ? "current" : ""
           }`}
         >
-          <a href="#">
+          <a href="/">
             <span className="mr-10">Home</span>
             {/* <i className="icon icon-chevron-sm-down" /> */}
           </a>

@@ -1,5 +1,5 @@
 import { useState } from "react"
-const MultiFields = ({ addFieldsToTour, section, fields })  => {
+const MultiFields = ({ addFieldsToTour, section, fields }) => {
 
     const [inputFields, setInputFields] = useState(fields);
 
@@ -27,48 +27,38 @@ const MultiFields = ({ addFieldsToTour, section, fields })  => {
     }
     return (
 
-        <div className="container">
-            <div className="row">
-                <div className="col-sm-8">
-                    {
-                        inputFields && inputFields.map((data, index) => {
-                            const { fullName, emailAddress, salary } = data;
-                            return (
-                                <div className="row my-3" key={index}>
+        <div className="row">
+            <div className="col-sm-10">
+                {
+                    inputFields && inputFields.map((data, index) => {
+                        const { fullName, emailAddress, salary } = data;
+                        return (
+                            <div className="row" style={{marginBottom:'10px'}} key={index}>
 
-                                    {fields.map((field) => {
-                                        let k = Object.keys(field);
-                                        return (<div className="col">
-                                            <div className="form-group">
-                                                <input type="text" onChange={(evnt) => handleChange(index, evnt)} value={inputFields[index][k]} name={k} className="form-control" placeholder="write here.." />
-                                            </div>
-                                        </div>)
-                                    }
-                                    )}
+                                {fields.map((field) => {
+                                    let k = Object.keys(field);
+                                    return (<div className="col-sm-10">
+                                        <div className="form-group">
+                                            <input type="text" onChange={(evnt) => handleChange(index, evnt)} value={inputFields[index][k]} name={k} className="form-control" placeholder="write here.." />
+                                        </div>
+                                    </div>)
+                                }
+                                )}
 
-                                    <div className="col">
-
+                                <div className="col-sm-2">
 
 
-                                        {(inputFields.length !== 1) ? <button className="btn btn-outline-danger" onClick={removeInputFields}>Remove</button> : ''}
+                                    {(inputFields.length !== 1) ? <button  type="button" className="btn btn-outline-danger" onClick={removeInputFields}>-</button> : ''}
 
 
-                                    </div>
                                 </div>
-                            )
-                        })
-                    }
-
-                    <div className="row">
-                        <div className="col-sm-12">
-
-                            <button type="button" className="btn btn-outline-success" onClick={addInputField}>Add New</button>
-                        </div>
-                    </div>
-                </div>
+                            </div>
+                        )
+                    })
+                }
             </div>
-            <div className="col-sm-4">
-
+            <div className="col-sm-2">
+                <button type="button" className="btn btn-outline-success" onClick={addInputField}>+</button>
             </div>
         </div>
 

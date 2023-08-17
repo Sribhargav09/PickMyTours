@@ -9,6 +9,8 @@ import TourDataService from "../../../services/tour.service";
 import MultiFields from "./components/multiFields";
 import { useRouter } from "next/router";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
+import tourTypeService from "../../../services/tour-type.service";
+import locationService from "../../../services/location.service";
 
 
 
@@ -20,17 +22,17 @@ const index = () => {
       labelNo: 1,
     },
     {
-      label: "Information",
+      label: "Gallery",
       labelNo: 2,
     },
     {
-      label: "Gallery",
+      label: "Itinerary",
       labelNo: 3,
     },
     {
-      label: "Itinerary",
+      label: "Information",
       labelNo: 4,
-    }
+    },
   ];
 
   
@@ -45,9 +47,32 @@ const index = () => {
     name: '', photos: [], details: '', duration: '', place: '', address: '', longitude: '', latitude: '', zoom: '',
   }]);
 
+  
+  const [tourTypes, settourTypes] = useState([]);
+  const [locations, setLocations] = useState([]);
+
+  useEffect(() => {
+    tourTypeService.getAll()
+      .then(response => {
+       settourTypes(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+
+      
+      locationService.getAll()
+      .then(response => {
+       setLocations(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }, [])
+
   useEffect(() => {
     if (!id) {
-      //setLoading(false);
+      setLoading(false);
     }
     else {
       TourDataService.get(id)
@@ -468,9 +493,13 @@ const index = () => {
                           </div>
 
                           <div className="col-12">
-                            <div className="form-input ">
-                              <input type="text" name="type" value={tour?.type || ''} onChange={(event) => setTour({ ...tour, type: event.target.value })} required />
-                              <label className="lh-1 text-16 text-light-1">Type</label>
+                            <div className="form-select">
+                              <select  name="type" value={tour?.type || ''} onChange={(event) => setTour({ ...tour, type: event.target.value })} required>
+                                <option value="">Type</option>
+                              {tourTypes && tourTypes.data && tourTypes.data.length > 0 && tourTypes.data.map((type) => {
+                                return <option>{type.name}</option>
+                              })}
+                              </select>
                             </div>
                           </div>
                           {/* End Name */}
@@ -483,9 +512,13 @@ const index = () => {
                           </div>
 
                           <div className="col-12">
-                            <div className="form-input ">
-                              <input type="text" name="location" value={tour?.location || ''} onChange={(event) => setTour({ ...tour, location: event.target.value })} required />
-                              <label className="lh-1 text-16 text-light-1">Location</label>
+                            <div className="form-select ">
+                            <select  name="location" value={tour?.location || ''} onChange={(event) => setTour({ ...tour, location: event.target.value })} required>
+                                <option value="">Location</option>
+                              {locations && locations.data && locations.data.length > 0 && locations.data.map((location) => {
+                                return <option>{location.name}</option>
+                              })}
+                              </select>
                             </div>
                           </div>
 
@@ -522,168 +555,10 @@ const index = () => {
 
                       </TabPanel>
 
+
                       <TabPanel
                         key={'2'}
-                        className={`-tab-item-2 ${tabIndex === 2 ? "is-tab-el-active" : ""}`}
-                      >
-                        <div className="row x-gap-20 y-gap-20">
-                          <div className="col-12">
-                            <div className="text-18 fw-500">Highlights</div>
-                          </div>
-
-                          <div className="col-12">
-                            <div className="form-input ">
-                              <MultiFields addFieldsToTour={addFieldsToTour} section="highlights" fields={[{ highlight: '' }]} />
-                            </div>
-                          </div>
-
-                          <div className="col-12">
-                            <div className="text-18 fw-500">Includes</div>
-                          </div>
-
-                          <div className="col-12">
-                            <div className="form-input ">
-                              <MultiFields addFieldsToTour={addFieldsToTour} section="includes" fields={[{ include: '' }]} />
-                            </div>
-                          </div>
-
-                          <div className="col-12">
-                            <div className="text-18 fw-500">Not Includes</div>
-                          </div>
-
-                          <div className="col-12">
-                            <div className="form-input ">
-                              <MultiFields addFieldsToTour={addFieldsToTour} section="notIncludes" fields={[{ notInclude: '' }]} />
-                            </div>
-                          </div>
-
-                          <div className="col-12">
-                            <div className="text-18 fw-500">Inclusions</div>
-                          </div>
-
-                          <div className="col-12">
-                            <div className="form-input ">
-                              <MultiFields addFieldsToTour={addFieldsToTour} section="inclusions" fields={[{ Inclusion: '' }]} />
-                            </div>
-                          </div>
-
-                          <div className="col-12">
-                            <div className="text-18 fw-500">Departure details</div>
-                          </div>
-
-                          <div className="col-12">
-                            <div className="form-input ">
-                              <MultiFields addFieldsToTour={addFieldsToTour} section="departureDetails" fields={[{ departureDetail: '' }]} />
-                            </div>
-                          </div>
-
-                          <div className="col-12">
-                            <div className="text-18 fw-500">Know before you go</div>
-                          </div>
-
-                          <div className="col-12">
-                            <div className="form-input ">
-                              <MultiFields addFieldsToTour={addFieldsToTour} section="knowThings" fields={[{ knowThing: '' }]} />
-                            </div>
-                          </div>
-
-                          <div className="col-12">
-                            <div className="text-18 fw-500">Exclusions</div>
-                          </div>
-
-                          <div className="col-12">
-                            <div className="form-input ">
-                              <MultiFields addFieldsToTour={addFieldsToTour} section="exclusions" fields={[{ exclusion: '' }]} />
-                            </div>
-                          </div>
-
-                          <div className="col-12">
-                            <div className="text-18 fw-500">Additional Information</div>
-                          </div>
-
-                          <div className="col-12">
-                            <div className="form-input ">
-                              <MultiFields addFieldsToTour={addFieldsToTour} section="informations" fields={[{ information: '' }]} />
-                            </div>
-                          </div>
-
-                        </div>
-
-
-                        <div className="row x-gap-20 y-gap-20">
-
-                          <div className="col-12">
-                            <div className="form-input ">
-                              <input type="text" name="duration" value={tour?.duration || ''} onChange={(event) => setTour({ ...tour, duration: event.target.value })} required /> Hrs
-                              <label className="lh-1 text-16 text-light-1">Duration</label>
-                            </div>
-                          </div>
-
-                          <div className="col-12">
-                            <div className="form-input ">
-                              <input type="text" name="noOfPersons" value={tour?.noOfPersons || ''} onChange={(event) => setTour({ ...tour, noOfPersons: event.target.value })} required />
-                              <label className="lh-1 text-16 text-light-1">No of Persons Allowed</label>
-                            </div>
-                          </div>
-
-
-                        </div>
-
-                        <div className="row x-gap-20 y-gap-20">
-
-                          <div className="col-12">
-                            <div className="text-18 fw-500">Languages</div>
-                          </div>
-
-                          <div className="col-12">
-                            <div className="d-flex items-center form-checkbox">
-                              <input type="checkbox" value={tour?.languages?.english || ''} onChange={(event) => setTour({ ...tour, languages: { ...tour?.languages, english: event.target.checked } })} />
-                              <div className="form-checkbox__mark">
-                                <div className="form-checkbox__icon icon-check" />
-                              </div>
-
-                              <div className="text-15 lh-11 ml-10">English</div>
-                            </div>
-                          </div>
-
-
-                          <div className="col-12">
-                            <div className="form-checkbox">
-                              <input type="checkbox" value={tour?.languages?.hindi || ''} onChange={(event) => setTour({ ...tour, languages: { ...tour?.languages, hindi: event.target.checked } })} />
-                              <div className="form-checkbox__mark">
-                                <div className="form-checkbox__icon icon-check" />
-                              </div>
-
-                              <div className="text-15 lh-11 ml-10">Hindi</div>
-                            </div>
-                          </div>
-
-                        </div>
-
-                        <div className="row x-gap-20 y-gap-20">
-                          <div className="col-12">
-                            <div className="text-18 fw-500">FAQS</div>
-                          </div>
-
-                          <div className="col-12">
-                            <div className="form-input ">
-                              <MultiFields addFieldsToTour={addFieldsToTour} section="faqs" fields={[{ questions: '' }, { answers: '' }]} />
-                            </div>
-                          </div>
-                        </div>
-
-
-                        <div className="d-inline-block pt-30">
-                          <button onClick={() => setTabIndex(2)} type="button" className="button h-50 px-24 -dark-1 bg-blue-1 text-white">
-                            Next <div className="icon-arrow-top-right ml-15" />
-                          </button>
-                        </div>
-
-                      </TabPanel>
-
-                      <TabPanel
-                        key={'3'}
-                        className={`-tab-item-3 ${tabIndex === 3 ? "is-tab-el-active" : ""}`}
+                        className={`-tab-item-3 ${tabIndex === 2 ? "is-tab-el-active" : ""}`}
                       >
                         <div className="mt-30">
                           <div className="fw-500">Feature Photo</div>
@@ -778,15 +653,15 @@ const index = () => {
 
 
                         <div className="d-inline-block pt-30">
-                          <button onClick={() => setTabIndex(3)} type="button" className="button h-50 px-24 -dark-1 bg-blue-1 text-white">
+                          <button onClick={() => setTabIndex(2)} type="button" className="button h-50 px-24 -dark-1 bg-blue-1 text-white">
                             Next <div className="icon-arrow-top-right ml-15" />
                           </button>
                         </div>
                       </TabPanel>
 
                       <TabPanel
-                        key={'4'}
-                        className={`-tab-item-4 ${tabIndex === 4 ? "is-tab-el-active" : ""}`}
+                        key={'3'}
+                        className={`-tab-item-2 ${tabIndex === 3 ? "is-tab-el-active" : ""}`}
                       >
                         <div className="row x-gap-20 y-gap-20">
                           <div className="col-12">
@@ -916,13 +791,192 @@ const index = () => {
                           </div>
                         </div>
 
+                        
+                        <div className="d-inline-block pt-30">
+                          <button onClick={() => setTabIndex(3)} type="button" className="button h-50 px-24 -dark-1 bg-blue-1 text-white">
+                            Next <div className="icon-arrow-top-right ml-15" />
+                          </button>
+                        </div>
+
+                        
+
+
+                      </TabPanel>
+
+                      <TabPanel
+                        key={'4'}
+                        className={`-tab-item-4 ${tabIndex === 4 ? "is-tab-el-active" : ""}`}
+                      >
+                        <div className="row x-gap-10 y-gap-10">
+                        <div className="col-6">
+                          <div className="col-12">
+                            <div className="text-18 fw-500">Highlights</div>
+                          </div>
+
+                          <div className="col-12">
+                            <div className="form-input ">
+                              <MultiFields addFieldsToTour={addFieldsToTour} section="highlights" fields={[{ highlight: '' }]} />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="col-6">
+                          <div className="col-12">
+                            <div className="text-18 fw-500">Know before you go</div>
+                          </div>
+
+                          <div className="col-12">
+                            <div className="form-input ">
+                              <MultiFields addFieldsToTour={addFieldsToTour} section="knowThings" fields={[{ knowThing: '' }]} />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="col-6">
+                          <div className="col-12">
+                            <div className="text-18 fw-500">Includes</div>
+                          </div>
+
+                          <div className="col-12">
+                            <div className="form-input ">
+                              <MultiFields addFieldsToTour={addFieldsToTour} section="includes" fields={[{ include: '' }]} />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="col-6">
+                          <div className="col-12">
+                            <div className="text-18 fw-500">Not Includes</div>
+                          </div>
+
+                          <div className="col-12">
+                            <div className="form-input ">
+                              <MultiFields addFieldsToTour={addFieldsToTour} section="notIncludes" fields={[{ notInclude: '' }]} />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="col-6">
+                          <div className="col-12">
+                            <div className="text-18 fw-500">Inclusions</div>
+                          </div>
+
+                          <div className="col-12">
+                            <div className="form-input ">
+                              <MultiFields addFieldsToTour={addFieldsToTour} section="inclusions" fields={[{ Inclusion: '' }]} />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="col-6">
+                        <div className="col-12">
+                            <div className="text-18 fw-500">Exclusions</div>
+                          </div>
+
+                          <div className="col-12">
+                            <div className="form-input ">
+                              <MultiFields addFieldsToTour={addFieldsToTour} section="exclusions" fields={[{ exclusion: '' }]} />
+                            </div>
+                          </div>
+                        </div>
+
+                          <div className="col-12">
+                            <div className="text-18 fw-500">Departure details</div>
+                          </div>
+
+                          <div className="col-12">
+                            <div className="form-input ">
+                              <MultiFields addFieldsToTour={addFieldsToTour} section="departureDetails" fields={[{ departureDetail: '' }]} />
+                            </div>
+                          </div>
+
+                          
+                         
+
+                          <div className="col-12">
+                            <div className="text-18 fw-500">Additional Information</div>
+                          </div>
+
+                          <div className="col-12">
+                            <div className="form-input ">
+                              <MultiFields addFieldsToTour={addFieldsToTour} section="informations" fields={[{ information: '' }]} />
+                            </div>
+                          </div>
+
+                        </div>
+
+
+                        <div className="row x-gap-20 y-gap-20">
+
+                          <div className="col-12">
+                            <div className="form-input ">
+                              <input type="text" name="duration" value={tour?.duration || ''} onChange={(event) => setTour({ ...tour, duration: event.target.value })} required /> Hrs
+                              <label className="lh-1 text-16 text-light-1">Duration</label>
+                            </div>
+                          </div>
+
+                          <div className="col-12">
+                            <div className="form-input ">
+                              <input type="text" name="noOfPersons" value={tour?.noOfPersons || ''} onChange={(event) => setTour({ ...tour, noOfPersons: event.target.value })} required />
+                              <label className="lh-1 text-16 text-light-1">No of Persons Allowed</label>
+                            </div>
+                          </div>
+
+
+                        </div>
+
+                        <div className="row x-gap-20 y-gap-20">
+
+                          <div className="col-12">
+                            <div className="text-18 fw-500">Languages</div>
+                          </div>
+
+                          <div className="col-12">
+                            <div className="d-flex items-center form-checkbox">
+                              <input type="checkbox" value={tour?.languages?.english || ''} onChange={(event) => setTour({ ...tour, languages: { ...tour?.languages, english: event.target.checked } })} />
+                              <div className="form-checkbox__mark">
+                                <div className="form-checkbox__icon icon-check" />
+                              </div>
+
+                              <div className="text-15 lh-11 ml-10">English</div>
+                            </div>
+                          </div>
+
+
+                          <div className="col-12">
+                            <div className="form-checkbox">
+                              <input type="checkbox" value={tour?.languages?.hindi || ''} onChange={(event) => setTour({ ...tour, languages: { ...tour?.languages, hindi: event.target.checked } })} />
+                              <div className="form-checkbox__mark">
+                                <div className="form-checkbox__icon icon-check" />
+                              </div>
+
+                              <div className="text-15 lh-11 ml-10">Hindi</div>
+                            </div>
+                          </div>
+
+                        </div>
+
+                        <div className="row x-gap-20 y-gap-20">
+                          <div className="col-12">
+                            <div className="text-18 fw-500">FAQS</div>
+                          </div>
+
+                          <div className="col-12">
+                            <div className="form-input ">
+                              <MultiFields addFieldsToTour={addFieldsToTour} section="faqs" fields={[{ questions: '' }, { answers: '' }]} />
+                            </div>
+                          </div>
+                        </div>
+
 
                         <div className="d-inline-block pt-30">
                           <button type="submit" className="button h-50 px-24 -dark-1 bg-blue-1 text-white">
                             Save Changes <div className="icon-arrow-top-right ml-15" />
                           </button>
                         </div>
+
                       </TabPanel>
+
                     </div>
                   </Tabs>
 

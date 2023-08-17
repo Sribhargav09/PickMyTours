@@ -1,38 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import locationService from "../../services/location.service";
+import {  useRouter } from "next/router";
+import Router from "next/router";
 
 const LocationSearch = () => {
   const [searchValue, setSearchValue] = useState("");
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const locationSearchContent = [
-    {
-      id: 1,
-      name: "London",
-      address: "Greater London, United Kingdom",
-    },
-    {
-      id: 2,
-      name: "New York",
-      address: "New York State, United States",
-    },
-    {
-      id: 3,
-      name: "Paris",
-      address: "France",
-    },
-    {
-      id: 4,
-      name: "Madrid",
-      address: "Spain",
-    },
-    {
-      id: 5,
-      name: "Santorini",
-      address: "Greece",
-    },
-  ];
+  const [locations, setLocations] = useState([]);
+
+  useEffect(() => {
+      locationService.getAll()
+      .then(response => {
+       setLocations(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }, [])
+
 
   const handleOptionClick = (item) => {
+    Router.push(`/tour/tour-list-v1?location=${item.name}`);
+    location.href = `/tour/tour-list-v1?location=${item.name}`;
     setSearchValue(item.name);
     setSelectedItem(item);
   };
@@ -61,12 +51,12 @@ const LocationSearch = () => {
         <div className="shadow-2 dropdown-menu min-width-400">
           <div className="bg-white px-20 py-20 sm:px-0 sm:py-15 rounded-4">
             <ul className="y-gap-5 js-results">
-              {locationSearchContent.map((item) => (
+              {locations && locations.data && locations.data.map((item) => (
                 <li
                   className={`-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option mb-1 ${
-                    selectedItem && selectedItem.id === item.id ? "active" : ""
+                    selectedItem && selectedItem.id === item._id ? "active" : ""
                   }`}
-                  key={item.id}
+                  key={item._id}
                   role="button"
                   onClick={() => handleOptionClick(item)}
                 >
@@ -77,7 +67,7 @@ const LocationSearch = () => {
                         {item.name}
                       </div>
                       <div className="text-14 lh-12 text-light-1 mt-5">
-                        {item.address}
+                        {/* {item.address} */}
                       </div>
                     </div>
                   </div>

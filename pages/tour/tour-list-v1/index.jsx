@@ -2,28 +2,45 @@ import CallToActions from "../../../components/common/CallToActions";
 import Seo from "../../../components/common/Seo";
 import Header11 from "../../../components/header/header-11";
 import DefaultFooter from "../../../components/footer/default";
-import MainFilterSearchBox from "../../../components/tour-list/tour-list-v1/MainFilterSearchBox";
 import TopHeaderFilter from "../../../components/tour-list/tour-list-v1/TopHeaderFilter";
 import TourProperties from "../../../components/tour-list/tour-list-v1/TourProperties";
 // import Pagination from "../../../components/tour-list/common/Pagination";
 import Sidebar from "../../../components/tour-list/tour-list-v1/Sidebar";
 import { useState, useEffect } from "react";
 import TourDataService from "../../../services/tour.service";
+import { useSearchParams } from "react-router-dom";
+import { useRouter } from "next/router";
+import MainFilterSearchBox from "../../../components/hero/MainFilterSearchBox";
 
 
 const index = () => {
   const [tours, setTours] = useState([]);
 
+  
+  const router = useRouter();
+  console.log(router.query);
+  const location = router.query.location;
+  const type = router.query.type;
+
+
   useEffect(() => {
     TourDataService.getAll()
       .then(response => {
-       setTours(response.data);
+        let toursData = response.data;
+        if(type){
+          toursData.data = toursData.data.filter((t) => t.type.toLowerCase() === type.toLowerCase()); 
+        }
+
+        if(location){
+          toursData.data = toursData.data.filter((t) => t.location.toLowerCase() === location.toLowerCase()); 
+        }
+       setTours(toursData);
         console.log(response.data);
       })
       .catch(e => {
         console.log(e);
       });
-  }, [])
+  }, [location])
 
   return (
     <>
@@ -41,7 +58,7 @@ const index = () => {
           <div className="row">
             <div className="col-12">
               <div className="text-center">
-                <h1 className="text-30 fw-600">Tours in London</h1>
+                <h1 className="text-30 fw-600">Tours in {location}</h1>
               </div>
               {/* End text-center */}
               <MainFilterSearchBox />
