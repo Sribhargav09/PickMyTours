@@ -67,32 +67,10 @@ userExpressRoute
 // Create user
 userExpressRoute.post("/create-user",  upload.fields([{ name: 'photo', maxCount: 1 }]), (req, res, next) => {
     
-    const url = req.protocol + '://' + req.get('host')
+    const url = req.protocol + '://' + req.get('host');
 
-    const photos = [];
-    for (var i = 0; i < req.files['gallery'].length; i++) {
-        photos.push(url + '/users/' + req.files['gallery'][i].filename)
-    }
-
-    req.body.featurePhoto = url + '/users/' + req.files['featurePhoto'][0].filename;
-    req.body.gallery = photos;
-
-
-      console.log(req.files);
-    const itineraryPhotos = [];
-    for (var i = 0; i < req.files['itineraryImages'].length; i++) {
-      itineraryPhotos.push(url + '/users/' + req.files['itineraryImages'][i].filename)
-    }
-    req.body.itineraryPhotos = photos;
-
-
-    
-    // const itineraryFieldsList = JSON.parse(req.body.itinerarys);
-    //   itineraryFieldsList.map((t, index) => {
-
-  //});
-
-
+    req.body.photo = url + '/users/' + req.files['photo'][0].filename;
+   
    UserSchema.create(req.body)
     .then((result) => {
       console.log(result);

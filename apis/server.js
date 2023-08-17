@@ -24,6 +24,7 @@ const tourRoute = require("./routes/tour.route");
 const locationRoute = require("./routes/location.route");
 const tourTypeRoute = require("./routes/tour-type.route");
 const offerRoute = require("./routes/offer.route");
+const userRoute = require("./routes/user.route");
 
 
 const app = express();
@@ -41,6 +42,8 @@ app.use("/", tourRoute);
 app.use("/", locationRoute);
 app.use("/", tourTypeRoute);
 app.use("/", offerRoute);
+app.use("/", userRoute);
+
 
 app.use(express.static(__dirname +'/public'));
 // PORT
