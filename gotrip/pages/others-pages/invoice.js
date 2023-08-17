@@ -115,7 +115,7 @@ const Invoice = () => {
                     </div>
                     <div className="col-auto">
                       <a href="#" className="text-14">
-                        invoice@gotrip.com
+                        invoice@pickmytours.com
                       </a>
                     </div>
                     <div className="col-auto">

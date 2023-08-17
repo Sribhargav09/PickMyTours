@@ -3,8 +3,24 @@ import Link from "next/link";
 import Slider from "react-slick";
 import toursData from "../../data/tours";
 import isTextMatched from "../../utils/isTextMatched";
+import { useEffect, useState } from "react";
+import tourService from "../../services/tour.service";
 
 const Tours = () => {
+
+
+  const [tours, setTours] = useState([]);
+
+  useEffect(() => {
+    tourService.getAll()
+      .then(response => {
+        setTours(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }, [])
+
   var settings = {
     dots: true,
     infinite: true,
@@ -69,14 +85,14 @@ const Tours = () => {
   return (
     <>
       <Slider {...settings}>
-        {toursData.slice(0, 4).map((item) => (
+        {tours && tours.data && tours.data.slice(0, 4).map((item) => (
           <div
-            key={item?.id}
+            key={item?._id}
             data-aos="fade"
-            data-aos-delay={item?.delayAnimation}
+            data-aos-delay={10}
           >
             <Link
-              href={`/tour/tour-single/${item.id}`}
+              href={`/tour/tour-single/${item._id}`}
               className="tourCard -type-1 rounded-4 hover-inside-slider"
             >
               <div className="tourCard__image position-relative">
@@ -87,10 +103,10 @@ const Tours = () => {
                     nextArrow={<Arrow type="next" />}
                     prevArrow={<Arrow type="prev" />}
                   >
-                    {item?.slideImg?.map((slide, i) => (
-                      <div className="cardImage ratio ratio-1:1" key={i}>
+                    {item && item.gallery && item.gallery.map((slide, i) => {
+                      return <div className="cardImage ratio ratio-1:1" key={i}>
                         <div className="cardImage__content ">
-                          <Image
+                          <img
                             width={300}
                             height={300}
                             className="col-12 js-lazy"
@@ -99,7 +115,7 @@ const Tours = () => {
                           />
                         </div>
                       </div>
-                    ))}
+                })}
                   </Slider>
 
                   <div className="cardImage__wishlist">
@@ -113,18 +129,18 @@ const Tours = () => {
                       className={`py-5 px-15 rounded-right-4 text-12 lh-16 fw-500 uppercase ${
                         isTextMatched(item?.tag, "likely to sell out*")
                           ? "bg-dark-1 text-white"
-                          : ""
+                          : "bg-blue-1 text-white"
                       } ${
                         isTextMatched(item?.tag, "best seller")
                           ? "bg-blue-1 text-white"
-                          : ""
+                          : "bg-blue-1 text-white"
                       }  ${
                         isTextMatched(item?.tag, "top rated")
                           ? "bg-yellow-1 text-dark-1"
-                          : ""
+                          : "bg-blue-1 text-white"
                       }`}
                     >
-                      {item.tag}
+                      {item?.tag ?? 'Best Seller'}
                     </div>
                   </div>
                 </div>
@@ -137,10 +153,10 @@ const Tours = () => {
                     {item?.duration}+ hours
                   </div>
                   <div className="size-3 bg-light-1 rounded-full ml-10 mr-10" />
-                  <div className="text-14 text-light-1">{item?.tourType}</div>
+                  <div className="text-14 text-light-1">{item?.type}</div>
                 </div>
                 <h4 className="tourCard__title text-dark-1 text-18 lh-16 fw-500">
-                  <span>{item?.title}</span>
+                  <span>{item?.name}</span>
                 </h4>
                 <p className="text-light-1 lh-14 text-14 mt-5">
                   {item?.location}
@@ -159,7 +175,7 @@ const Tours = () => {
                       {/* End ratings */}
 
                       <div className="text-14 text-light-1 ml-10">
-                        {item?.numberOfReviews} reviews
+                        {item?.rating} reviews
                       </div>
                     </div>
                   </div>

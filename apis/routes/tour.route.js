@@ -123,7 +123,8 @@ tourExpressRoute.route("/tour/:id").get(async (req, res, next) => {
 });
 // Update user
 tourExpressRoute.route("/update-tour/:id").put(async (req, res, next) => {
-  await TourSchema.findByIdAndUpdate(req.params.id, {
+  upload.fields([{ name: 'featurePhoto', maxCount: 1 }, { name: 'gallery', maxCount: 8 }, { name: 'itineraryImages', maxCount: 8 }]);
+  await TourSchema.findByIdAndUpdate({_id:req.params.id}, {
     $set: req.body,
   })
     .then((result) => {
