@@ -63,7 +63,7 @@ const index = () => {
     } else {
       
       if (id) {
-        LocationDataService.update(id, {name, description})
+        LocationDataService.update(id, {name, description, photo})
           .then(response => {
             Router.push("/vendor-dashboard/locations")
             console.log(response.data);
@@ -73,7 +73,7 @@ const index = () => {
           });
 
       } else {
-      LocationDataService.create(formData)
+      LocationDataService.create({name, description, photo})
         .then(response => {
           Router.push("/vendor-dashboard/locations")
           console.log(response.data);

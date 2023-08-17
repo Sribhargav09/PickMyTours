@@ -1,6 +1,22 @@
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import locationService from "../../../services/location.service";
+
 
 const WhyChoose = () => {
+
+  
+  const [locations, setLocations] = useState([]);
+
+  useEffect(() => {
+      locationService.getAll()
+      .then(response => {
+       setLocations(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }, [])
   const blockContent = [
     {
       id: 1,
@@ -26,26 +42,26 @@ const WhyChoose = () => {
   ];
   return (
     <>
-      {blockContent.map((item) => (
+      {locations && locations.data && locations.data.map((item) => (
         <div
           className="col-lg-3 col-sm-6"
-          key={item.id}
+          key={item._id}
           data-aos="fade"
-          data-aos-delay={item.delayAnimation}
+          data-aos-delay={100}
         >
           <div className="featureIcon -type-1 ">
             <div className="d-flex justify-center">
               <Image
                 width={70}
                 height={70}
-                src={item.icon}
+                src={item.photo}
                 alt="image"
                 className="js-lazy"
               />
             </div>
             <div className="text-center mt-30">
-              <h4 className="text-18 fw-500">{item.title}</h4>
-              <p className="text-15 mt-10">{item.text}</p>
+              <h4 className="text-18 fw-500">{item.name}</h4>
+              <p className="text-15 mt-10">{item.description}</p>
             </div>
           </div>
         </div>

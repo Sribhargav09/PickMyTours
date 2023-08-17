@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Slider from "react-slick";
 import { tourCategories1 } from "../../../data/tourCategories";
+import tourTypeService from "../../../services/tour-type.service";
+import { useEffect, useState } from "react";
 
 const TourCategories = () => {
   var settings = {
@@ -32,9 +34,21 @@ const TourCategories = () => {
     ],
   };
 
+  const [tourTypes, settourTypes] = useState([]);
+
+  useEffect(() => {
+    tourTypeService.getAll()
+      .then(response => {
+       settourTypes(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }, [])
+
   return (
     <Slider {...settings} arrows={false}>
-      {tourCategories1.slice(8, 13).map((item) => (
+      {tourTypes && tourTypes.data && tourTypes.data.map((item) => (
         <div
           className="col-xl col-md-4 col-sm-6"
           key={item.id}
@@ -46,12 +60,12 @@ const TourCategories = () => {
             className="tourTypeCard -type-1 d-block rounded-4 bg-blue-1-05 rounded-4"
           >
             <div className="tourTypeCard__content text-center pt-60 pb-24 px-30">
-              <i className={`${item.icon} text-60 sm:text-40 text-blue-1`}></i>
-              <h4 className="text-dark-1 text-18 fw-500 mt-50 md:mt-30">
+              <img width="200" height="200" src={item.photo} className={`text-60 sm:text-40 text-blue-1`} />
+              <h4 className="text-dark-1 text-16 fw-500 mt-50 md:mt-30">
                 {item.name}
               </h4>
               <p className="text-light-1 lh-14 text-14 mt-5">
-                {item.tourNumber} Tours From ${item.price}
+                {'10'} Tours From ${item.price}
               </p>
             </div>
           </Link>
