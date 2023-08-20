@@ -11,10 +11,22 @@ import { useRouter } from "next/router";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import tourTypeService from "../../../services/tour-type.service";
 import locationService from "../../../services/location.service";
-
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import * as React from 'react';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { Background } from "react-parallax";
 
 
 const index = () => {
+
+  const [alignment, setAlignment] = React.useState('active');
+
+  const handleChange = (event, newAlignment) => {
+    setAlignment(newAlignment);
+  };
 
   const tabs = [
     {
@@ -44,7 +56,7 @@ const index = () => {
   const id = router.query.id;
   const [tour, setTour] = useState(null);
   const [itineraryFields, setItineraryFields] = useState([{
-    name: '', photos: [], details: '', duration: '', place: '', address: '', longitude: '', latitude: '', zoom: '',
+    name: '', photos: [], details: '', duration: '', place: '', address: '',
   }]);
 
   
@@ -543,16 +555,39 @@ const index = () => {
                               <label className="lh-1 text-16 text-light-1">Cancellation policy</label>
                             </div>
                           </div>
+                          
+                          <div className="col-12">
+                            <div className="form-input ">
+                              <input type="text" name="price" value={tour?.price || ''} onChange={(event) => setTour({ ...tour, price: event.target.value })} required />
+                              <label className="lh-1 text-16 text-light-1">Map Url</label>
+                            </div>
+                          </div>
 
+                        <h4>Tags</h4>
+                        <FormGroup>
+                          <FormControlLabel control={<Checkbox  />} label="Best Seller" />
+                          <FormControlLabel control={<Checkbox />} label="Top Rating" />
+                          <FormControlLabel  control={<Checkbox />} label="Best Offer" />
+                        </FormGroup>
 
-                        </div>
+                        <ToggleButtonGroup  color="success" value={alignment} exclusive onChange={handleChange} aria-label="Platform">   
+                            <ToggleButton style={{backgroundColor: 'green' , color:'white'}}  value="active">Active</ToggleButton>
+                            <ToggleButton value="android">In-active</ToggleButton>
+                        </ToggleButtonGroup>
+                        
+
+                          <div className="col-12">
+                            <div className="form-input ">
+                              <MultiFields addFieldsToTour={addFieldsToTour} section="faqs" fields={[{ fromPlace: '' }, { price: '' }]} />
+                            </div>
+                          </div>
 
                         <div className="d-inline-block pt-30">
                           <button onClick={() => setTabIndex(1)} type="button" className="button h-50 px-24 -dark-1 bg-blue-1 text-white">
                             Next <div className="icon-arrow-top-right ml-15" />
                           </button>
                         </div>
-
+                    </div>
                       </TabPanel>
 
 
@@ -711,6 +746,13 @@ const index = () => {
 
                                 <div className="col-12">
                                   <div className="form-input ">
+                                    <input type="text" name="address" value={itineraryFields[index].address} onChange={(event) => handleItineraryFieldsChange(index, event)} required />
+                                    <label className="lh-1 text-16 text-light-1">Map Url</label>
+                                  </div>
+                                </div>
+
+                                {/* <div className="col-12">
+                                  <div className="form-input ">
                                     <input type="text" name="latitude" value={itineraryFields[index].latitude} onChange={(event) => handleItineraryFieldsChange(index, event)} required />
                                     <label className="lh-1 text-16 text-light-1">Latitude</label>
                                   </div>
@@ -728,8 +770,7 @@ const index = () => {
                                     <input type="text" name="zoom" value={itineraryFields[index].zoom} onChange={(event) => handleItineraryFieldsChange(index, event)} required />
                                     <label className="lh-1 text-16 text-light-1">Zoom</label>
                                   </div>
-                                </div>
-
+                                </div> */}
                                 <div className="mt-30">
                                   <div className="fw-500">Photos</div>
                                   <div className="row x-gap-20 y-gap-20 pt-15">
