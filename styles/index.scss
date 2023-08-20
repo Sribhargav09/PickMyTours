@@ -46,3 +46,142 @@
   background-color: #6a0dad;
 }
 
+
+.contact-us{
+
+.container {
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 800px;
+  float:right;
+  
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.select {
+  padding: 8px;
+  width: 100%;
+}
+
+
+
+label {
+  display: block;
+  margin-bottom: 6px;
+}
+
+input {
+  padding: 8px;
+  border: 1px solid #ccc;
+}
+
+textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+button {
+  background-color: #575383;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  width: 75%;
+}
+
+img {
+  float: left;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width:200px !important;
+  height:200px !important;
+}
+
+}
+
+ul.tst-list li:before {
+  content: '✓';
+}
+
+.why-us{
+  .box img{
+    border-radius: 50%;
+    background-color: white;
+    width: 90px;
+}
+
+.box p {
+    text-align:center;
+    margin-left: -100px;
+}
+
+.column {
+    float: left;
+    width: 50%;
+    padding: 10px;
+    height: auto; 
+    text-align:justify;
+    
+  }
+
+.column h2 {
+    text-align: center;
+}
+
+.text {
+    text-align:justify;
+    font-weight: 500;
+}
+
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+.col-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+  }
+  
+  .box {
+    display: table-cell;
+    padding: 10px;
+    display: center;
+    margin: 10px;
+  }
+  .cl-left{
+    background-image: url("/img/banners/tour.png");
+  }
+
+}
+
+.testimonial__quote__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  font-size: 5rem;
+  position: absolute;
+  right: 0;
+  top: -6rem;
+  transform: rotate(180deg);
+  z-index: -1;
+}
+
+.fa-quote-left:before {
+  content: "\f10d";
+}
+
+.fa-quote-left:before {
+  content: "\f10d";
+}
