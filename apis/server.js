@@ -25,6 +25,9 @@ const locationRoute = require("./routes/location.route");
 const tourTypeRoute = require("./routes/tour-type.route");
 const offerRoute = require("./routes/offer.route");
 const userRoute = require("./routes/user.route");
+const reviewRoute = require("./routes/review.route");
+const testinomialRoute = require("./routes/testinomial.route");
+const enquieryRoute = require("./routes/enquiery.route");
 
 
 const app = express();
@@ -43,6 +46,9 @@ app.use("/", locationRoute);
 app.use("/", tourTypeRoute);
 app.use("/", offerRoute);
 app.use("/", userRoute);
+app.use("/", reviewRoute);
+app.use("/", testinomialRoute);
+app.use("/", enquieryRoute);
 
 
 app.use(express.static(__dirname +'/public'));
