@@ -9,7 +9,7 @@ const index = () => {
   
   return (
     <>
-      <Seo pageTitle="Vendor Hotels" />
+      <Seo pageTitle="Vendor Tours" />
       {/* End Page Title */}
 
       <div className="header-margin"></div>
@@ -28,19 +28,19 @@ const index = () => {
           <div className="dashboard__content bg-light-2">
             <div className="row y-gap-20 justify-between items-end pb-60 lg:pb-40 md:pb-32">
               <div className="col-auto">
-                <h1 className="text-30 lh-14 fw-600">All Testinomials</h1>
+                <h1 className="text-30 lh-14 fw-600">All Testimonials</h1>
                 <div className="text-15 text-light-1">
-                  All Testinomials infomration here.
+                  All testimonial infomration here.
                 </div>
               </div>
               {/* End .col-auto */}
 
               <div className="col-auto">
                 <Link
-                  href="/vendor-dashboard/add-tour-type"
+                  href="/vendor-dashboard/add-testimonial"
                   className="button h-50 px-24 -dark-1 bg-blue-1 text-white"
                 >
-                  Add Tour type <div className="icon-arrow-top-right ml-15"></div>
+                  Add Testimonial <div className="icon-arrow-top-right ml-15"></div>
                 </Link>
               </div>
             </div>
