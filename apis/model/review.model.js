@@ -15,6 +15,9 @@ let reviewSchema = new Schema(
       type: String,
     },
     comments: {
+        type: String,
+    },
+    rating:{
         type: String
     }
   },
