@@ -70,7 +70,13 @@ let tourSchema = new Schema(
     },
     itineraryImages: {
       type: Array
-    }
+    },
+    tags: {
+      type: String,
+    },
+    status: {
+      type: String,
+    },
   },
   {
     collection: "tours",

@@ -35,21 +35,22 @@ const MultiFields = ({ addFieldsToTour, section, fields }) => {
                         return (
                             <div className="row" style={{marginBottom:'10px'}} key={index}>
 
+                            <div className="col-10">
+                                <div className="row">
                                 {fields.map((field) => {
                                     let k = Object.keys(field);
-                                    return (<div className="col-sm-10">
+                                    return (<div className="col-6">
                                         <div className="form-group">
-                                            <input type="text" onChange={(evnt) => handleChange(index, evnt)} value={inputFields[index][k]} name={k} className="form-control" placeholder="write here.." />
+                                            <input type="text" onChange={(evnt) => handleChange(index, evnt)} value={inputFields[index][k]} name={k} className="form-control" placeholder={k} />
                                         </div>
                                     </div>)
                                 }
                                 )}
+                                </div>
+                            </div>
 
-                                <div className="col-sm-2">
-
-
+                                <div className="col-2">
                                     {(inputFields.length !== 1) ? <button  type="button" className="btn btn-outline-danger" onClick={removeInputFields}>-</button> : ''}
-
 
                                 </div>
                             </div>

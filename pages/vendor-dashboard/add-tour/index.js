@@ -11,10 +11,22 @@ import { useRouter } from "next/router";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import tourTypeService from "../../../services/tour-type.service";
 import locationService from "../../../services/location.service";
-
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import * as React from 'react';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { Background } from "react-parallax";
 
 
 const index = () => {
+
+  const [alignment, setAlignment] = React.useState('active');
+
+  const handleChange = (event, newAlignment) => {
+    setAlignment(newAlignment);
+  };
 
   const tabs = [
     {
@@ -35,7 +47,7 @@ const index = () => {
     },
   ];
 
-  
+
   const [loading, setLoading] = useState(true);
 
   const [tabIndex, setTabIndex] = useState(0);
@@ -44,26 +56,26 @@ const index = () => {
   const id = router.query.id;
   const [tour, setTour] = useState(null);
   const [itineraryFields, setItineraryFields] = useState([{
-    name: '', photos: [], details: '', duration: '', place: '', address: '', longitude: '', latitude: '', zoom: '',
+    name: '', photos: [], details: '', duration: '', place: '', address: '',
   }]);
 
-  
+
   const [tourTypes, settourTypes] = useState([]);
   const [locations, setLocations] = useState([]);
 
   useEffect(() => {
     tourTypeService.getAll()
       .then(response => {
-       settourTypes(response.data);
+        settourTypes(response.data);
       })
       .catch(e => {
         console.log(e);
       });
 
-      
-      locationService.getAll()
+
+    locationService.getAll()
       .then(response => {
-       setLocations(response.data);
+        setLocations(response.data);
       })
       .catch(e => {
         console.log(e);
@@ -494,11 +506,11 @@ const index = () => {
 
                           <div className="col-12">
                             <div className="form-select">
-                              <select  name="type" value={tour?.type || ''} onChange={(event) => setTour({ ...tour, type: event.target.value })} required>
+                              <select name="type" value={tour?.type || ''} onChange={(event) => setTour({ ...tour, type: event.target.value })} required>
                                 <option value="">Type</option>
-                              {tourTypes && tourTypes.data && tourTypes.data.length > 0 && tourTypes.data.map((type) => {
-                                return <option>{type.name}</option>
-                              })}
+                                {tourTypes && tourTypes.data && tourTypes.data.length > 0 && tourTypes.data.map((type) => {
+                                  return <option>{type.name}</option>
+                                })}
                               </select>
                             </div>
                           </div>
@@ -513,15 +525,38 @@ const index = () => {
 
                           <div className="col-12">
                             <div className="form-select ">
-                            <select  name="location" value={tour?.location || ''} onChange={(event) => setTour({ ...tour, location: event.target.value })} required>
+                              <select name="location" value={tour?.location || ''} onChange={(event) => setTour({ ...tour, location: event.target.value })} required>
                                 <option value="">Location</option>
-                              {locations && locations.data && locations.data.length > 0 && locations.data.map((location) => {
-                                return <option>{location.name}</option>
-                              })}
+                                {locations && locations.data && locations.data.length > 0 && locations.data.map((location) => {
+                                  return <option>{location.name}</option>
+                                })}
                               </select>
                             </div>
                           </div>
 
+
+                          <div className="col-12">
+                            <div className="form-input ">
+                              <input type="text" name="rating" value={tour?.rating || ''} onChange={(event) => setTour({ ...tour, rating: event.target.value })} required />
+                              <label className="lh-1 text-16 text-light-1">Rating</label>
+                            </div>
+                          </div>
+
+                          <div className="col-12">
+                            <div className="form-input ">
+                              <input type="text" name="price" value={tour?.price || ''} onChange={(event) => setTour({ ...tour, price: event.target.value })} required />
+                              <label className="lh-1 text-16 text-light-1">Map Url</label>
+                            </div>
+                          </div>
+
+                          <h4>Tags</h4>
+                          <FormGroup className="row">
+                            <FormControlLabel control={<Checkbox />} label="Best Seller" />
+                            <FormControlLabel control={<Checkbox />} label="Top Rating" />
+                            <FormControlLabel control={<Checkbox />} label="Best Offer" />
+                          </FormGroup>
+
+                          <h4>Price</h4>
                           <div className="col-12">
                             <div className="form-input ">
                               <input type="text" name="price" value={tour?.price || ''} onChange={(event) => setTour({ ...tour, price: event.target.value })} required />
@@ -531,28 +566,23 @@ const index = () => {
 
                           <div className="col-12">
                             <div className="form-input ">
-                              <input type="text" name="rating" value={tour?.rating || ''} onChange={(event) => setTour({ ...tour, rating: event.target.value })} required />
-                              <label className="lh-1 text-16 text-light-1">Rating</label>
+                              <MultiFields addFieldsToTour={addFieldsToTour} section="faqs" fields={[{ fromPlace: '' }, { price: '' }]} />
                             </div>
                           </div>
 
+                          <h4>Status</h4>      
+                          <ToggleButtonGroup color="success" value={alignment} exclusive onChange={handleChange} aria-label="Platform">
+                            <ToggleButton style={{ backgroundColor: 'green', color: 'white' }} value="active">Active</ToggleButton>
+                            <ToggleButton value="android">In-active</ToggleButton>
+                          </ToggleButtonGroup>
 
-                          <div className="col-12">
-                            <div className="form-input ">
-                              <textarea required name="cancellation" value={tour?.cancellation || ''} onChange={(event) => setTour({ ...tour, cancellation: event.target.value })} rows={5} defaultValue={""} />
-                              <label className="lh-1 text-16 text-light-1">Cancellation policy</label>
-                            </div>
+
+                          <div className="d-inline-block pt-30">
+                            <button onClick={() => setTabIndex(1)} type="button" className="button h-50 px-24 -dark-1 bg-blue-1 text-white">
+                              Next <div className="icon-arrow-top-right ml-15" />
+                            </button>
                           </div>
-
-
                         </div>
-
-                        <div className="d-inline-block pt-30">
-                          <button onClick={() => setTabIndex(1)} type="button" className="button h-50 px-24 -dark-1 bg-blue-1 text-white">
-                            Next <div className="icon-arrow-top-right ml-15" />
-                          </button>
-                        </div>
-
                       </TabPanel>
 
 
@@ -711,6 +741,13 @@ const index = () => {
 
                                 <div className="col-12">
                                   <div className="form-input ">
+                                    <input type="text" name="address" value={itineraryFields[index].address} onChange={(event) => handleItineraryFieldsChange(index, event)} required />
+                                    <label className="lh-1 text-16 text-light-1">Map Url</label>
+                                  </div>
+                                </div>
+
+                                {/* <div className="col-12">
+                                  <div className="form-input ">
                                     <input type="text" name="latitude" value={itineraryFields[index].latitude} onChange={(event) => handleItineraryFieldsChange(index, event)} required />
                                     <label className="lh-1 text-16 text-light-1">Latitude</label>
                                   </div>
@@ -728,8 +765,7 @@ const index = () => {
                                     <input type="text" name="zoom" value={itineraryFields[index].zoom} onChange={(event) => handleItineraryFieldsChange(index, event)} required />
                                     <label className="lh-1 text-16 text-light-1">Zoom</label>
                                   </div>
-                                </div>
-
+                                </div> */}
                                 <div className="mt-30">
                                   <div className="fw-500">Photos</div>
                                   <div className="row x-gap-20 y-gap-20 pt-15">
@@ -791,14 +827,14 @@ const index = () => {
                           </div>
                         </div>
 
-                        
+
                         <div className="d-inline-block pt-30">
                           <button onClick={() => setTabIndex(3)} type="button" className="button h-50 px-24 -dark-1 bg-blue-1 text-white">
                             Next <div className="icon-arrow-top-right ml-15" />
                           </button>
                         </div>
 
-                        
+
 
 
                       </TabPanel>
@@ -807,78 +843,92 @@ const index = () => {
                         key={'4'}
                         className={`-tab-item-4 ${tabIndex === 4 ? "is-tab-el-active" : ""}`}
                       >
+
                         <div className="row x-gap-10 y-gap-10">
-                        <div className="col-6">
                           <div className="col-12">
-                            <div className="text-18 fw-500">Highlights</div>
-                          </div>
+                          <div className="col-12">
+                              <div className="text-18 fw-500">Cancellation policy</div>
+                            </div>
 
-                          <div className="col-12">
                             <div className="form-input ">
-                              <MultiFields addFieldsToTour={addFieldsToTour} section="highlights" fields={[{ highlight: '' }]} />
+                              <textarea required name="cancellation" value={tour?.cancellation || ''} onChange={(event) => setTour({ ...tour, cancellation: event.target.value })} rows={5} defaultValue={""} />
+                              <label className="lh-1 text-16 text-light-1">Cancellation policy</label>
                             </div>
                           </div>
                         </div>
 
-                        <div className="col-6">
-                          <div className="col-12">
-                            <div className="text-18 fw-500">Know before you go</div>
-                          </div>
+                        <div className="row x-gap-10 y-gap-10">
+                          <div className="col-6">
+                            <div className="col-12">
+                              <div className="text-18 fw-500">Highlights</div>
+                            </div>
 
-                          <div className="col-12">
-                            <div className="form-input ">
-                              <MultiFields addFieldsToTour={addFieldsToTour} section="knowThings" fields={[{ knowThing: '' }]} />
+                            <div className="col-12">
+                              <div className="form-input ">
+                                <MultiFields addFieldsToTour={addFieldsToTour} section="highlights" fields={[{ highlight: '' }]} />
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        <div className="col-6">
-                          <div className="col-12">
-                            <div className="text-18 fw-500">Includes</div>
-                          </div>
+                          <div className="col-6">
+                            <div className="col-12">
+                              <div className="text-18 fw-500">Know before you go</div>
+                            </div>
 
-                          <div className="col-12">
-                            <div className="form-input ">
-                              <MultiFields addFieldsToTour={addFieldsToTour} section="includes" fields={[{ include: '' }]} />
+                            <div className="col-12">
+                              <div className="form-input ">
+                                <MultiFields addFieldsToTour={addFieldsToTour} section="knowThings" fields={[{ knowThing: '' }]} />
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        <div className="col-6">
-                          <div className="col-12">
-                            <div className="text-18 fw-500">Not Includes</div>
-                          </div>
+                          <div className="col-6">
+                            <div className="col-12">
+                              <div className="text-18 fw-500">Includes</div>
+                            </div>
 
-                          <div className="col-12">
-                            <div className="form-input ">
-                              <MultiFields addFieldsToTour={addFieldsToTour} section="notIncludes" fields={[{ notInclude: '' }]} />
+                            <div className="col-12">
+                              <div className="form-input ">
+                                <MultiFields addFieldsToTour={addFieldsToTour} section="includes" fields={[{ include: '' }]} />
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        <div className="col-6">
-                          <div className="col-12">
-                            <div className="text-18 fw-500">Inclusions</div>
-                          </div>
+                          <div className="col-6">
+                            <div className="col-12">
+                              <div className="text-18 fw-500">Not Includes</div>
+                            </div>
 
-                          <div className="col-12">
-                            <div className="form-input ">
-                              <MultiFields addFieldsToTour={addFieldsToTour} section="inclusions" fields={[{ Inclusion: '' }]} />
+                            <div className="col-12">
+                              <div className="form-input ">
+                                <MultiFields addFieldsToTour={addFieldsToTour} section="notIncludes" fields={[{ notInclude: '' }]} />
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        <div className="col-6">
-                        <div className="col-12">
-                            <div className="text-18 fw-500">Exclusions</div>
-                          </div>
+                          <div className="col-6">
+                            <div className="col-12">
+                              <div className="text-18 fw-500">Inclusions</div>
+                            </div>
 
-                          <div className="col-12">
-                            <div className="form-input ">
-                              <MultiFields addFieldsToTour={addFieldsToTour} section="exclusions" fields={[{ exclusion: '' }]} />
+                            <div className="col-12">
+                              <div className="form-input ">
+                                <MultiFields addFieldsToTour={addFieldsToTour} section="inclusions" fields={[{ Inclusion: '' }]} />
+                              </div>
                             </div>
                           </div>
-                        </div>
+
+                          <div className="col-6">
+                            <div className="col-12">
+                              <div className="text-18 fw-500">Exclusions</div>
+                            </div>
+
+                            <div className="col-12">
+                              <div className="form-input ">
+                                <MultiFields addFieldsToTour={addFieldsToTour} section="exclusions" fields={[{ exclusion: '' }]} />
+                              </div>
+                            </div>
+                          </div>
 
                           <div className="col-12">
                             <div className="text-18 fw-500">Departure details</div>
@@ -890,8 +940,8 @@ const index = () => {
                             </div>
                           </div>
 
-                          
-                         
+
+
 
                           <div className="col-12">
                             <div className="text-18 fw-500">Additional Information</div>

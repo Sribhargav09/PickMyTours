@@ -8,7 +8,7 @@ const Testimonial = () => {
     infinite: true,
     autoplay: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: 1,
     slidesToScroll: 1,
     responsive: [
       {
@@ -39,17 +39,14 @@ const Testimonial = () => {
       <Slider {...settings}>
         {testimonial1.map((item) => (
           <div
-            className="testimonials -type-1 bg-white rounded-4 pt-40 pb-30 px-40"
+            className="testimonials -type-1 bg-white rounded-4"
             key={item.id}
             data-aos="fade"
             data-aos-delay={item.dealyAnimation}
           >
-            <h4 className="text-16 fw-500 text-blue-1 mb-20">{item.meta}</h4>
-            <p className="testimonials__text lh-18 fw-500 text-dark-1">
-              {item.text}
-            </p>
-            <div className="pt-20 mt-28 border-top-light">
-              <div className="row x-gap-20 y-gap-20 items-center">
+            
+            <div className="mb-28 ">
+              <div className="row x-gap-20 y-gap-20 items-center border-bottom-light">
                 <div className="col-auto">
                   <Image
                     width={60}
@@ -65,8 +62,15 @@ const Testimonial = () => {
                     {item.designation}
                   </div>
                 </div>
+                <div className="col-auto">
+                <span class="testimonial__quote__icon"> <i class="icon-quotes-right" aria-hidden="true"></i></span>
+                </div>
               </div>
             </div>
+            <h4 className="text-16 fw-500 text-blue-1 mb-20">{item.meta}</h4>
+            <p className="testimonials__text lh-18 fw-500 text-dark-1">
+              {item.text}
+            </p>
           </div>
         ))}
       </Slider>

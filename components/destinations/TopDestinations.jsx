@@ -27,7 +27,7 @@ const TopDestinations = () => {
           data-aos-delay={100}
         >
           <Link
-            href="/tour/tour-list-v3"
+            href={`/tour/tour-list-v1?location=${item.name}`}
             className="citiesCard -type-3 d-block h-full rounded-4 "
           >
             <div className="citiesCard__image ratio ratio-1:1">

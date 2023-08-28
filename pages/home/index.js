@@ -17,13 +17,14 @@ import AddBanner from "../../components/home/home-3/AddBanner";
 import WhyChoose from "../../components/home/home-3/WhyChoose";
 import Header from "../../components/header";
 import TourCategories from "../../components/home/home-6/TourCategories";
+import Testimonial from "../../components/testimonial/Testimonial";
 
 
 
 const home = () => {
   const { tabs, currentTab } = useSelector((state) => state.hero) || {};
 
-  
+
   return (
     <>
       <Seo pageTitle="Home" />
@@ -34,7 +35,7 @@ const home = () => {
       <Hero />
       {/* End Hero 3 */}
 
-      
+
       {currentTab == 'Tour' && <section className="layout-pt-md layout-pb-md">
         <div className="container">
           <div className="row y-gap-20 justify-between items-end">
@@ -49,7 +50,7 @@ const home = () => {
 
             <div className="col-auto">
               <Link
-                 href={`/tour/tour-list-v1`}
+                href={`/tour/tour-list-v1`}
                 className="button -md -blue-1 bg-blue-1-05 text-blue-1"
               >
                 More <div className="icon-arrow-top-right ml-15" />
@@ -68,13 +69,13 @@ const home = () => {
       </section>}
       {/* End Tours Sections */}
 
-      {currentTab == 'Tour' &&<section className="layout-pt-md layout-pb-md">
+      {currentTab == 'Tour' && <section className="layout-pt-md layout-pb-md">
         <div className="container">
           <div className="row justify-center text-center">
             <div className="col-auto">
               <div className="sectionTitle -md">
                 <h2 className="sectionTitle__title">
-                  Choose Your Tour 
+                  Choose Your Tour
                 </h2>
                 <p className=" sectionTitle__text mt-5 sm:mt-0">
                 </p>
@@ -83,7 +84,7 @@ const home = () => {
           </div>
           {/* End .row */}
 
-          <div className="row y-gap-30 pt-40 sm:pt-20 item_gap-x30">
+          <div className="row y-gap-30 pt-20 sm:pt-20 item_gap-x30">
             <TourCategories />
           </div>
           {/* End .row */}
@@ -92,20 +93,20 @@ const home = () => {
       </section>}
       {/* Adventure and activity */}
 
-      {currentTab == 'Tour' && <section className="layout-pt-lg layout-pb-md">
+      {currentTab == 'Tour' && <section className="layout-pt-md layout-pb-md">
         <div className="container">
           <div className="row justify-center text-center">
             <div className="col-auto">
               <div className="sectionTitle -md">
                 <h2 className="sectionTitle__title">Special Offers</h2>
                 <p className=" sectionTitle__text mt-5 sm:mt-0">
-                  These popular destinations have a lot to offer
+                  The popular Offers
                 </p>
               </div>
             </div>
           </div>
           {/* End .row */}
-          <div className="row y-gap-20 pt-40">
+          <div className="row y-gap-10 pt-20">
             <AddBanner />
           </div>
           {/* End .row */}
@@ -113,23 +114,23 @@ const home = () => {
         {/* End container */}
       </section>}
       {/* End AddBanner Section */}
-      
 
-      {currentTab == 'Hotel' && <section className="layout-pt-md layout-pb-md">
+
+      {currentTab == 'Tour' && <section className="layout-pt-md layout-pb-md">
         <div className="container">
           <div className="row justify-center text-center">
             <div className="col-auto">
               <div className="sectionTitle -md">
                 <h2 className="sectionTitle__title">Why Choose Us</h2>
                 <p className=" sectionTitle__text mt-5 sm:mt-0">
-                  These popular destinations have a lot to offer
+                 
                 </p>
               </div>
             </div>
           </div>
           {/* End .row */}
 
-          <div className="row y-gap-40 justify-between pt-50">
+          <div className=" y-gap-20 mt-20">
             <WhyChoose />
           </div>
           {/* End row */}
@@ -160,6 +161,40 @@ const home = () => {
         {/* End .container */}
       </section>}
       {/* End Top Destinations Section */}
+
+      {currentTab == 'Tour' && <section className="layout-pt-md layout-pb-md">
+        <div className="container">
+          <div className="row justify-center text-center">
+            <div className="col-auto">
+              <div className="sectionTitle -md">
+                <h2 className="sectionTitle__title">Testimonial</h2>
+                <p className=" sectionTitle__text mt-5 sm:mt-0">
+                  These popular testimonials from clients
+                </p>
+              </div>
+            </div>
+          </div>
+          {/* End .row */}
+          <div className="row y-gap-20 rounded-4 mt-20 pt-40 pl-40">
+            <div class="col-6  bg-blue-2">
+              <h3>Most Trusted Travel Community</h3>
+              <ul className='tst-list' style={{marginLeft: 10}}>
+                <li>A stellar rating of 5 on Trip Advisor.</li>
+                <li>An exceptional rating of 4.9 stars on Google.</li>
+                <li>50,000+ satisfied travelers.</li>
+                <li>4,000+ successful trips.</li>
+                <li>More than 2500+ reviews and recommendations across all platforms.</li>
+              </ul>
+            </div>
+            <div class="col-6 bg-white">
+              <Testimonial />
+            </div>
+          </div>
+          {/* End .row */}
+        </div>
+        {/* End container */}
+      </section>}
+      {/* End Testinomial Section */}
 
       {currentTab == 'Hotel' && <section className="layout-pt-md layout-pb-md">
         <div className="container">
