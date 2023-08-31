@@ -1,6 +1,7 @@
 import FilterBox from "../../components/tour-single/filter-box";
 
 const SidebarRight = ({ tour }) => {
+
   return (
     <div className="d-flex justify-end js-pin-content">
       <div className="w-360 lg:w-full d-flex flex-column items-center">
@@ -8,7 +9,7 @@ const SidebarRight = ({ tour }) => {
           <div className="text-14 text-light-1">
             From{" "}
             <span className="text-20 fw-500 text-dark-1 ml-5">
-              US${tour?.price}
+              Rs.{tour?.price}
             </span>
           </div>
           {/* End div */}
