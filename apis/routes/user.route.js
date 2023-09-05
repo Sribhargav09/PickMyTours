@@ -69,7 +69,11 @@ userExpressRoute.post("/create-user",  upload.fields([{ name: 'photo', maxCount:
     
     const url = req.protocol + '://' + req.get('host');
 
+    if(req.files && req.files['photo']){
     req.body.photo = url + '/users/' + req.files['photo'][0].filename;
+    }else{
+      req.body.photo = 'avatar.png';
+    }
    
    UserSchema.create(req.body)
     .then((result) => {

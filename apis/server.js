@@ -28,6 +28,7 @@ const userRoute = require("./routes/user.route");
 const reviewRoute = require("./routes/review.route");
 const testinomialRoute = require("./routes/testinomial.route");
 const enquieryRoute = require("./routes/enquiery.route");
+const stripeRoute = require("./routes/stripe-pay.route");
 
 
 const app = express();
@@ -49,6 +50,7 @@ app.use("/", userRoute);
 app.use("/", reviewRoute);
 app.use("/", testinomialRoute);
 app.use("/", enquieryRoute);
+app.use("/", stripeRoute)
 
 
 app.use(express.static(__dirname +'/public'));

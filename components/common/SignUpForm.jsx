@@ -10,8 +10,8 @@ const SignUpForm = () => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [ConfirmPassword,setConformPassword] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [confirmPassword,setConfirmPassword] = useState('');
+  const [phone, setPhone] = useState('');
   const [userRole, setUserRole] = useState('user');
   const [errors, setErrors] = useState({ name: '', email: '', password: '', phoneNumber: '', userRole: '', photos: '' })
   const [photo, setPhoto] = useState(null);
@@ -37,7 +37,7 @@ const SignUpForm = () => {
           setPhotos([response.data.data.photo]);
           setEmail(response.data.data.email);
           setPassword(response.data.data.password);
-          setConformPassword(response.data.data.conformpassword);
+          setConfirmPassword(response.data.data.conformpassword);
           setPhoneNumber(response.data.data.phoneNumber);
 
           setTimeout(() => {
@@ -166,50 +166,56 @@ const SignUpForm = () => {
 
       <div className="col-12">
         <div className="form-input ">
-          <input type="text" required />
+          <input type="text" value={firstName} onChange={(event) => setFirstName(event.target.value)} required />
           <label className="lh-1 text-14 text-light-1">FirstName</label>
+          <span class="error">{errors && errors.firstname}</span>
         </div>
       </div>
       {/* End .col */}
 
       <div className="col-12">
         <div className="form-input ">
-          <input type="text" required />
+          <input type="text" value={lastName} onChange={(event) => setLastName(event.target.value)} required />
           <label className="lh-1 text-14 text-light-1">LastName</label>
+          <span class="error">{errors && errors.lastname}</span>
         </div>
       </div>
       {/* End .col */}
 
       <div className="col-12">
         <div className="form-input ">
-          <input type="text" required />
+          <input type="text" value={email} onChange={(event) => setEmail(event.target.value)} required />
           <label className="lh-1 text-14 text-light-1">Email</label>
+          <span class="error">{errors && errors.email}</span>
         </div>
       </div>
       {/* End .col */}
 
       <div className="col-12">
         <div className="form-input ">
-          <input type="password" required />
+          <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} required />
           <label className="lh-1 text-14 text-light-1">Password</label>
+          <span class="error">{errors && errors.password}</span>
         </div>
       </div>
       {/* End .col */}
 
       <div className="col-12">
         <div className="form-input ">
-          <input type="password" required />
+          <input type="password"  value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} required />
           <label className="lh-1 text-14 text-light-1">ConfirmPassword</label>
+          <span class="error">{errors && errors.confirmPassword}</span>
         </div>
       </div>
       {/* End .col */}
       <div className="col-12">
         <div className="form-input ">
-          <input type="number" required />
+          <input type="number"  value={phone} onChange={(event) => setPhone(event.target.value)}  required />
           <label className="lh-1 text-14 text-light-1">phoneNumber</label>
+          <span class="error">{errors && errors.phonr}</span>
         </div>
       </div>
-      <div className="col-12">
+      {/* <div className="col-12">
         <InputLabel>user Role</InputLabel>
         <Select style={{ width: '30%', marginTop: '5' }}
           required
@@ -222,7 +228,7 @@ const SignUpForm = () => {
           <MenuItem value={'vendor'}>Vendor</MenuItem>
           <MenuItem value={'manager'}>Manager</MenuItem>
         </Select>
-      </div><br />
+      </div><br /> */}
       <div className="col-12">
         <div className="mt-30">
           <div className="fw-500">Feature Photo</div>
