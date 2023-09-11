@@ -6,6 +6,9 @@ multer = require('multer'),
 
 const DIR = './public/users/';
 
+var jwt = require("jsonwebtoken");
+var bcrypt = require("bcryptjs");
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, DIR);
@@ -75,6 +78,7 @@ userExpressRoute.post("/create-user",  upload.fields([{ name: 'photo', maxCount:
       req.body.photo = 'avatar.png';
     }
    
+  req.body.password = bcrypt.hashSync(req.body.password, 8),
    UserSchema.create(req.body)
     .then((result) => {
       console.log(result);
@@ -89,6 +93,56 @@ userExpressRoute.post("/create-user",  upload.fields([{ name: 'photo', maxCount:
       return next(err);
     });
 });
+
+userExpressRoute.post("/login", (req, res, next) => {
+  UserSchema.findOne({
+    username: req.body.username,
+  })
+    .populate("roles", "-__v")
+    .exec((err, user) => {
+      if (err) {
+        res.status(500).send({ message: err });
+        return;
+      }
+
+      if (!user) {
+        return res.status(404).send({ message: "User Not found." });
+      }
+
+      var passwordIsValid = bcrypt.compareSync(
+        req.body.password,
+        user.password
+      );
+
+      if (!passwordIsValid) {
+        return res.status(401).send({ message: "Invalid Password!" });
+      }
+
+      const token = jwt.sign({ id: user.id },
+                              config.secret,
+                              {
+                                algorithm: 'HS256',
+                                allowInsecureKeySizes: true,
+                                expiresIn: 86400, // 24 hours
+                              });
+
+      // var authorities = [];
+
+      // for (let i = 0; i < user.roles.length; i++) {
+      //   authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
+      // }
+
+      req.session.token = token;
+
+      res.status(200).send({
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        token:req.session.token
+      });
+    });
+});
+
 // Get single user
 userExpressRoute.route("/user/:id").get(async (req, res, next) => {
   await UserSchema.findById(req.params.id, req.body)
