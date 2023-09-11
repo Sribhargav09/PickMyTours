@@ -13,7 +13,7 @@ const SignUpForm = () => {
   const [confirmPassword,setConfirmPassword] = useState('');
   const [phone, setPhone] = useState('');
   const [userRole, setUserRole] = useState('user');
-  const [errors, setErrors] = useState({ name: '', email: '', password: '', phoneNumber: '', userRole: '', photos: '' })
+  const [errors, setErrors] = useState({ firstName: '', lastName: '', email: '', password: '', phone: '', userRole: '', photos: '' })
   const [photo, setPhoto] = useState(null);
   const [photos, setPhotos] = useState([]);
   const [images, setImages] = useState(null);
@@ -38,7 +38,7 @@ const SignUpForm = () => {
           setEmail(response.data.data.email);
           setPassword(response.data.data.password);
           setConfirmPassword(response.data.data.conformpassword);
-          setPhoneNumber(response.data.data.phoneNumber);
+          setphone(response.data.data.phone);
 
           setTimeout(() => {
             setLoading(false)
@@ -56,30 +56,21 @@ const SignUpForm = () => {
 
   const add = () => {
     if (firstName.length == 0) {
-      setErrors({ ...errors, name: ' Name can not be empty' });
+      setErrors({ ...errors, firstName: 'First Name can not be empty' });
+    }if (lastName.length == 0) {
+      setErrors({ ...errors, lastName: 'Last Name can not be empty' });
     } else if (email.length == 0) {
       setErrors({ ...errors, email: 'email is required' })
-    } else if (password.length < 8) {
+    } else if (password.length == 0) {
       setErrors({ ...errors, password: 'password is required' })
-    } else if (phoneNumber.length <= 10) {
-      setErrors({ ...errors, phoneNumber: 'phoneNumber is required' })
+    } else if (phone.length < 10) {
+      setErrors({ ...errors, phone: 'phone is required' })
     } else if (userRole.length == 0) {
       setErrors({ ...errors, userRole: 'userRole is required' })
     } else if (photos.length == 0) {
       setErrors({ ...errors, photos: 'Upload a photo can not be empty' });
-    }
-    if (id) {
-      signupServer.update(id, { firstName, lastName, email, password, phoneNumber, userRole })
-        .then(response => {
-          Router.push("/vendor-dashboard/add-user")
-          console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-
     } else {
-      signupServer.create({ firstName, lastName, email, password, phone: phoneNumber, role: userRole, photo })
+      signupServer.create({ firstName, lastName, email, password, phone: phone, role: userRole, photo })
         .then(response => {
           //Router.push("/vendor-dashboard/users")
           setIsRegister(true);
@@ -89,15 +80,6 @@ const SignUpForm = () => {
           console.log(e);
         });
 
-    }
-    if (id) {
-      signupServer.delete(id)
-        .then(response => {
-          Router.push('/vendor-dashboard/add-user')
-          console.log(response.data);
-        }).catch(e => {
-          console.log(e);
-        });
     }
 
   }
@@ -168,53 +150,59 @@ const SignUpForm = () => {
         <div className="form-input ">
           <input type="text" value={firstName} onChange={(event) => setFirstName(event.target.value)} required />
           <label className="lh-1 text-14 text-light-1">FirstName</label>
-          <span class="error">{errors && errors.firstname}</span>
         </div>
       </div>
+      
+      <span class="error col-12">{errors && errors.firstName}</span>
       {/* End .col */}
 
       <div className="col-12">
         <div className="form-input ">
           <input type="text" value={lastName} onChange={(event) => setLastName(event.target.value)} required />
           <label className="lh-1 text-14 text-light-1">LastName</label>
-          <span class="error">{errors && errors.lastname}</span>
         </div>
       </div>
+      <span class="error col-12">{errors && errors.lastName}</span>
+
       {/* End .col */}
 
       <div className="col-12">
         <div className="form-input ">
           <input type="text" value={email} onChange={(event) => setEmail(event.target.value)} required />
           <label className="lh-1 text-14 text-light-1">Email</label>
-          <span class="error">{errors && errors.email}</span>
         </div>
       </div>
+      <span class="error col-12">{errors && errors.email}</span>
+
       {/* End .col */}
 
       <div className="col-12">
         <div className="form-input ">
           <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} required />
           <label className="lh-1 text-14 text-light-1">Password</label>
-          <span class="error">{errors && errors.password}</span>
         </div>
       </div>
+      <span class="error col-12">{errors && errors.password}</span>
+
       {/* End .col */}
 
       <div className="col-12">
         <div className="form-input ">
           <input type="password"  value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} required />
           <label className="lh-1 text-14 text-light-1">ConfirmPassword</label>
-          <span class="error">{errors && errors.confirmPassword}</span>
         </div>
       </div>
+      <span class="error col-12">{errors && errors.confirmPassword}</span>
+
       {/* End .col */}
       <div className="col-12">
         <div className="form-input ">
           <input type="number"  value={phone} onChange={(event) => setPhone(event.target.value)}  required />
-          <label className="lh-1 text-14 text-light-1">phoneNumber</label>
-          <span class="error">{errors && errors.phonr}</span>
+          <label className="lh-1 text-14 text-light-1">phone</label>
         </div>
       </div>
+      
+      <span class="error col-12">{errors && errors.phone}</span>
       {/* <div className="col-12">
         <InputLabel>user Role</InputLabel>
         <Select style={{ width: '30%', marginTop: '5' }}
@@ -278,11 +266,11 @@ const SignUpForm = () => {
 
 
       </div><br></br>
-      <div className="col-12">
+      {/* <div className="col-12">
         <Button className='button h-30 px-24 .dark-1 bg-blue-1 text-white' variant="outlined" onClick={() => add()}>submit</Button>
-      </div>
+      </div> */}
 
-      <div className="col-12">
+      {/* <div className="col-12">
         <div className="d-flex ">
           <div className="form-checkbox mt-5">
             <input type="checkbox" name="name" />
@@ -295,13 +283,14 @@ const SignUpForm = () => {
             in the Privacy Policy.
           </div>
         </div>
-      </div>
+      </div> */}
       {/* End .col */}
 
       <div className="col-12">
         <button
-          type="submit"
+          type="button"
           href="#"
+          onClick={() => add()}
           className="button py-20 -dark-1 bg-blue-1 text-white w-100"
         >
           Sign Up <div className="icon-arrow-top-right ml-15" />
@@ -309,7 +298,7 @@ const SignUpForm = () => {
       </div>
       {/* End .col */}
     </form>}
-    {!isRegister && <p>Thanks for Signup. <br/>Your account will be activate after approval form our end</p>}
+    {isRegister && <div class="success"><p>Thanks for Signup. <br/>Your account will be activate after approval form our end</p></div>}
     </>
 
   );

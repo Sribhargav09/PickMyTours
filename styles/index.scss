@@ -188,6 +188,7 @@ ul.tst-list li:before {
 
 span.error{
   display: block;
+  clear:both;
   color:red;
 }
 
@@ -216,4 +217,9 @@ span.error{
   position:absolute;
   background-color: #383636;
   opacity: 0.6;
+}
+
+.success{
+  color:darkolivegreen;
+  font-size:16px;
 }
