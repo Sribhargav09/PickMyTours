@@ -1,6 +1,37 @@
 import Link from "next/link";
 
 const LoginForm = () => {
+
+  const add = () => {
+    if (firstName.length == 0) {
+      setErrors({ ...errors, firstName: 'First Name can not be empty' });
+    }if (lastName.length == 0) {
+      setErrors({ ...errors, lastName: 'Last Name can not be empty' });
+    } else if (email.length == 0) {
+      setErrors({ ...errors, email: 'email is required' })
+    } else if (password.length == 0) {
+      setErrors({ ...errors, password: 'password is required' })
+    } else if (phone.length < 10) {
+      setErrors({ ...errors, phone: 'phone is required' })
+    } else if (userRole.length == 0) {
+      setErrors({ ...errors, userRole: 'userRole is required' })
+    } else if (photos.length == 0) {
+      setErrors({ ...errors, photos: 'Upload a photo can not be empty' });
+    } else {
+      signupServer.create({ firstName, lastName, email, password, phone: phone, role: userRole, photo })
+        .then(response => {
+          //Router.push("/vendor-dashboard/users")
+          setIsRegister(true);
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+
+    }
+
+  }
+  
   return (
     <form className="row y-gap-20">
       <div className="col-12">
