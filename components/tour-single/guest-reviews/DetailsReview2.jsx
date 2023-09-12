@@ -1,15 +1,21 @@
 import Image from "next/image";
 import ReviewGallery from "./ReviewGallery";
-import { useState } from "react";
-import { useEffect } from "react";
-import axios from "axios";
+import { useState, useEffect } from "react";
+import reviewService from "../../../services/review.service";
 
-const DetailsReview2 = () => {
+const DetailsReview2 = ({tourId}) => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/reviews')
-      .then(response => setReviews(response.data.data))
+      console.log(tourId);
+    reviewService.getReviewsByTourId(tourId)
+      .then(response => {
+        setReviews(response.data.data);
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
   }, [])
   return (
     <div className="row y-gap-40">
