@@ -32,6 +32,7 @@ const TourSingleV1Dynamic = () => {
   const [isOpen, setOpen] = useState(false);
   const router = useRouter();
   const [tour, setTour] = useState({});
+  const [tourId, setTourId] = useState('');
   const id = router.query.id;
 
   const getFieldsData = (field) => {
@@ -50,7 +51,7 @@ const TourSingleV1Dynamic = () => {
     else {
       TourDataService.get(id)
         .then(response => {
-
+          setTourId(id);
           // const langs = response.data.data.languages[0].split(",");
           // langs.forEach((lang) => {
           //   console.log(JSON.parse(lang));
@@ -423,7 +424,7 @@ const TourSingleV1Dynamic = () => {
             {/* End col-xl-3 */}
 
             <div className="col-xl-8">
-              {tour && <DetailsReview2 />}
+              {tour && tourId && <DetailsReview2 tourId={tourId} />}
             </div>
             {/* End col-xl-8 */}
           </div>

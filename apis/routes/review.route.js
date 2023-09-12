@@ -99,6 +99,22 @@ reviewExpressRoute.route("/review/:id").get(async (req, res, next) => {
       return next(err);
     });
 });
+// Get single user
+reviewExpressRoute.route("/tour-reviews/:id").get(async (req, res, next) => {
+  console.log(req.params.id)
+  await ReviewSchema.find({"tourId": req.params.id})
+    .then((result) => {
+      console.log(result)
+      res.json({
+        data: result,
+        message: "Data successfully retrieved.",
+        status: 200,
+      });
+    })
+    .catch((err) => {
+      return next(err);
+    });
+});
 // Update user
 reviewExpressRoute.route("/update-review/:id").put(async (req, res, next) => {
   await ReviewSchema.findByIdAndUpdate(req.params.id, {
