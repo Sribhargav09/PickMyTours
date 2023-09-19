@@ -23,8 +23,6 @@ const TopDestinations = () => {
         <div
           className='col-3'
           key={item._id}
-          data-aos="fade"
-          data-aos-delay={100}
         >
           <Link
             href={`/tour/tour-list-v1?location=${item.name}`}

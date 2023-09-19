@@ -46,7 +46,7 @@ const Header1 = () => {
 
             <div className="col-auto">
               <div className="d-flex items-center">
-                <div className="mr-15 xxl:d-none">
+                <div className="mr-15">
                   <button
                     className="text-26 text-dark-1"
                     data-bs-toggle="offcanvas"

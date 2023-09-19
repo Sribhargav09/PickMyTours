@@ -1,39 +1,58 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from 'react-redux'
+import { changeLanguage } from '../../app/features/language/languageSlice';
+import axios from "axios";
+
 
 const LanguageMegaMenu = ({ textClass }) => {
+  const selectedLanguageValue = useSelector((state) => state.language.selectedLanguage);
+  const dispatch = useDispatch()
+
   const [click, setClick] = useState(false);
   const handleCurrency = () => setClick((prevState) => !prevState);
 
-  const languageContent = [
-    { id: 1, language: "English", country: "United States" },
-    { id: 2, language: "Türkçe", country: "Turkey" },
-    { id: 3, language: "Español", country: "España" },
-    { id: 4, language: "Français", country: "France" },
-    { id: 5, language: "Italiano", country: "Italia" },
-    { id: 6, language: "Dari, Pashto", country: "Afghanistan" },
-    { id: 7, language: "Albanian", country: "Albania" },
-    { id: 8, language: "Arabic, Berber", country: "	Algeria" },
-    { id: 9, language: "Catalan", country: "Andorra" },
-    { id: 10, language: "Kongo, Portuguese	", country: "Angola" },
-    { id: 11, language: "Spanish", country: "Argentina" },
-    { id: 12, language: "Armenian", country: "Armenia" },
-    { id: 13, language: "English", country: "Australia" },
-    { id: 14, language: "German", country: "Austria" },
-    { id: 15, language: "Azerbaijani", country: "Azerbaijan" },
-    { id: 16, language: "Bengali", country: "Bangladesh" },
-    { id: 17, language: "English", country: "Barbados" },
-    { id: 18, language: "Belarusian", country: "Belarus" },
-    { id: 19, language: "Dutch, French", country: "Belgium" },
-    { id: 20, language: "English", country: "Belize" },
-  ];
+  const languageContent = useSelector((state) => state.language.languagies);
 
-  const [selectedCurrency, setSelectedCurrency] = useState(languageContent[0]);
+  const [selectedCurrency, setSelectedCurrency] = useState(selectedLanguageValue);
 
   const handleItemClick = (item) => {
     setSelectedCurrency(item);
     setClick(false);
+    dispatch(changeLanguage(item));
   };
+
+  useEffect(() => {
+    axios
+      .get("https://ipapi.co/json/")
+      .then((response) => {
+        let data = response.data;
+        // setState({
+        //   ...state,
+        //   ip: data.ip,
+        //   countryName: data.country_name,
+        //   countryCode: data.country_calling_code,
+        //   city: data.city,
+        //   timezone: data.timezone
+        // });
+        //console.log(data.country_name);
+        languageContent.map((ln) => {
+           //console.log(ln)
+          const ct = ln.country;
+          if(ct == data.country_name){
+              dispatch(changeLanguage(ln));
+          }
+        })
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+ },[]);
+ 
+
+ useEffect(() => {
+  setSelectedCurrency(selectedLanguageValue);
+ }, [selectedLanguageValue])
 
   return (
     <>
@@ -52,7 +71,7 @@ const LanguageMegaMenu = ({ textClass }) => {
           />
           <span className="js-language-mainTitle">
             {" "}
-            {selectedCurrency.country}
+            {selectedCurrency && selectedCurrency.country}
           </span>
           <i className="icon-chevron-sm-down text-7 ml-15" />
         </button>
@@ -75,7 +94,7 @@ const LanguageMegaMenu = ({ textClass }) => {
             {languageContent.map((item) => (
               <li
                 className={`modalGrid__item js-item ${
-                  selectedCurrency.country === item.country ? "active" : ""
+                  selectedCurrency && selectedCurrency.country === item.country ? "active" : ""
                 }`}
                 key={item.id}
                 onClick={() => handleItemClick(item)}

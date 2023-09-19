@@ -55,42 +55,46 @@ export const blogItems = [
   },
 ];
 export const pageItems = [
-  {
-    name: "404",
-    routePath: "/404",
-  },
+  // {
+  //   name: "404",
+  //   routePath: "/404",
+  // },
   {
     name: "About",
     routePath: "/others-pages/about",
   },
-  {
-    name: "Become Expert",
-    routePath: "/others-pages/become-expert",
-  },
+  // {
+  //   name: "Become Expert",
+  //   routePath: "/others-pages/become-expert",
+  // },
   {
     name: "Help Center",
     routePath: "/others-pages/help-center",
   },
   {
-    name: "Login",
-    routePath: "/others-pages/login",
-  },
-  {
-    name: "Register",
-    routePath: "/others-pages/signup",
-  },
-  {
-    name: "Terms",
+    name: "Terms and Polices",
     routePath: "/others-pages/terms",
   },
   {
-    name: "Invoice",
-    routePath: "/others-pages/invoice",
+    name: "Contact",
+    routePath: "/contact",
   },
-  {
-    name: "UI Elements",
-    routePath: "/others-pages/ui-elements",
-  },
+  // {
+  //   name: "Login",
+  //   routePath: "/others-pages/login",
+  // },
+  // {
+  //   name: "Register",
+  //   routePath: "/others-pages/signup",
+  // },
+  // {
+  //   name: "Invoice",
+  //   routePath: "/others-pages/invoice",
+  // },
+  // {
+  //   name: "UI Elements",
+  //   routePath: "/others-pages/ui-elements",
+  // },
 ];
 export const dashboardItems = [
   {

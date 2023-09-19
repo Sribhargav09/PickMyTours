@@ -1,6 +1,19 @@
 import FilterBox from "../../components/tour-single/filter-box";
 
+import { useSelector, useDispatch } from "react-redux";
+import Router from "next/router";
+
+import { useEffect, useState, useRef } from "react";
+
 const SidebarRight = ({ tour }) => {
+
+  const selectedCurrency = useSelector((state) => state.currency.selectedCurrency);
+  const [currency, setCurrency] = useState(selectedCurrency);
+
+  useEffect(() => {
+    setCurrency(selectedCurrency);
+  }, [selectedCurrency])
+
 
   return (
     <div className="d-flex justify-end js-pin-content">
@@ -9,7 +22,8 @@ const SidebarRight = ({ tour }) => {
           <div className="text-14 text-light-1">
             From{" "}
             <span className="text-20 fw-500 text-dark-1 ml-5">
-              Rs.{tour?.price}
+            {currency.symbol}{(tour?.price * currency.rate).toFixed(2)}
+
             </span>
           </div>
           {/* End div */}

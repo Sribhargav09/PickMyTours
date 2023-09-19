@@ -11,12 +11,18 @@ const index = () => {
   const delay = 3000;
 
   const [tours, setTours] = useState([]);
+  const selectedCurrency = useSelector((state) => state.currency.selectedCurrency);
+  const [currency, setCurrency] = useState(selectedCurrency);
+
+  useEffect(() => {
+    setCurrency(selectedCurrency);
+  }, [selectedCurrency])
 
   useEffect(() => {
     TourDataService.getAll()
       .then(response => {
-        setTours(response.data);
-        console.log(response.data);
+        setTours(response.data.data.slice(0, 3));
+        console.log(response.data.data.slice(0, 3));
       })
       .catch(e => {
         console.log(e);
@@ -34,11 +40,11 @@ const index = () => {
 
   useEffect(() => {
     resetTimeout();
-    
+
     timeoutRef.current = setTimeout(
       () =>
         setIndex((prevIndex) =>
-          prevIndex === 2 ? 0 : prevIndex + 1
+          (prevIndex + 1) === tours.length  ? 0 : prevIndex + 1
         ),
       delay
     );
@@ -48,70 +54,72 @@ const index = () => {
     };
   }, [index]);
 
+  const gotoTourPage = () => {
+    const id = tours[index]._id;
+    Router.push(`tour/tour-single/${id}`)
+  }
+
 
   return (
-    <section className="masthead -type-3 z-5">
-      <div className="masthead__bg" style={{background: 'none'}}>
-
+    <section className="masthead -type-3 z-5" style={{height: '600px'}}>
+      <div className="masthead__bg" style={{ background: 'none', cursor: 'pointer', height: '200px' }}>
+        
         {/* {tours && tours.data && tours.data.length > 0 && tours.data[tours.data.length-1] && tours.data[tours.data.length-1]?.gallery && <img alt="image" src={tours.data[tours.data.length-1]['gallery'][0] ?? ''} className="js-lazy" />} */}
-        <div className="slideshow">
+        <div className="slideshow" >
           <div
             className="slideshowSlider"
+            onClick={gotoTourPage}
             style={{ transform: `translate3d(${-index * 100}%, 0, 0)` }}
           >
-            {tours && tours?.data?.slice(0, 3).map((tour, index) => {
+            {tours && tours.map((tour, index) => {
               if (tour && tour.gallery) {
-                return <div
-                  onClick={() => Router.push(`tour/tour-single/${tour._id}`)}
-                  className="slide"
-                  key={index}
-                  style={{
-                    backgroundImage: `url(${tour.gallery[0]})`,
-                    backgroundRepeat: "no-repeat",
-                    cursor: 'pointer',
-                    backgroundSize: "cover", backgroundRepeat: 'no',
-                    backgroundColor: 'transparent',
-                  }}>
-                  <div className="row justify-center mt-50" >
-                    <div className="col-auto">
-                      <div className="text-center">
-                        <h2
-                          style={{ color: 'white' }}
-                          className="text-50 mt-80 lg:text-40 md:text-30 text-white"
-                          data-aos="fade-up"
-                        >
-                          {tour.name}
-                        </h2>
+                // return <div
+                //   className="slide"
+                //   key={index}
+                //   style={{
+                //     backgroundImage: `url(${tour.gallery[0]})`,
+                //     backgroundRepeat: "no-repeat",
+                //     cursor: 'pointer',
+                //     backgroundSize: "cover", backgroundRepeat: 'no',
+                //     backgroundColor: 'transparent',
+                //   }}>
+                //   <div className="row justify-center mt-50" >
+                //     <div className="col-auto">
+                //       <div className="text-center">
+                       
+                //       </div>
+                //     </div>
+                //   </div>
+                // </div>
 
-                        <p
-                          className="text-white mt-50 md:mt-10"
-                        >
-                          {tour.price} - {tour.location}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                //  <img alt="image" src={currentTab == 'Tours' ? photo : `/img/banners/${currentTab == 'Holyday Rentals' ? 'rental' : currentTab.toLowerCase()}.png`} className="js-lazy" />
+                return <img alt="image" src={currentTab == 'Tour' ? `${tour.gallery[0]}` : `/img/banners/${currentTab == 'Holyday Rentals' ? 'rental' : currentTab.toLowerCase()}.png`}  className="slide js-lazy" />
 
               }
             }
             )}
           </div>
         </div>
-      </div>
-      <div className="container">
+        
+      <div className="container" style={{position: 'absolute', cursor: 'pointer', left:'50px', top:'50px'}}>
         <div className="row justify-center">
-          <div className="col-auto">
-            <div className="text-center">
+          <div className="col-12" style={{width: '90%'}}>
+            <div className="text-center"  onClick={gotoTourPage} >
+                      <h2
+                          style={{ color: 'white' }}
+                          className="text-50 mt-80 lg:text-40 md:text-30 text-white"
+                        >
+                          {tours[index]?.name.substr(0, 30)} 
+                        </h2>
 
+                        <p
+                          className="text-white mt-20 md:mt-10"
+                        >
+                          {currency.symbol}{(tours[index]?.price * currency.rate).toFixed(2)}  - {tours[index]?.location}
+                        </p>
             </div>
 
             <div
               className="masthead__tabs"
-              data-aos="fade-up"
-              data-aos-delay="200"
             >
               <MainFilterSearchBox />
 
@@ -119,6 +127,7 @@ const index = () => {
             {/* End tab-filter */}
           </div>
         </div>
+      </div>
       </div>
     </section>
   );

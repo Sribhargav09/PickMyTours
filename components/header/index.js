@@ -6,8 +6,22 @@ import LanguageMegaMenu from "./LanguageMegaMenu";
 import HeaderSearch from "./HeaderSearch";
 import MobileMenu from "./MobileMenu";
 
+import Router from "next/router";
+import { useSelector, useDispatch } from 'react-redux'
+import { setUser, setToken } from '../../app/features/user/userSlice';
+
+
+
 const Header = () => {
   const [navbar, setNavbar] = useState(false);
+
+  
+  const loginUser = useSelector((state) => state.user.loginUser);
+  const userToken = useSelector((state) => state.user.token);
+  const dispatch = useDispatch()
+console.log(loginUser);
+
+
 
   const changeBackground = () => {
     if (window.scrollY >= 10) {
@@ -16,6 +30,12 @@ const Header = () => {
       setNavbar(false);
     }
   };
+
+  const logOut = () => {
+    dispatch(setToken(''));
+    dispatch(setUser(null));
+    Router.push("/others-pages/login");
+  } 
 
   useEffect(() => {
     window.addEventListener("scroll", changeBackground);
@@ -51,7 +71,7 @@ const Header = () => {
 
             <div className="col-auto">
               <div className="d-flex items-center">
-                <div className="row x-gap-20 items-center xxl:d-none">
+                <div className="row x-gap-20 items-center">
                   <CurrenctyMegaMenu textClass="text-dark-1" />
                   {/* End Megamenu for Currencty */}
 
@@ -67,7 +87,7 @@ const Header = () => {
                 {/* End language and currency selector */}
 
                 {/* Start btn-group */}
-                <div className="d-flex items-center ml-20 is-menu-opened-hide md:d-none">
+                {!userToken &&<div className="d-flex items-center ml-20 is-menu-opened-hide md:d-none">
                 <Link
                     href="/others-pages/become-expert"
                     className="button px-30 fw-400 text-14 -blue-1 bg-blue-1 h-50 text-white"
@@ -81,14 +101,32 @@ const Header = () => {
                   >
                     Sign In / Register
                   </Link>
-                </div>
+                </div>}
+
+                {userToken && <div className="d-flex items-center ml-20 is-menu-opened-hide md:d-none">
+                  <img
+                    width={50}
+                    height={50}
+                    src={`${loginUser.photo}`}
+                    alt="image"
+                    className="size-50 rounded-22 object-cover"
+                  />
+                  <h5>{loginUser.name}</h5>
+                  <button
+                    onClick={logOut}
+                    className="button px-30 fw-400 text-14 -outline-blue-1 h-50 text-blue-1 ml-20"
+                  >
+                    Logout
+                  </button>
+                </div>}
                 {/* End btn-group */}
 
                 {/* Start mobile menu icon */}
                 <div className="d-none xl:d-flex x-gap-20 items-center pl-30 text-dark-1">
                   <div>
                     <Link
-                      href="/others-pages/login"
+                      href="#"
+                      onClick={logOut}
                       className="d-flex items-center icon-user text-inherit text-22"
                     />
                   </div>

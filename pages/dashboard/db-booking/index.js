@@ -1,10 +1,29 @@
 import Seo from "../../../components/common/Seo";
 import Sidebar from "../common/Sidebar";
-import Header from "../../../components/header/dashboard-header";
+import Header from "../../../components/header/index";
 import Footer from "../common/Footer";
 import BookingTable from "./components/BookingTable";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import Router from "next/router";
+import { useSelector, useDispatch } from 'react-redux'
+import { setUser, setToken } from '../../../app/features/user/userSlice';
+
 
 const index = () => {
+
+  const loginUser = useSelector((state) => state.user.loginUser);
+  const userToken = useSelector((state) => state.user.token);
+  const dispatch = useDispatch()
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if(!userToken){
+      Router.push("/others-pages/login");
+    }
+  })
+
   return (
     <>
       <Seo pageTitle="Booking History" />

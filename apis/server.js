@@ -3,6 +3,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const createError = require("http-errors");
+const passport = require('passport');
+const mailer = require('nodemailer');
+
 // Connecting MongoDB
 async function mongoDbConnection() {
   await mongoose.connect(
