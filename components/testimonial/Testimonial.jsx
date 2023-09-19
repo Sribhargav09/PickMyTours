@@ -41,8 +41,6 @@ const Testimonial = () => {
           <div
             className="testimonials -type-1 bg-white rounded-4"
             key={item.id}
-            data-aos="fade"
-            data-aos-delay={item.dealyAnimation}
           >
             
             <div className="mb-28 ">

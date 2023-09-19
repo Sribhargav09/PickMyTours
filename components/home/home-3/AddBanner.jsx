@@ -52,8 +52,6 @@ const AddBanner = () => {
       {offers && offers.data && offers.data.map((item) => (
         <div
           className="col-lg-4 col-sm-6"
-          data-aos="fade"
-          data-aos-delay={100}
           key={item._id}
         >
           <div className="ctaCard -type-1 rounded-4 ">

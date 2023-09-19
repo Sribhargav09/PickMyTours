@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { useState ,useEffect} from "react";
+import { useState, useEffect } from "react";
 import { TextField, InputLabel, Button, Select, MenuItem } from "@mui/material";
-import {  useRouter } from "next/router";
+import { useRouter } from "next/router";
 import Router from "next/router";
 import signupServer from "../../services/signup.server";
 
@@ -10,7 +10,7 @@ const SignUpForm = () => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword,setConfirmPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [phone, setPhone] = useState('');
   const [userRole, setUserRole] = useState('user');
   const [errors, setErrors] = useState({ firstName: '', lastName: '', email: '', password: '', phone: '', userRole: '', photos: '' })
@@ -55,34 +55,65 @@ const SignUpForm = () => {
   }, [id]);
 
   const add = () => {
+    let error = false;
+    const rerrors = {}
     if (firstName.length == 0) {
-      setErrors({ ...errors, firstName: 'First Name can not be empty' });
-    }if (lastName.length == 0) {
-      setErrors({ ...errors, lastName: 'Last Name can not be empty' });
-    } else if (email.length == 0) {
-      setErrors({ ...errors, email: 'email is required' })
-    } else if (password.length == 0) {
-      setErrors({ ...errors, password: 'password is required' })
-    } else if (phone.length < 10) {
-      setErrors({ ...errors, phone: 'phone is required' })
-    } else if (userRole.length == 0) {
-      setErrors({ ...errors, userRole: 'userRole is required' })
-    } else if (photos.length == 0) {
-      setErrors({ ...errors, photos: 'Upload a photo can not be empty' });
-    } else {
+      rerrors['firstName'] = 'The firstname can not be empty';
+      error = true;
+    }
+
+    if (lastName.length == 0) {
+      rerrors['lastName'] = 'The lastname can not be empty';
+      error = true;
+    }
+
+    if (email.length == 0) {
+      rerrors['email'] = 'The email is required';
+      error = true;
+    }
+
+    if (password.length == 0) {
+      rerrors['password'] = 'The password is required';
+      error = true;
+    }
+
+    if (phone.length < 10) {
+      rerrors['phone'] = 'The phone is required';
+      error = true;
+    }
+
+    if (photos.length == 0) {
+      error = true;
+      rerrors['photos'] = 'Upload a photo can not be empty';
+    }
+
+    if (!error) {
       signupServer.create({ firstName, lastName, email, password, phone: phone, role: userRole, photo })
         .then(response => {
-          //Router.push("/vendor-dashboard/users")
-          setIsRegister(true);
           console.log(response.data);
+          window.scrollTo({ top: 100, behavior: "smooth" });
+
+          setTimeout(() => {
+            Router.push("/others-pages/login");
+          }, 1000);
+          setIsRegister(true);
         })
         .catch(e => {
+          if (e && e.response.data && e.response.data.email) {
+            setErrors({email: e.response.data.email});
+            window.scrollTo({ top: 450, behavior: "smooth" });
+
+          }
           console.log(e);
         });
 
+    } else {
+      setErrors(rerrors);
+      window.scrollTo({ top: 100, behavior: "smooth" });
     }
 
   }
+
   function handlePhotoUpload(event) {
     const fileList = event.target.files;
 
@@ -110,13 +141,17 @@ const SignUpForm = () => {
           newImages.push(reader.result);
           if (newImages.length === fileList.length) {
             setPhotos([...photos, ...newImages]);
-            setErrors({ ...errors, photos: "" });
+            setErrors({
+              ...errors, photos: ""
+            });
           }
 
         }
       };
       img.onerror = () => {
-        setErrors({ ...errors, photos: `Image ${file.name} could not be loaded.` });
+        setErrors({
+          ...errors, photos: `Image ${file.name} could not be loaded.`
+        });
       };
       img.src = reader.result;
     };
@@ -134,76 +169,76 @@ const SignUpForm = () => {
 
   return (
     <>
-    {!isRegister && <form className="row y-gap-20">
-      <div className="col-12">
-        <h1 className="text-22 fw-500">Welcome back</h1>
-        <p className="mt-10">
-          Already have an account yet?{" "}
-          <Link href="/others-pages/login" className="text-blue-1">
-            Log in
-          </Link>
-        </p>
-      </div>
-      {/* End .col */}
-
-      <div className="col-12">
-        <div className="form-input ">
-          <input type="text" value={firstName} onChange={(event) => setFirstName(event.target.value)} required />
-          <label className="lh-1 text-14 text-light-1">FirstName</label>
+      {!isRegister && <form className="row y-gap-20">
+        <div className="col-12">
+          <h1 className="text-22 fw-500">Welcome back</h1>
+          <p className="mt-10">
+            Already have an account yet?{" "}
+            <Link href="/others-pages/login" className="text-blue-1">
+              Log in
+            </Link>
+          </p>
         </div>
-      </div>
-      
-      <span class="error col-12">{errors && errors.firstName}</span>
-      {/* End .col */}
+        {/* End .col */}
 
-      <div className="col-12">
-        <div className="form-input ">
-          <input type="text" value={lastName} onChange={(event) => setLastName(event.target.value)} required />
-          <label className="lh-1 text-14 text-light-1">LastName</label>
+        <div className="col-12">
+          <div className="form-input ">
+            <input type="text" value={firstName} onChange={(event) => setFirstName(event.target.value)} required />
+            <label className="lh-1 text-14 text-light-1">FirstName*</label>
+          </div>
         </div>
-      </div>
-      <span class="error col-12">{errors && errors.lastName}</span>
 
-      {/* End .col */}
+        <span class="error col-12">{errors && errors.firstName}</span>
+        {/* End .col */}
 
-      <div className="col-12">
-        <div className="form-input ">
-          <input type="text" value={email} onChange={(event) => setEmail(event.target.value)} required />
-          <label className="lh-1 text-14 text-light-1">Email</label>
+        <div className="col-12">
+          <div className="form-input ">
+            <input type="text" value={lastName} onChange={(event) => setLastName(event.target.value)} required />
+            <label className="lh-1 text-14 text-light-1">LastName*</label>
+          </div>
         </div>
-      </div>
-      <span class="error col-12">{errors && errors.email}</span>
+        <span class="error col-12">{errors && errors.lastName}</span>
 
-      {/* End .col */}
+        {/* End .col */}
 
-      <div className="col-12">
-        <div className="form-input ">
-          <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} required />
-          <label className="lh-1 text-14 text-light-1">Password</label>
+        <div className="col-12">
+          <div className="form-input ">
+            <input type="text" value={email} onChange={(event) => setEmail(event.target.value)} required />
+            <label className="lh-1 text-14 text-light-1">Email*</label>
+          </div>
         </div>
-      </div>
-      <span class="error col-12">{errors && errors.password}</span>
+        <span class="error col-12">{errors && errors.email}</span>
 
-      {/* End .col */}
+        {/* End .col */}
 
-      <div className="col-12">
-        <div className="form-input ">
-          <input type="password"  value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} required />
-          <label className="lh-1 text-14 text-light-1">ConfirmPassword</label>
+        <div className="col-12">
+          <div className="form-input ">
+            <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} required />
+            <label className="lh-1 text-14 text-light-1">Password*</label>
+          </div>
         </div>
-      </div>
-      <span class="error col-12">{errors && errors.confirmPassword}</span>
+        <span class="error col-12">{errors && errors.password}</span>
 
-      {/* End .col */}
-      <div className="col-12">
-        <div className="form-input ">
-          <input type="number"  value={phone} onChange={(event) => setPhone(event.target.value)}  required />
-          <label className="lh-1 text-14 text-light-1">phone</label>
+        {/* End .col */}
+
+        <div className="col-12">
+          <div className="form-input ">
+            <input type="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} required />
+            <label className="lh-1 text-14 text-light-1">ConfirmPassword</label>
+          </div>
         </div>
-      </div>
-      
-      <span class="error col-12">{errors && errors.phone}</span>
-      {/* <div className="col-12">
+        <span class="error col-12">{errors && errors.confirmPassword}</span>
+
+        {/* End .col */}
+        <div className="col-12">
+          <div className="form-input ">
+            <input type="number" value={phone} onChange={(event) => setPhone(event.target.value)} required />
+            <label className="lh-1 text-14 text-light-1">phone</label>
+          </div>
+        </div>
+
+        <span class="error col-12">{errors && errors.phone}</span>
+        {/* <div className="col-12">
         <InputLabel>user Role</InputLabel>
         <Select style={{ width: '30%', marginTop: '5' }}
           required
@@ -217,60 +252,60 @@ const SignUpForm = () => {
           <MenuItem value={'manager'}>Manager</MenuItem>
         </Select>
       </div><br /> */}
-      <div className="col-12">
-        <div className="mt-30">
-          <div className="fw-500">Feature Photo</div>
-          <div className="row x-gap-20 y-gap-20 pt-15">
-            <div className="col-auto">
-              <div className="w-200">
-                <label htmlFor="featurePhotoUpload" className="d-flex ratio ratio-1:1">
-                  <div className="flex-center flex-column text-center bg-blue-2 h-full w-1/1 absolute rounded-4 border-type-1">
-                    <div className="icon-upload-file text-40 text-blue-1 mb-10" />
-                    <div className="text-blue-1 fw-500">Upload Image</div>
+        <div className="col-12">
+          <div className="mt-30">
+            <div className="fw-500">Feature Photo</div>
+            <div className="row x-gap-20 y-gap-20 pt-15">
+              <div className="col-auto">
+                <div className="w-200">
+                  <label htmlFor="featurePhotoUpload" className="d-flex ratio ratio-1:1">
+                    <div className="flex-center flex-column text-center bg-blue-2 h-full w-1/1 absolute rounded-4 border-type-1">
+                      <div className="icon-upload-file text-40 text-blue-1 mb-10" />
+                      <div className="text-blue-1 fw-500">Upload Image</div>
+                    </div>
+                  </label>
+                  <input
+                    type="file"
+                    name="photo"
+                    id="featurePhotoUpload"
+                    accept="image/png, image/jpeg"
+                    className="d-none"
+                    onChange={handlePhotoUpload}
+                  />
+                  <div className="text-start mt-10 text-14 text-light-1">
+                    PNG or JPG no bigger than 800px wide and tall.
                   </div>
-                </label>
-                <input
-                  type="file"
-                  name="photo"
-                  id="featurePhotoUpload"
-                  accept="image/png, image/jpeg"
-                  className="d-none"
-                  onChange={handlePhotoUpload}
-                />
-                <div className="text-start mt-10 text-14 text-light-1">
-                  PNG or JPG no bigger than 800px wide and tall.
                 </div>
               </div>
-            </div>
-            {/* End uploader field */}
+              {/* End uploader field */}
 
-            {photos.map((image, index) => (
-              <div className="col-auto" key={index}>
-                <div className="d-flex ratio ratio-1:1 w-200">
-                  <img src={image} alt="image" className="img-ratio rounded-4" />
-                  <div
-                    className="d-flex justify-end px-10 py-10 h-100 w-1/1 absolute"
-                    onClick={() => handleRemovePhoto(index)}
-                  >
-                    <div className="size-40 bg-white rounded-4 flex-center cursor-pointer">
-                      <i className="icon-trash text-16" />
+              {photos.map((image, index) => (
+                <div className="col-auto" key={index}>
+                  <div className="d-flex ratio ratio-1:1 w-200">
+                    <img src={image} alt="image" className="img-ratio rounded-4" />
+                    <div
+                      className="d-flex justify-end px-10 py-10 h-100 w-1/1 absolute"
+                      onClick={() => handleRemovePhoto(index)}
+                    >
+                      <div className="size-40 bg-white rounded-4 flex-center cursor-pointer">
+                        <i className="icon-trash text-16" />
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
 
-            {errors.photos && <div className="col-12 mb-10  text-red-1">{error.photos}</div>}
+              {errors.photos && <div className="col-12 mb-10  text-red-1">{errors.photos}</div>}
+            </div>
           </div>
-        </div>
 
 
-      </div><br></br>
-      {/* <div className="col-12">
+        </div><br></br>
+        {/* <div className="col-12">
         <Button className='button h-30 px-24 .dark-1 bg-blue-1 text-white' variant="outlined" onClick={() => add()}>submit</Button>
       </div> */}
 
-      {/* <div className="col-12">
+        {/* <div className="col-12">
         <div className="d-flex ">
           <div className="form-checkbox mt-5">
             <input type="checkbox" name="name" />
@@ -284,21 +319,21 @@ const SignUpForm = () => {
           </div>
         </div>
       </div> */}
-      {/* End .col */}
+        {/* End .col */}
 
-      <div className="col-12">
-        <button
-          type="button"
-          href="#"
-          onClick={() => add()}
-          className="button py-20 -dark-1 bg-blue-1 text-white w-100"
-        >
-          Sign Up <div className="icon-arrow-top-right ml-15" />
-        </button>
-      </div>
-      {/* End .col */}
-    </form>}
-    {isRegister && <div class="success"><p>Thanks for Signup. <br/>Your account will be activate after approval form our end</p></div>}
+        <div className="col-12">
+          <button
+            type="button"
+            href="#"
+            onClick={() => add()}
+            className="button py-20 -dark-1 bg-blue-1 text-white w-100"
+          >
+            Sign Up <div className="icon-arrow-top-right ml-15" />
+          </button>
+        </div>
+        {/* End .col */}
+      </form>}
+      {isRegister && <div class="success"><p>Thanks for Signup. <br />Your account will be activate after approval form our end</p></div>}
     </>
 
   );

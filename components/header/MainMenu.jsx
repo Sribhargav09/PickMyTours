@@ -29,8 +29,11 @@ const MainMenu = ({ style = "" }) => {
             <span className="mr-10">Home</span>
             {/* <i className="icon icon-chevron-sm-down" /> */}
           </a>
-          {/* <ul className="subnav">
-            {homeItems.map((menu, i) => (
+        </li>
+
+        
+        
+        {pageItems.map((menu, i) => (
               <li
                 key={i}
                 className={
@@ -40,8 +43,6 @@ const MainMenu = ({ style = "" }) => {
                 <Link href={menu.routePath}>{menu.name}</Link>
               </li>
             ))}
-          </ul> */}
-        </li>
         {/* End home page menu */}
 
         {/* <li className="menu-item-has-children -has-mega-menu">
@@ -84,28 +85,6 @@ const MainMenu = ({ style = "" }) => {
         </li> */}
         {/* End blogIems */}
 
-        {/* <li
-          className={`${
-            isActiveParentChaild(pageItems, router.asPath) ? "current" : ""
-          } menu-item-has-children`}
-        >
-          <a href="#">
-            <span className="mr-10">Pages</span>
-            <i className="icon icon-chevron-sm-down" />
-          </a>
-          <ul className="subnav">
-            {pageItems.map((menu, i) => (
-              <li
-                key={i}
-                className={
-                  isActiveLink(menu.routePath, router.asPath) ? "current" : ""
-                }
-              >
-                <Link href={menu.routePath}>{menu.name}</Link>
-              </li>
-            ))}
-          </ul>
-        </li> */}
         {/* End pages items */}
 
         {/* <li

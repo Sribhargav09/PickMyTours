@@ -16,12 +16,12 @@ if (typeof window !== "undefined") {
 }
 
 export default function App({ Component, pageProps }) {
-  useEffect(() => {
-    Aos.init({
-      duration: 1200,
-      once: true,
-    });
-  }, []);
+  // useEffect(() => {
+  //   Aos.init({
+  //     duration: 1200,
+  //     once: true,
+  //   });
+  // }, []);
 
   return (
     <main>

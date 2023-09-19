@@ -1,4 +1,5 @@
 import http from "../common/http";
+import http2 from "../common/http2";
 
 class SignupDataService {
   getAll() {
@@ -11,6 +12,10 @@ class SignupDataService {
 
   create(data) {
     return http.post("/create-user", data);
+  }
+
+  login(data) {
+    return http2.post("/login", data);
   }
 
   update(id, data) {

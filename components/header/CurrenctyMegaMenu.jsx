@@ -1,38 +1,52 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from 'react-redux'
+import { changeCurrency } from '../../app/features/currency/currencySlice';
+import axios from "axios";
 
 const CurrenctyMegaMenu = ({ textClass }) => {
+  const selectedCurrencyValue = useSelector((state) => state.currency.selectedCurrency);
+  const dispatch = useDispatch()
   const [click, setClick] = useState(false);
   const handleCurrency = () => setClick((prevState) => !prevState);
 
-  const currencyContent = [
-    { id: 1, name: "United States dollar", currency: "USD", symbol: "$" },
-    { id: 2, name: "Australian dollar", currency: "AUD", symbol: "$" },
-    { id: 3, name: "Brazilian real", currency: "BRL", symbol: "R$" },
-    { id: 4, name: "Bulgarian lev", currency: "BGN", symbol: "лв." },
-    { id: 5, name: "Canadian dollar", currency: "CAD", symbol: "$" },
-    { id: 6, name: "Bangladeshi Taka", currency: "BDT", symbol: "৳" },
-    { id: 7, name: "Azerbaijan Manat", currency: "AZN", symbol: "₼" },
-    { id: 8, name: "Colombia Peso", currency: "COP", symbol: "$" },
-    { id: 9, name: "Oman Rial", currency: "OMR", symbol: "﷼" },
-    { id: 10, name: "India Rupee", currency: "INR", symbol: "₹" },
-    { id: 11, name: "Iran Rial", currency: "IRR", symbol: "﷼" },
-    { id: 12, name: "Japan Yen", currency: "JPY", symbol: "£" },
-    { id: 13, name: "Jersey Pound", currency: "JEP", symbol: "£" },
-    { id: 14, name: "Korea (South) Won", currency: "KRW", symbol: "	₩" },
-    { id: 15, name: "Lebanon Pound", currency: "LBP", symbol: "$" },
-    { id: 16, name: "Liberia Dollar", currency: "LRD", symbol: "$" },
-    { id: 17, name: "Malaysia Ringgit", currency: "MYR", symbol: "$" },
-    { id: 18, name: "Mexico Peso", currency: "MXN", symbol: "$" },
-    { id: 19, name: "Namibia Dollar", currency: "NAD", symbol: "R$" },
-    { id: 20, name: "Nepal Rupee", currency: "NPR", symbol: "Nepal Rupee" },
-  ];
+  const currencyContent = useSelector((state) => state.currency.currencies);
 
-  const [selectedCurrency, setSelectedCurrency] = useState(currencyContent[0]);
+  const [selectedCurrency, setSelectedCurrency] = useState(selectedCurrencyValue);
 
-  const handleItemClick = (item) => {
-    setSelectedCurrency(item);
+  const handleItemClick = (currencyItem) => {
     setClick(false);
+    const to = (currencyItem.currency)?.toLowerCase();
+    const from = (selectedCurrency.currency)?.toLowerCase();
+    axios.get(
+      `https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/${from}.json`)
+            .then((res) => {
+              console.log(res)
+              const rates = res.data[from];
+              //currencyItem.rate = JSON.stringify(rates[to]);
+              const updateCurrencyItem = {...currencyItem, rate:rates[to]};
+              dispatch(changeCurrency(updateCurrencyItem));
+            })
   };
+
+  useEffect(() => {
+    setSelectedCurrency(selectedCurrencyValue);
+}, [selectedCurrencyValue]);
+
+  useEffect(() => {
+    const to =  'inr';
+    const from = 'inr';
+
+    axios.get(
+      `https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/${from}.json`)
+            .then((res) => {
+              console.log(res)
+              const rates = res.data[from];
+              const updateCurrencyItem = {...selectedCurrency, rate:rates[to]};
+              dispatch(changeCurrency(updateCurrencyItem));
+            })
+  }, []);
+
+
 
   return (
     <>
@@ -43,7 +57,7 @@ const CurrenctyMegaMenu = ({ textClass }) => {
           onClick={handleCurrency}
         >
           <span className="js-currencyMenu-mainTitle">
-            {selectedCurrency.currency}
+            {selectedCurrency.currency} 
           </span>
           <i className="icon-chevron-sm-down text-7 ml-10" />
         </button>

@@ -73,7 +73,6 @@ const Activity = () => {
           <div
             key={item?.id}
             data-aos="fade"
-            data-aos-delay={item?.delayAnimation}
           >
             <Link
               href={`/activity/activity-single/${item.id}`}

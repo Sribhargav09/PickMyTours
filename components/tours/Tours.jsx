@@ -14,6 +14,7 @@ const Tours = () => {
   useEffect(() => {
     tourService.getAll()
       .then(response => {
+        console.log(response.data);
         setTours(response.data);
       })
       .catch(e => {
@@ -88,8 +89,6 @@ const Tours = () => {
         {tours && tours.data && tours.data.slice(0, 4).map((item) => (
           <div
             key={item?._id}
-            data-aos="fade"
-            data-aos-delay={10}
           >
             <Link
               href={`/tour/tour-single/${item._id}`}
@@ -113,6 +112,7 @@ const Tours = () => {
                             src={slide}
                             alt="image"
                           />
+                          dsdsd
                         </div>
                       </div>
                 })}
