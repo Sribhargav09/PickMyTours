@@ -8,7 +8,7 @@ const DateSearch = () => {
   //   1597994736000, //unix time in milliseconds (August 21 2020)
   // ]);
   const [dates, setDates] = useState([
-    new DateObject().setDay(5),
+    new DateObject(),
     new DateObject().setDay(14).add(1, "month"),
   ]);
 
@@ -19,6 +19,7 @@ const DateSearch = () => {
         containerClassName="custom_container-picker"
         value={dates}
         onChange={setDates}
+        minDate={new DateObject()}
         numberOfMonths={2}
         offsetY={10}
         range

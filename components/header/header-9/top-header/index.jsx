@@ -17,7 +17,7 @@ const HeaderBanner = () => {
           <div className="col-auto">
             <div className="row x-gap-15 items-center jusify-between">
               <div className="col-auto">
-                <div className="row x-gap-20 items-center xxl:d-none">
+                <div className="row x-gap-20 items-center">
                   <CurrenctyMegaMenu textClass="text-white" />
                   {/* End Megamenu for Currencty */}
 
@@ -33,7 +33,7 @@ const HeaderBanner = () => {
               </div>
               {/* End language currency Selector */}
 
-              <div className="col-auto xxl:d-none">
+              <div className="col-auto">
                 <div className="w-1 h-20 bg-white-20" />
               </div>
               {/* End .col-auto */}

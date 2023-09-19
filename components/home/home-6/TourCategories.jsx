@@ -52,8 +52,6 @@ const TourCategories = () => {
         <div
           className="col-xl col-md-4 col-sm-6"
           key={item.id}
-          data-aos="fade"
-          data-aos-delay={item.dealyAimation}
         >
           <Link
             href={`/tour/tour-list-v1?type=${item.name}`}

@@ -38,7 +38,6 @@ const WhyChoose = () => {
         <div
           className="col-sm-6"
           data-aos="fade-up"
-          data-aos-delay={item.delayAnimaion}
           key={item.id}
         >
           <Image
