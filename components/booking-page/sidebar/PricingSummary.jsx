@@ -1,4 +1,15 @@
+import { useState,useEffect } from "react";
+import { useSelector, useDispatch } from 'react-redux'
+
+
 const PricingSummary = ({tour}) => {
+  const selectedCurrency = useSelector((state) => state.currency.selectedCurrency);
+  const [currency, setCurrency] = useState(selectedCurrency);
+
+  useEffect(() => {
+    setCurrency(selectedCurrency);
+  }, [selectedCurrency])
+
   return (
     <div className="px-30 py-30 border-light rounded-4 mt-30">
       <div className="text-20 fw-500 mb-20">Your price summary</div>
@@ -8,7 +19,7 @@ const PricingSummary = ({tour}) => {
         </div>
         {/* End col */}
         <div className="col-auto">
-          <div className="text-15">Rs.{tour.price}</div>
+          <div className="text-15">{currency.symbol}{(tour.price * currency.rate).toFixed(2)}</div>
         </div>
         {/* End col */}
       </div>

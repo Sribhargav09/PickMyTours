@@ -5,10 +5,17 @@ import { Navigation, Pagination } from "swiper";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import axios from "axios";
-
+import { useSelector, useDispatch } from 'react-redux'
 
 const TourProperties = ({toursData}) => {
   const [featureImage, setFeatureImage] = useState("");
+  const selectedCurrency = useSelector((state) => state.currency.selectedCurrency);
+  const [currency, setCurrency] = useState(selectedCurrency);
+
+  useEffect(() => {
+    setCurrency(selectedCurrency);
+  }, [selectedCurrency])
+
   
   const getPhoto = (url) => {
     
@@ -120,7 +127,8 @@ const TourProperties = ({toursData}) => {
 
                 <div className="text-14 text-light-1 mt-50 md:mt-20">From</div>
                 <div className="text-22 lh-12 fw-600 mt-5">
-                  US${item?.price}
+                  {/* US${item?.price} */}
+                  {currency.symbol}{(item?.price * currency.rate).toFixed(2)}
                 </div>
                 <div className="text-14 text-light-1 mt-5">per adult</div>
 

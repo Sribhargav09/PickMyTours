@@ -1,6 +1,7 @@
 import MainFilterSearchBox from "./MainFilterSearchBox";
 import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
+import Button from '@mui/material/Button';
 
 import { useEffect, useState, useRef } from "react";
 import TourDataService from "../../services/tour.service";
@@ -116,6 +117,7 @@ const index = () => {
                         >
                           {currency.symbol}{(tours[index]?.price * currency.rate).toFixed(2)}  - {tours[index]?.location}
                         </p>
+                        <Button variant="contained" style={{ width:'15%',height:'30%',fontSize:'12px'}}>Book Now</Button>
             </div>
 
             <div

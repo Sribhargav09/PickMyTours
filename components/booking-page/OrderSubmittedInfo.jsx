@@ -1,4 +1,16 @@
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from 'react-redux'
+
+
 const OrderSubmittedInfo = ({firstName, lastName, email,  phone, address, amount=100}) => {
+
+  const selectedCurrency = useSelector((state) => state.currency.selectedCurrency);
+  const [currency, setCurrency] = useState(selectedCurrency);
+
+  useEffect(() => {
+    setCurrency(selectedCurrency);
+  }, [selectedCurrency])
+
   return (
     <>
       <div className="col-xl-8 col-lg-8">
@@ -35,7 +47,8 @@ const OrderSubmittedInfo = ({firstName, lastName, email,  phone, address, amount
               <div className="col-lg-3 col-md-6">
                 <div className="text-15 lh-12">Total</div>
                 <div className="text-15 lh-12 fw-500 text-blue-1 mt-10">
-                  Rs. {amount}
+                  {/* Rs. {amount} */}
+                  {currency.symbol}{(amount * currency.rate).toFixed(2)}
                 </div>
               </div>
               {/* End .col */}
