@@ -12,6 +12,7 @@ const initialState = {
     { id: 7, name: "Flight", icon: "icon-tickets" },
   ],
   currentTab: "Tour",
+  loader: false
 };
 
 export const findPlaceSlice = createSlice({
@@ -21,8 +22,11 @@ export const findPlaceSlice = createSlice({
     addCurrentTab: (state, { payload }) => {
       state.currentTab = payload;
     },
+    setLoader: (state, { payload }) => {
+      state.loader = payload
+    }
   },
 });
 
-export const { addCurrentTab } = findPlaceSlice.actions;
+export const { addCurrentTab,setLoader } = findPlaceSlice.actions;
 export default findPlaceSlice.reducer;

@@ -36,8 +36,8 @@ const Travellers = () => {
             <Link
               href="#"
               className="citiesCard -type-2"
-              data-aos="fade"
-              data-aos-delay={item.delayAnimation}
+              ata-aos="fade"
+              ata-aos-delay={item.delayAnimation}
             >
               <div className="citiesCard__image rounded-4 ratio ratio-1:1">
                 <img

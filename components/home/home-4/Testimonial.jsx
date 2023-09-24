@@ -36,8 +36,8 @@ const Testimonial = () => {
             <div
               className="testimonials -type-1 bg-white rounded-4 pt-40 pb-30 px-40"
               key={item.id}
-              data-aos="fade"
-              data-aos-delay={item.dealyAnimation}
+              ata-aos="fade"
+              ata-aos-delay={item.dealyAnimation}
             >
               <h4 className="text-16 fw-500 text-blue-1 mb-20">{item.meta}</h4>
               <p className="testimonials__text lh-18 fw-500 text-dark-1">

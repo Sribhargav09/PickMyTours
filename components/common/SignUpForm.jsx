@@ -4,6 +4,14 @@ import { TextField, InputLabel, Button, Select, MenuItem } from "@mui/material";
 import { useRouter } from "next/router";
 import Router from "next/router";
 import signupServer from "../../services/signup.server";
+import ReactCodeInput from 'react-verification-code-input';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
+
 
 const SignUpForm = () => {
   const [firstName, setFirstName] = useState('');
@@ -20,6 +28,9 @@ const SignUpForm = () => {
 
   const [loading, setLoading] = useState(true);
   const [isRegister, setIsRegister] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
+  const [enableVerify, setEnableVerify] = useState(false);
+
 
 
   const router = useRouter();
@@ -93,14 +104,14 @@ const SignUpForm = () => {
           console.log(response.data);
           window.scrollTo({ top: 100, behavior: "smooth" });
 
-          setTimeout(() => {
-            Router.push("/others-pages/login");
-          }, 1000);
+          // setTimeout(() => {
+          //   Router.push("/others-pages/login");
+          // }, 1000);
           setIsRegister(true);
         })
         .catch(e => {
           if (e && e.response.data && e.response.data.email) {
-            setErrors({email: e.response.data.email});
+            setErrors({ email: e.response.data.email });
             window.scrollTo({ top: 450, behavior: "smooth" });
 
           }
@@ -167,6 +178,14 @@ const SignUpForm = () => {
     setPhotos(newPhotos);
   };
 
+  const handleVerificationCode = (value) => {
+    if(value.length < 4){
+      setEnableVerify(false);
+    }else{
+      setEnableVerify(true);
+    }
+  }
+
   return (
     <>
       {!isRegister && <form className="row y-gap-20">
@@ -184,7 +203,7 @@ const SignUpForm = () => {
         <div className="col-12">
           <div className="form-input ">
             <input type="text" value={firstName} onChange={(event) => setFirstName(event.target.value)} required />
-            <label className="lh-1 text-14 text-light-1">FirstName*</label>
+            <label className="lh-1 text-14 text-light-1">First Name*</label>
           </div>
         </div>
 
@@ -194,7 +213,7 @@ const SignUpForm = () => {
         <div className="col-12">
           <div className="form-input ">
             <input type="text" value={lastName} onChange={(event) => setLastName(event.target.value)} required />
-            <label className="lh-1 text-14 text-light-1">LastName*</label>
+            <label className="lh-1 text-14 text-light-1">Last Name*</label>
           </div>
         </div>
         <span class="error col-12">{errors && errors.lastName}</span>
@@ -224,7 +243,7 @@ const SignUpForm = () => {
         <div className="col-12">
           <div className="form-input ">
             <input type="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} required />
-            <label className="lh-1 text-14 text-light-1">ConfirmPassword</label>
+            <label className="lh-1 text-14 text-light-1">Confirm Password*</label>
           </div>
         </div>
         <span class="error col-12">{errors && errors.confirmPassword}</span>
@@ -233,7 +252,7 @@ const SignUpForm = () => {
         <div className="col-12">
           <div className="form-input ">
             <input type="number" value={phone} onChange={(event) => setPhone(event.target.value)} required />
-            <label className="lh-1 text-14 text-light-1">phone</label>
+            <label className="lh-1 text-14 text-light-1">Phone</label>
           </div>
         </div>
 
@@ -333,7 +352,17 @@ const SignUpForm = () => {
         </div>
         {/* End .col */}
       </form>}
-      {isRegister && <div class="success"><p>Thanks for Signup. <br />Your account will be activate after approval form our end</p></div>}
+      {isRegister && !isVerified && <>  
+        <h4 className="mb-20">{"Verify Your Email Address"}</h4>
+        <div  style={{ textAlign: 'center', padding: 10, margin: 'auto' }}>
+          <p>Please enter the 4-digit verification code we sent via SMS:</p>
+          <div className="mb-20" >(we want to make sure it's your email id verified)</div>
+          <div lassName="mt-50 mb-20"><ReactCodeInput fields={4} onChange={handleVerificationCode} onComplete={setEnableVerify}  /></div>
+          <button style={{opacity: !enableVerify ? 0.5 : 1}} className="button px-30 mt-50 ml-50 fw-400 text-14 -blue-1 bg-blue-1 h-50 text-white" type="button" disabled={!enableVerify}>Verifiy</button>
+
+        </div>
+      </>}
+      {isRegister && isVerified && <div class="success"><p>Thanks for Signup. <br />Your account will be activate after approval form our end</p></div>}
     </>
 
   );

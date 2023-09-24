@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "functions": {
+    "/dashboard/components/ChartMain": {},
+    "/dashboard/db-dashboard/components/ChartMain": {},
+    "/vendor-dashboard/dashboard/components/ChartMain": {}
+  }
+}

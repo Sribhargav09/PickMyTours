@@ -71,13 +71,63 @@ export const pageItems = [
     name: "Help Center",
     routePath: "/others-pages/help-center",
   },
+  // {
+  //   name: "Terms and Polices",
+  //   routePath: "/others-pages/terms",
+  // },
   {
-    name: "Terms and Polices",
-    routePath: "/others-pages/terms",
+    name: "Careers",
+    routePath: "/Careers",
+  },
+  // {
+  //   name: "Login",
+  //   routePath: "/others-pages/login",
+  // },
+  // {
+  //   name: "Register",
+  //   routePath: "/others-pages/signup",
+  // },
+  // {
+  //   name: "Invoice",
+  //   routePath: "/others-pages/invoice",
+  // },
+  // {
+  //   name: "UI Elements",
+  //   routePath: "/others-pages/ui-elements",
+  // },
+];
+export const userItems = [
+  // {
+  //   name: "404",
+  //   routePath: "/404",
+  // },
+  {
+    name: "My Trips",
+    routePath: "/dashboard/db-booking",
   },
   {
-    name: "Contact",
-    routePath: "/contact",
+    name: "Offers & Expensces",
+    routePath: "/dashboard/offers",
+  },
+  // {
+  //   name: "Become Expert",
+  //   routePath: "/others-pages/become-expert",
+  // },
+  {
+    name: "Help Center",
+    routePath: "/others-pages/help-center",
+  },
+  // {
+  //   name: "Terms and Polices",
+  //   routePath: "/others-pages/terms",
+  // },
+  {
+    name: "Careers",
+    routePath: "/Careers",
+  },
+  {
+    name: "My Profile",
+    routePath: "/dashboard/db-settings",
   },
   // {
   //   name: "Login",

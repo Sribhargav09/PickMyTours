@@ -26,7 +26,7 @@ const TermsConent = () => {
 
         <div className="col-lg-9">
           <TabPanel>
-            <div className="tabs__content js-tabs-content" data-aos="fade">
+            <div className="tabs__content js-tabs-content" ata-aos="fade">
               <h1 className="text-30 fw-600 mb-15">General Terms of Use</h1>
               <h2 className="text-16 fw-500">1. Your Agreement</h2>
               <p className="text-15 text-dark-1 mt-5">
@@ -82,7 +82,7 @@ const TermsConent = () => {
           {/* End  General Terms of Use */}
 
           <TabPanel>
-            <div className="tabs__content js-tabs-content" data-aos="fade">
+            <div className="tabs__content js-tabs-content" ata-aos="fade">
               <h1 className="text-30 fw-600 mb-15"> Privacy policy</h1>
               <h2 className="text-16 fw-500">1. Your Agreement</h2>
               <p className="text-15 text-dark-1 mt-5">
@@ -138,7 +138,7 @@ const TermsConent = () => {
           {/* End  Privacy policy */}
 
           <TabPanel>
-            <div className="tabs__content js-tabs-content" data-aos="fade">
+            <div className="tabs__content js-tabs-content" ata-aos="fade">
               <h1 className="text-30 fw-600 mb-15"> Cookie Policy</h1>
               <h2 className="text-16 fw-500">1. Your Agreement</h2>
               <p className="text-15 text-dark-1 mt-5">
@@ -194,7 +194,7 @@ const TermsConent = () => {
           {/* End  Cookie Policy */}
 
           <TabPanel>
-            <div className="tabs__content js-tabs-content" data-aos="fade">
+            <div className="tabs__content js-tabs-content" ata-aos="fade">
               <h1 className="text-30 fw-600 mb-15"> Best Price Guarantee</h1>
               <h2 className="text-16 fw-500">1. Your Agreement</h2>
               <p className="text-15 text-dark-1 mt-5">

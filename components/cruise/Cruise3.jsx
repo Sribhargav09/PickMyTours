@@ -40,8 +40,8 @@ const Cruise3 = () => {
           <SwiperSlide key={item.id}>
             <div
               key={item?.id}
-              data-aos="fade"
-              data-aos-delay={item?.delayAnimation}
+              ata-aos="fade"
+              ata-aos-delay={item?.delayAnimation}
             >
               <Link
                 href={`/cruise/cruise-single/${item.id}`}

@@ -99,8 +99,8 @@ const PopularRoutes = () => {
             <Link
               href="/rental/rental-list-v2"
               className="rentalCard -type-2"
-              data-aos="fade"
-              data-aos-delay={item.delayAnimation}
+              ata-aos="fade"
+              ata-aos-delay={item.delayAnimation}
             >
               <div className="rentalCard__image">
                 <div className="cardImage ratio ratio-6:5">

@@ -26,7 +26,7 @@ const Home_1 = () => {
       <Hero1 />
       {/* End Hero 1 */}
 
-      <section className="layout-pt-lg layout-pb-md" data-aos="fade-up">
+      <section className="layout-pt-lg layout-pb-md" ata-aos="fade-up">
         <div className="container">
           <div className="row y-gap-20 justify-between items-end">
             <div className="col-auto">
@@ -107,7 +107,7 @@ const Home_1 = () => {
       <section className="layout-pt-lg layout-pb-lg bg-blue-2">
         <div className="container">
           <div className="row y-gap-40 justify-between">
-            <div className="col-xl-5 col-lg-6" data-aos="fade-up">
+            <div className="col-xl-5 col-lg-6" ata-aos="fade-up">
               <TestimonialLeftCol />
             </div>
             {/* End col */}
@@ -115,8 +115,8 @@ const Home_1 = () => {
             <div className="col-lg-6">
               <div
                 className="overflow-hidden js-testimonials-slider-3"
-                data-aos="fade-up"
-                data-aos-delay="50"
+                ata-aos="fade-up"
+                ata-aos-delay="50"
               >
                 <Testimonial />
               </div>

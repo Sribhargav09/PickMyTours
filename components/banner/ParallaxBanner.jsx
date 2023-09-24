@@ -12,7 +12,7 @@ const ParallaxBanner = () => {
       <div className="section-bg layout-pt-xl layout-pb-xl">
         <div className="container">
           <div className="row justify-center text-center">
-            <div className="col-auto" data-aos="fade">
+            <div className="col-auto" ata-aos="fade">
               <div className="text-white mb-10">Happy Holiday</div>
               <h2 className="text-40 text-white">
                 Get Amazing Rates at Hotels Worldwide

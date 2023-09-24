@@ -81,6 +81,9 @@ userExpressRoute.post("/create-user", upload.fields([{ name: 'photo', maxCount: 
 
   req.body.password = bcrypt.hashSync(req.body.password, 8),
 
+  req.body.active = false;
+  req.body.code = Math.floor(1000 + Math.random() * 9000);
+
   UserSchema.findOne({
       email: req.body.email
     }).then(user => {
@@ -99,6 +102,30 @@ userExpressRoute.post("/create-user", upload.fields([{ name: 'photo', maxCount: 
               message: "Data successfully added.",
               status: 200,
             });
+
+            smtpProtocol = mailer.createTransport({
+              service: "Gmail",
+              auth: {
+                  user: "Admin@pickmytours.com",
+                  pass: "TravelStories@9"
+              }
+          });
+          
+          var mailoption = {
+              from: "Admin@pickmytours.com",
+              to: req.body.email,
+              subject: "Veriy your Email Address - PickMyTours",
+              html: '<body style="background-color:grey"><p>The verificaiton code to verify your emil address to complete registraiton is as below</p><div><strong>'+req.body.code+'</strong></div></body>'
+          }
+          
+          smtpProtocol.sendMail(mailoption, function(err, response){
+              if(err) {
+                  console.log(err);
+              } 
+              console.log('Message Sent' + response);
+              smtpProtocol.close();
+          });
+
 
           //   smtpProtocol = mailer.createTransport({
           //     service: "Gmail",
