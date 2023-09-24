@@ -72,8 +72,8 @@ const Activity2 = () => {
         {activityData.slice(0, 5).map((item) => (
           <div
             key={item?.id}
-            data-aos="fade"
-            data-aos-delay={item?.delayAnimation}
+            ata-aos="fade"
+            ata-aos-delay={item?.delayAnimation}
           >
             <Link
               href={`/activity/activity-single/${item.id}`}

@@ -8,6 +8,11 @@ import axios from "axios";
 
 
 const TourProperties = ({toursData}) => {
+
+  useEffect(() => {
+    console.log(toursData);
+  }, [toursData]);
+
   const [featureImage, setFeatureImage] = useState("");
   
   const getPhoto = (url) => {
@@ -31,8 +36,8 @@ const TourProperties = ({toursData}) => {
         <div
           className="col-12"
           key={item?._id}
-          data-aos="fade"
-          data-aos-delay={10}
+          ata-aos="fade"
+          ata-aos-delay={10}
         >
           <div className="border-top-light pt-30">
             <div className="row x-gap-20 y-gap-20">

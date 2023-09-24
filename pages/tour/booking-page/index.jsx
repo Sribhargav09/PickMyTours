@@ -7,9 +7,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import TourDataService from "../../../services/tour.service";
 
-import {Elements} from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
-import CheckoutForm from "./checkoutForm";
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.

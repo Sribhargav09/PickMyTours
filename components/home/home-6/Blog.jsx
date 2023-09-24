@@ -9,8 +9,8 @@ const Blog = () => {
         <div
           className="col-lg-6"
           key={item.id}
-          data-aos="fade-up"
-          data-aos-delay={item.delayAnimation}
+          ata-aos="fade-up"
+          ata-aos-delay={item.delayAnimation}
         >
           <Link
             href={`/blog/blog-details/${item.id}`}

@@ -42,8 +42,8 @@ const Slights = () => {
         <div
           className="col-lg-6"
           key={item.id}
-          data-aos="fade"
-          data-aos-delay={item.delayAnimation}
+          ata-aos="fade"
+          ata-aos-delay={item.delayAnimation}
         >
           <div className="rounded-4 border-light">
             <div className="d-flex flex-wrap y-gap-30">

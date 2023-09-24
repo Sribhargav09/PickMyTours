@@ -31,8 +31,8 @@ const AddBanner = () => {
       {addContent.map((item) => (
         <div
           className="col-md-6"
-          data-aos="fade-up"
-          data-aos-delay={item.delayAnimation}
+          ata-aos="fade-up"
+          ata-aos-delay={item.delayAnimation}
           key={item.id}
         >
           <div className="ctaCard -type-1 rounded-4 ">

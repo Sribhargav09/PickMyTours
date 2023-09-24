@@ -4,7 +4,7 @@ const AppBanner = () => {
   return (
     <section
       className="section-bg pt-80 pb-80 md:pt-40 md:pb-40"
-      data-aos="fade-up"
+      ata-aos="fade-up"
     >
       <div className="section-bg__item -w-1500 rounded-4 bg-yellow-1"></div>
       <div className="container">

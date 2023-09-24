@@ -72,7 +72,7 @@ const Activity = () => {
         {activityData.slice(0, 4).map((item) => (
           <div
             key={item?.id}
-            data-aos="fade"
+            ata-aos="fade"
           >
             <Link
               href={`/activity/activity-single/${item.id}`}

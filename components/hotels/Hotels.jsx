@@ -41,8 +41,8 @@ const Hotels = () => {
             <Link
               href={`/hotel/hotel-single-v1/${item.id}`}
               className="hotelsCard -type-1 hover-inside-slider"
-              data-aos="fade"
-              data-aos-delay={item.delayAnimation}
+              ata-aos="fade"
+              ata-aos-delay={item.delayAnimation}
             >
               <div className="hotelsCard__image">
                 <div className="cardImage ratio ratio-1:1">

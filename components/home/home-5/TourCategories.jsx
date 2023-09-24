@@ -36,7 +36,7 @@ const TourCategories = () => {
       >
         {tourCategories1.slice(0, 8).map((item) => (
           <SwiperSlide key={item.id}>
-            <div data-aos="fade" data-aos-delay={item.dealyAimation}>
+            <div ata-aos="fade" ata-aos-delay={item.dealyAimation}>
               <Link
                 href="/tour/tour-list-v2"
                 className="tourTypeCard -type-1 d-block rounded-4 bg-blue-1-05 rounded-4"

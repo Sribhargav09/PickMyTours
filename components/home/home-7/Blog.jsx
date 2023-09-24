@@ -8,8 +8,8 @@ const Blog = () => {
         <Link
           href={`/blog/blog-details/${item.id}`}
           key={item.id}
-          data-aos="fade"
-          data-aos-delay={item.delayAnimation}
+          ata-aos="fade"
+          ata-aos-delay={item.delayAnimation}
         >
           <div className="blogCard -type-3 ">
             <div className="blogCard__image rounded-4">

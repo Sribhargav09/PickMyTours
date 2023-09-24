@@ -2,7 +2,7 @@ const Subscribe = () => {
   return (
     <section
       className="layout-pt-md layout-pb-md is-in-view"
-      data-aos="fade-up"
+      ata-aos="fade-up"
     >
       <div className="container">
         <div className="row ml-0 mr-0 items-center justify-between">

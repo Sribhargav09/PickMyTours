@@ -12,8 +12,8 @@ const CruiseProperties = () => {
         <div
           key={item?.id}
           className="col-lg-4 col-sm-6"
-          data-aos="fade"
-          data-aos-delay={item?.delayAnimation}
+          ata-aos="fade"
+          ata-aos-delay={item?.delayAnimation}
         >
           <Link
             href={`/cruise/cruise-single/${item.id}`}

@@ -8,8 +8,8 @@ const MainFilterSearchBox = () => {
     <>
       <div
         className="mainSearch bg-white rounded-4 shadow-1"
-        data-aos="fade-up"
-        data-aos-delay="300"
+        ata-aos="fade-up"
+        ata-aos-delay="300"
         data-aos-offset="0"
       >
         <div className="button-grid items-center">

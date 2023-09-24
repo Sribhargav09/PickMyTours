@@ -35,8 +35,8 @@ const Counter4 = () => {
         <div
           className="col-sm-6"
           key={item.id}
-          data-aos="fade"
-          data-aos-delay={item.delayAnim}
+          ata-aos="fade"
+          ata-aos-delay={item.delayAnim}
         >
           <div className="py-60 sm:py-30 text-center">
             <div className="text-40 lg:text-30 lh-13 text-dark-1 fw-600">

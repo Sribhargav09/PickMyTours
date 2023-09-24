@@ -65,13 +65,13 @@ const LanguageMegaMenu = ({ textClass }) => {
           <Image
             width={20}
             height={20}
-            src="/img/general/lang.png"
+            src="/img/general/globe.svg"
             alt="image"
             className="rounded-full mr-10"
           />
           <span className="js-language-mainTitle">
             {" "}
-            {selectedCurrency && selectedCurrency.country}
+            {selectedCurrency && selectedCurrency.language}
           </span>
           <i className="icon-chevron-sm-down text-7 ml-15" />
         </button>

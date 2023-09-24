@@ -9,15 +9,15 @@ const SearchBoxContent = () => {
             <div className="text-center">
               <h1
                 className="text-60 lg:text-40 md:text-30 text-dark-1"
-                data-aos="fade-up"
-                data-aos-delay="100"
+                ata-aos="fade-up"
+                ata-aos-delay="100"
               >
                 Search for the Best Car Hire Deals
               </h1>
               <p
                 className="text-dark-1 mt-5"
-                data-aos="fade-up"
-                data-aos-delay="200"
+                ata-aos="fade-up"
+                ata-aos-delay="200"
               >
                 Book better cars from local hosts across the US and around the
                 world.

@@ -9,8 +9,8 @@ const Flights = () => {
         <div
           className="col-12"
           key={item?.id}
-          data-aos="fade"
-          data-aos-delay={item?.delayAnimation}
+          ata-aos="fade"
+          ata-aos-delay={item?.delayAnimation}
         >
           <div className="px-20 py-20 rounded-4 border-light">
             <div className="row y-gap-30 justify-between xl:justify-">

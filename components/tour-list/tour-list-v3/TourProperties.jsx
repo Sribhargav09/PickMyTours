@@ -11,8 +11,8 @@ const TourProperties = () => {
         <div
           className="col-12"
           key={item?.id}
-          data-aos="fade"
-          data-aos-delay={item?.delayAnimation}
+          ata-aos="fade"
+          ata-aos-delay={item?.delayAnimation}
         >
           <div className="border-top-light pt-20">
             <div className="row x-gap-20 y-gap-20">

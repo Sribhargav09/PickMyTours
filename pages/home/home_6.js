@@ -107,7 +107,7 @@ const home_6 = () => {
       </section>
       {/* Adventure and activity */}
 
-      <section className="layout-pt-lg layout-pb-md" data-aos="fade-up">
+      <section className="layout-pt-lg layout-pb-md" ata-aos="fade-up">
         <div className="container">
           <div className="row y-gap-20 justify-between items-end">
             <div className="col-auto">

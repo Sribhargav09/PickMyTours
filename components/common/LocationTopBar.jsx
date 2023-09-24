@@ -1,7 +1,7 @@
 const LocationTopBar = () => {
   return (
     <section
-      data-aos="fade"
+      ata-aos="fade"
       className="d-flex items-center py-15 border-top-light"
     >
       <div className="container">

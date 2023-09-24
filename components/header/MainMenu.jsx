@@ -4,6 +4,7 @@ import {
   homeItems,
   blogItems,
   pageItems,
+  userItems,
   dashboardItems,
 } from "../../data/mainMenuData";
 import CategoriesMegaMenu from "./CategoriesMegaMenu";
@@ -13,8 +14,14 @@ import {
   isActiveParentChaild,
 } from "../../utils/linkActiveChecker";
 import { useRouter } from "next/router";
+import { useSelector, useDispatch } from 'react-redux'
+import { setUser, setToken } from '../../app/features/user/userSlice';
+
 
 const MainMenu = ({ style = "" }) => {
+  
+  const loginUser = useSelector((state) => state.user.loginUser);
+  const userToken = useSelector((state) => state.user.token);
   const router = useRouter();
 
   return (
@@ -33,7 +40,18 @@ const MainMenu = ({ style = "" }) => {
 
         
         
-        {pageItems.map((menu, i) => (
+          {!userToken && pageItems.map((menu, i) => (
+              <li
+                key={i}
+                className={
+                  isActiveLink(menu.routePath, router.asPath) ? "current" : ""
+                }
+              >
+                <Link href={menu.routePath}>{menu.name}</Link>
+              </li>
+            ))}
+
+          {userToken && userItems.map((menu, i) => (
               <li
                 key={i}
                 className={

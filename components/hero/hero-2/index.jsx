@@ -37,7 +37,7 @@ const Index = () => {
 
         <div className="masthead__content">
           <div className="row y-gap-40">
-            <div className="col-xl-5" data-aos="fade-up" data-aos-offset="0">
+            <div className="col-xl-5" ata-aos="fade-up" data-aos-offset="0">
               <h1 className="z-2 text-60 lg:text-40 md:text-30 text-white pt-80 xl:pt-0">
                 <span className="text-yellow-1">Where Would</span>
                 <br />
@@ -55,7 +55,7 @@ const Index = () => {
 
             <div className="col-xl-7">
               <div className="masthead__images relative-1">
-                <div data-aos="fade" data-aos-delay="400">
+                <div ata-aos="fade" ata-aos-delay="400">
                   <img
                     src="/img/masthead/2/1.png"
                     alt="image"
@@ -64,7 +64,7 @@ const Index = () => {
                 </div>
                 {/* End left image */}
 
-                <div data-aos="fade" data-aos-delay="600">
+                <div ata-aos="fade" ata-aos-delay="600">
                   <img
                     src="/img/masthead/2/2.png"
                     alt="image"
@@ -73,7 +73,7 @@ const Index = () => {
                 </div>
                 {/* End right top image */}
 
-                <div data-aos="fade" data-aos-delay="800">
+                <div ata-aos="fade" ata-aos-delay="800">
                   <img
                     src="/img/masthead/2/3.png"
                     alt="image"

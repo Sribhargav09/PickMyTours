@@ -38,8 +38,8 @@ const PoularDestinations = () => {
         <div
           className="col-xl col-lg-3 col-6"
           key={item.id}
-          data-aos="fade-up"
-          data-aos-delay={item.delayAnimation}
+          ata-aos="fade-up"
+          ata-aos-delay={item.delayAnimation}
         >
           <Link
             href="/cruise/cruise-list-v2"

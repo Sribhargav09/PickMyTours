@@ -320,7 +320,7 @@ const Destinations = () => {
       <section className="layout-pt-lg layout-pb-lg bg-light-2">
         <div className="container">
           <div className="row y-gap-40 justify-between">
-            <div className="col-xl-5 col-lg-6" data-aos="fade-up">
+            <div className="col-xl-5 col-lg-6" ata-aos="fade-up">
               <TestimonialLeftCol />
             </div>
             {/* End col */}
@@ -328,8 +328,8 @@ const Destinations = () => {
             <div className="col-lg-6">
               <div
                 className="overflow-hidden js-testimonials-slider-3"
-                data-aos="fade-up"
-                data-aos-delay="50"
+                ata-aos="fade-up"
+                ata-aos-delay="50"
               >
                 <Testimonial />
               </div>

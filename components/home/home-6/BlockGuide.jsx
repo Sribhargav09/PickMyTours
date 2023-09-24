@@ -27,8 +27,8 @@ const BlockGuide = () => {
       {blockContent.map((item) => (
         <div
           className="col-lg-4 col-md-6"
-          data-aos="fade"
-          data-aos-delay={item.delayAnim}
+          ata-aos="fade"
+          ata-aos-delay={item.delayAnim}
           key={item.id}
         >
           <div className="d-flex pr-30">

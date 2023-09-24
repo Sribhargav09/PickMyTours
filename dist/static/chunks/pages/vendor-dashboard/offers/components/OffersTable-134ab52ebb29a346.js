@@ -1,0 +1,1 @@
+(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[9047],{3590:function(n,_,e){(window.__NEXT_P=window.__NEXT_P||[]).push(["/vendor-dashboard/offers/components/OffersTable",function(){return e(19650)}])}},function(n){n.O(0,[4827,252,3726,3600,46,594,9650,9774,2888,179],function(){return n(n.s=3590)}),_N_E=n.O()}]);
