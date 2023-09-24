@@ -5,7 +5,7 @@ const CallToActions = () => {
 
       <div className="container">
         <div className="row items-center justify-center text-center">
-          <div className="col-auto" data-aos="fade-up" data-aos-delay="100">
+          <div className="col-auto" ata-aos="fade-up" ata-aos-delay="100">
             <i className="icon-newsletter text-60 sm:text-40 text-white" />
             <h2 className="text-30 sm:text-24 lh-15 text-white mt-20">
               Your Travel Journey Starts Here

@@ -2,7 +2,7 @@ const DiscountsBanner = () => {
   return (
     <div
       className="ctaCard -type-1 rounded-4"
-      data-aos="fade"
+      ata-aos="fade"
       data-aos-dealy="100"
     >
       <div className="ctaCard__image ratio ratio-63:55">

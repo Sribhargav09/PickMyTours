@@ -1,6 +1,8 @@
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+
 import CallToActions from "../../../components/common/CallToActions";
 import Seo from "../../../components/common/Seo";
-import Header11 from "../../../components/header/header-11";
 import DefaultFooter from "../../../components/footer/default";
 import TopHeaderFilter from "../../../components/tour-list/tour-list-v1/TopHeaderFilter";
 import TourProperties from "../../../components/tour-list/tour-list-v1/TourProperties";
@@ -11,36 +13,48 @@ import TourDataService from "../../../services/tour.service";
 import { useSearchParams } from "react-router-dom";
 import { useRouter } from "next/router";
 import MainFilterSearchBox from "../../../components/hero/MainFilterSearchBox";
+import Noresults from "../../../components/tour-list/tour-list-v1/NoResults";
+import Header from '../../../components/header';
+import { useDispatch } from 'react-redux';
+import { setLoader } from '../../../app/features/hero/findPlaceSlice';
 
 
 const index = () => {
   const [tours, setTours] = useState([]);
-
+  const dispatch = useDispatch();
   
   const router = useRouter();
   console.log(router.query);
-  const location = router.query.location;
-  const type = router.query.type;
+  const location = router.query.location ?? '';
+  const type = router.query.type ?? '';
 
+  const handleDelete = () => {
+
+  }
 
   useEffect(() => {
+    dispatch(setLoader(true));
     TourDataService.getAll()
       .then(response => {
         let toursData = response.data;
+        // console.log(toursData);
+        // const tdata = [];
         if(type){
-          toursData.data = toursData.data.filter((t) => t.type.toLowerCase() === type.toLowerCase()); 
+          toursData = toursData.data?.filter((t) => (t.type).toLowerCase() === type.toLowerCase()); 
         }
 
         if(location){
-          toursData.data = toursData.data.filter((t) => t.location.toLowerCase() === location.toLowerCase()); 
+          toursData = toursData.data?.filter((t) => t.location.toLowerCase() === location.toLowerCase()); 
         }
        setTours(toursData);
-        console.log(response.data);
+        console.log(toursData);
+        dispatch(setLoader(false));
       })
       .catch(e => {
         console.log(e);
-      });
-  }, [location])
+        dispatch(setLoader(false));
+      })
+  }, [location, type])
 
   return (
     <>
@@ -50,17 +64,14 @@ const index = () => {
       <div className="header-margin"></div>
       {/* header top margin */}
 
-      <Header11 />
+      <Header />
       {/* End Header 1 */}
 
-      <section className="pt-40 pb-40 bg-light-2">
+      <section className="pt-40 pb-40 bg-light-1">
         <div className="container">
           <div className="row">
             <div className="col-12">
-              <div className="text-center">
-                <h1 className="text-30 fw-600">Tours in {location}</h1>
-              </div>
-              {/* End text-center */}
+            {/* End text-center */}
               <MainFilterSearchBox />
             </div>
             {/* End col-12 */}
@@ -112,7 +123,12 @@ const index = () => {
               <div className="mt-30"></div>
               {/* End mt--30 */}
               <div className="row y-gap-30">
-                <TourProperties toursData={tours.data} />
+              <Stack direction="row" spacing={1}>
+                  <Chip label="Deletable" onDelete={handleDelete} />
+                  <Chip label="Deletable" variant="outlined" onDelete={handleDelete} />
+                </Stack>
+                {tours && tours.length > 0 && <TourProperties toursData={tours} />}
+                {(!tours || tours.length == 0) && <Noresults />}
               </div>
               {/* End .row */}
               {/* <Pagination /> */}

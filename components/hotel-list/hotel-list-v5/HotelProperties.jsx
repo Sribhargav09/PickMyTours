@@ -43,8 +43,8 @@ const HotelProperties = () => {
         <div
           className="col-lg-3 col-sm-6"
           key={item?.id}
-          data-aos="fade"
-          data-aos-delay={item.delayAnimation}
+          ata-aos="fade"
+          ata-aos-delay={item.delayAnimation}
         >
           <Link
             href={`/hotel/hotel-single-v2/${item.id}`}

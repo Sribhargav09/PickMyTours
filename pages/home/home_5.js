@@ -216,7 +216,7 @@ const home_5 = () => {
         </div>
         {/* End bg image */}
 
-        <div data-aos="fade-up" data-aos-delay="100" className="container">
+        <div ata-aos="fade-up" ata-aos-delay="100" className="container">
           <div className="row justify-center text-center">
             <div className="col-auto">
               <div className="sectionTitle -md">

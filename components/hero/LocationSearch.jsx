@@ -5,8 +5,8 @@ import Router from "next/router";
 import { ReactSearchAutocomplete } from 'react-search-autocomplete'
 
 
-const LocationSearch = () => {
-  const [searchValue, setSearchValue] = useState("");
+const LocationSearch = ({ setValue}) => {
+  const [searchValue, setSearchValue] = useState('');
   const [selectedItem, setSelectedItem] = useState(null);
 
   const [locations, setLocations] = useState([]);
@@ -27,7 +27,8 @@ const LocationSearch = () => {
 
   const handleOnSelect = (item) => {
     // the item selected
-    setSearchValue(item.name)
+    setSearchValue(item.name);
+    setValue(item.name);
     console.log(item)
   }
 
@@ -60,9 +61,10 @@ const LocationSearch = () => {
 
 
   const handleOptionClick = (item) => {
-    Router.push(`/tour/tour-list-v1?location=${item.name}`);
-    location.href = `/tour/tour-list-v1?location=${item.name}`;
+    //Router.push(`/tour/tour-list-v1?location=${item.name}`);
+    //location.href = `/tour/tour-list-v1?location=${item.name}`;
     setSearchValue(item.name);
+    setValue(item.name);
     setSelectedItem(item);
   };
 

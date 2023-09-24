@@ -72,8 +72,8 @@ const Rentals = () => {
         {rentalsData.slice(0, 4).map((item) => (
           <div
             key={item.id}
-            data-aos="fade"
-            data-aos-delay={item.delayAnimation}
+            ata-aos="fade"
+            ata-aos-delay={item.delayAnimation}
           >
             <Link
               href={`/rental/rental-single/${item.id}`}

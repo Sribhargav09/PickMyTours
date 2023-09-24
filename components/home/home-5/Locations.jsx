@@ -8,8 +8,8 @@ const Locations = () => {
         <div
           className="col-xl-3 col-lg-4 col-md-6"
           key={item.id}
-          data-aos="fade"
-          data-aos-delay={item.delayAnim}
+          ata-aos="fade"
+          ata-aos-delay={item.delayAnim}
         >
           <Link href="/tour/tour-list-v3" className="destCard -type-1 d-block">
             <div className="row x-gap-20 y-gap-20 items-center">

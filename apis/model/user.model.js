@@ -22,6 +22,12 @@ let userSchema = new Schema(
     },
     photo: {
       type: Array
+    },
+    code: {
+      type: String
+    },
+    active: {
+      type: Boolean
     }
   },
   {

@@ -29,8 +29,8 @@ const index = () => {
                 <div className="col-xl-9">
                   <div
                     className="text-center"
-                    data-aos="fade-up"
-                    data-aos-delay="300"
+                    ata-aos="fade-up"
+                    ata-aos-delay="300"
                     data-aos-offset="0"
                   >
                     <h1 className="text-60 lg:text-40 md:text-30 text-white">

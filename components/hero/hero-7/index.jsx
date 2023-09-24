@@ -24,15 +24,15 @@ const index = () => {
                     </div>
                     <div
                       className="text-white"
-                      data-aos="fade-up"
-                      data-aos-delay="100"
+                      ata-aos="fade-up"
+                      ata-aos-delay="100"
                     >
                       Discover amzaing places at exclusive deals
                     </div>
                     <h1
                       className="text-60 lg:text-40 md:text-30 text-white"
-                      data-aos="fade-up"
-                      data-aos-delay="300"
+                      ata-aos="fade-up"
+                      ata-aos-delay="300"
                     >
                       Unique Houses Are Waiting
                       <br className="lg:d-none" /> For You
@@ -50,15 +50,15 @@ const index = () => {
                     </div>
                     <div
                       className="text-white"
-                      data-aos="fade-up"
-                      data-aos-delay="100"
+                      ata-aos="fade-up"
+                      ata-aos-delay="100"
                     >
                       Discover amzaing places at exclusive deals
                     </div>
                     <h1
                       className="text-60 lg:text-40 md:text-30 text-white"
-                      data-aos="fade-up"
-                      data-aos-delay="300"
+                      ata-aos="fade-up"
+                      ata-aos-delay="300"
                     >
                       Unique Houses Are Waiting
                       <br className="lg:d-none" /> For You

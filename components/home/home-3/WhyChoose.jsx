@@ -68,9 +68,14 @@ const WhyChoose = () => {
           <img src="/img/banners/tour.png" />
         </div>
         <div class="column pt-40 pl-40 pr-40">
-          <h2>WHY PickMyTour?</h2>
-          <p class="text pt-20">Travel communities have been flourishing for a long time in our country and with so many options for travelers to choose from, a question that every traveler asks themselves is why they should put their faith in us. <b>As a travel community</b> of more than <b>50,000+ members,</b>
-            PickMyTour has completed more than <b>5000+ trips</b> successfully. Out of which <b>40+ trips</b> have been <b>all-girls trips led by female trip captains.</b></p>
+          <h2>Why Choose Us?</h2>
+          <p class="text pt-20">At PickMyTour, we understand that travel is not just about reaching a destination; it's about the journey itself. 
+          That's why we are passionate about curating unforgettable experiences that leave a lasting imprint on your heart and soul. 
+          Our passion is to transform your wanderlust into meticulously planned journeys that leave you with memories to treasure. 
+          With our team of seasoned travel experts, we offer a level of expertise and personalization that sets us apart. 
+          We understand that your travels are as unique as you are, and that's why we go the extra mile to curate experiences that match your interests, whether it's exploring ancient ruins, savoring exotic cuisine, or simply unwinding on a pristine beach. 
+          Our commitment to safety, competitive pricing, and round-the-clock support ensure that your journey is not just extraordinary but hassle-free. 
+          Choose PickMyTour and embark on a voyage where your dreams are our destination.</p>
           <p class="text">We first gained recognition by <b>StartUp India</b> back in 2019, followed by being awarded the <b>Travelers choice award</b> in 2020 by <b>Trip Advisor.</b> In 2021, we were awarded the <b>Best Enterprise in Travel and Tourism 2021 by MSME business India awards.</b></p>
           <p class="text">All the milestones that we have achieved are because of the constant support and positive feedback of our travelers.</p>
         </div>

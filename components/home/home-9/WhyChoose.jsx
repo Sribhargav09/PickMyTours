@@ -37,7 +37,7 @@ const WhyChoose = () => {
       {whyChooseContent.map((item) => (
         <div
           className="col-sm-6"
-          data-aos="fade-up"
+          ata-aos="fade-up"
           key={item.id}
         >
           <Image

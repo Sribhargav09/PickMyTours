@@ -34,15 +34,15 @@ const index = () => {
                     <div className="text-center">
                       <div
                         className="text-white fw-500 uppercase mb-10"
-                        data-aos="fade-up"
-                        data-aos-delay="100"
+                        ata-aos="fade-up"
+                        ata-aos-delay="100"
                       >
                         TOUR EXPERIENCE
                       </div>
                       <h1
                         className="text-80 lg:text-60 sm:text-40 text-white"
-                        data-aos="fade-up"
-                        data-aos-delay="300"
+                        ata-aos="fade-up"
+                        ata-aos-delay="300"
                       >
                         Find The Best Cruise
                         <br className="md:d-none" /> For You
