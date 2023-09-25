@@ -18,7 +18,7 @@ const Overview = ({tourData}) => {
         </div>
 
         <div className="col-md-6">
-          <h5 className="text-16 fw-500">Available languages</h5>
+          {/* <h5 className="text-16 fw-500">Available languages</h5> */}
           <div className="text-15 mt-10">
           
           </div>
@@ -41,7 +41,7 @@ const Overview = ({tourData}) => {
         </div>
       </div>
 
-      <div className="mt-40 border-top-light">
+      {/* <div className="mt-40 border-top-light">
         <div className="row x-gap-40 y-gap-40 pt-40">
           <div className="col-12">
             <h3 className="text-22 fw-500">What&lsquo;s Included</h3>
@@ -67,7 +67,7 @@ const Overview = ({tourData}) => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

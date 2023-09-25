@@ -33,6 +33,7 @@ const TourSingleV1Dynamic = () => {
   const router = useRouter();
   const [tour, setTour] = useState({});
   const [tourId, setTourId] = useState('');
+  const [show, setShow] = useState(true);
   const id = router.query.id;
 
   const getFieldsData = (field) => {
@@ -388,10 +389,10 @@ const TourSingleV1Dynamic = () => {
           <div className="pt-40 border-top-light">
             <div className="row y-gap-20">
               <div className="col-lg-4">
-                <h2 className="text-22 fw-500">
-                  FAQs about
+                <button className="text-22 fw-500" onClick={() => setShow(!show)}>
+                {show ? "FAQs about":'show FAQs below'}
                   <br /> The Crown Hotel
-                </h2>
+                </button>
               </div>
               {/* End .row */}
 
@@ -400,7 +401,7 @@ const TourSingleV1Dynamic = () => {
                   className="accordion -simple row y-gap-20 js-accordion"
                   id="Faq1"
                 >
-                  <Faq tourData={tour} />
+                  { show && <Faq tourData={tour} />}
                 </div>
               </div>
               {/* End .col */}

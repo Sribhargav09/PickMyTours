@@ -1,3 +1,5 @@
+
+
 const Faq = ({tourData}) => {
   const faqContent = [
     {
@@ -41,6 +43,9 @@ const Faq = ({tourData}) => {
             enim ad minim veniam, quis nostrud exercitation ullamco.`,
     },
   ];
+
+  
+
   return (
     <>
       {faqContent.map((item) => (
@@ -75,5 +80,7 @@ const Faq = ({tourData}) => {
     </>
   );
 };
+
+
 
 export default Faq;
