@@ -7,12 +7,12 @@ const Sidebar = () => {
   const router = useRouter();
 
   const sidebarContent = [
-    {
-      id: 1,
-      icon: "/img/dashboard/sidebar/compass.svg",
-      name: "Dashboard",
-      routePath: "/dashboard/db-dashboard",
-    },
+    // {
+    //   id: 1,
+    //   icon: "/img/dashboard/sidebar/compass.svg",
+    //   name: "Dashboard",
+    //   routePath: "/dashboard/db-dashboard",
+    // },
     {
       id: 2,
       icon: "/img/dashboard/sidebar/booking.svg",

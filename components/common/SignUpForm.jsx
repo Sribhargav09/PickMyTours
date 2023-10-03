@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import Router from "next/router";
 import signupServer from "../../services/signup.server";
 import ReactCodeInput from 'react-verification-code-input';
+import { Hourglass } from "react-loader-spinner";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -21,51 +22,58 @@ const SignUpForm = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [phone, setPhone] = useState('');
   const [userRole, setUserRole] = useState('user');
-  const [errors, setErrors] = useState({ firstName: '', lastName: '', email: '', password: '', phone: '', userRole: '', photos: '' })
+  const [errors, setErrors] = useState({ firstName: '', lastName: '', email: '', password: '', phone: '', userRole: '', photos: '', registerError: '' })
   const [photo, setPhoto] = useState(null);
   const [photos, setPhotos] = useState([]);
-  const [images, setImages] = useState(null);
+  const [userId, setUserId] = useState(null);
 
-  const [loading, setLoading] = useState(true);
+  const [loader, setLoader] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
+  const [verificationCode, setVerificationCode] = useState('');
   const [enableVerify, setEnableVerify] = useState(false);
 
 
 
   const router = useRouter();
-  const id = router.query.id;
 
-  useEffect(() => {
-    if (!id) {
-      //setLoading(false);
-    }
-    else {
-      signupServer.get(id)
-        .then(response => {
-          setFirstName(response.data.data.firstName);
-          setLastName(response.data.data.lastName);
-          setPhotos([response.data.data.photo]);
-          setEmail(response.data.data.email);
-          setPassword(response.data.data.password);
-          setConfirmPassword(response.data.data.conformpassword);
-          setphone(response.data.data.phone);
+  const verify = () => {
+    setLoader(true);
+    setErrors({ registerError: '' });
+    console.log({ code: verificationCode, id: userId });
+    signupServer.verify({ code: verificationCode, id: userId })
+      .then(response => {
+        setTimeout(() => {
+          setLoader(false);
+          window.scrollTo({ top: 10, behavior: "smooth" });
 
           setTimeout(() => {
-            setLoading(false)
-            console.log('This will run after 1 second!')
+            Router.push("/others-pages/login");
           }, 1000);
-          console.log(add - user);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    }
+          setIsRegister(true);
+          setIsVerified(true);
+        }, 1500)
+      })
+      .catch(e => {
+        console.log(e);
+        setTimeout(() => {
+          if (e && e.response && e.response.data.message) {
+            setErrors({ registerError: e.response.data.message });
+            window.scrollTo({ top: 10, behavior: "smooth" });
+          } else {
 
-    return () => { };
-  }, [id]);
+            if (e && e.code) {
+              setErrors({ registerError: e.message });
+              window.scrollTo({ top: 10, behavior: "smooth" });
+            }
+          }
+          setLoader(false);
+        }, 1500)
+      });
+  }
 
   const add = () => {
+    setLoader(true);
     let error = false;
     const rerrors = {}
     if (firstName.length == 0) {
@@ -102,23 +110,26 @@ const SignUpForm = () => {
       signupServer.create({ firstName, lastName, email, password, phone: phone, role: userRole, photo })
         .then(response => {
           console.log(response.data);
-          window.scrollTo({ top: 100, behavior: "smooth" });
+          window.scrollTo({ top: 50, behavior: "smooth" });
 
           // setTimeout(() => {
           //   Router.push("/others-pages/login");
           // }, 1000);
           setIsRegister(true);
+          setUserId(response.data.data._id);
+          setTimeout(() => { setLoader(false); }, 1200)
         })
         .catch(e => {
-          if (e && e.response.data && e.response.data.email) {
-            setErrors({ email: e.response.data.email });
-            window.scrollTo({ top: 450, behavior: "smooth" });
 
+          window.scrollTo({ top: 100, behavior: "smooth" });
+          if (e && e.code) {
+            setErrors({ registerError: e.message });
           }
-          console.log(e);
+          setTimeout(() => { setLoader(false); }, 1200)
         });
 
     } else {
+      setTimeout(() => { setLoader(false); }, 1200)
       setErrors(rerrors);
       window.scrollTo({ top: 100, behavior: "smooth" });
     }
@@ -179,15 +190,17 @@ const SignUpForm = () => {
   };
 
   const handleVerificationCode = (value) => {
-    if(value.length < 4){
+    if (value.length < 4) {
       setEnableVerify(false);
-    }else{
+    } else {
+      setVerificationCode(value);
       setEnableVerify(true);
     }
   }
 
   return (
     <>
+      <span class="error col-12">{errors && errors.registerError}</span>
       {!isRegister && <form className="row y-gap-20">
         <div className="col-12">
           <h1 className="text-22 fw-500">Welcome back</h1>
@@ -352,17 +365,48 @@ const SignUpForm = () => {
         </div>
         {/* End .col */}
       </form>}
-      {isRegister && !isVerified && <>  
+      {isRegister && !isVerified && <>
         <h4 className="mb-20">{"Verify Your Email Address"}</h4>
-        <div  style={{ textAlign: 'center', padding: 10, margin: 'auto' }}>
+        <div style={{ textAlign: 'center', padding: 10, margin: 'auto' }}>
           <p>Please enter the 4-digit verification code we sent via SMS:</p>
           <div className="mb-20" >(we want to make sure it's your email id verified)</div>
-          <div lassName="mt-50 mb-20"><ReactCodeInput fields={4} onChange={handleVerificationCode} onComplete={setEnableVerify}  /></div>
-          <button style={{opacity: !enableVerify ? 0.5 : 1}} className="button px-30 mt-50 ml-50 fw-400 text-14 -blue-1 bg-blue-1 h-50 text-white" type="button" disabled={!enableVerify}>Verifiy</button>
+          <div lassName="mt-50 mb-20"><ReactCodeInput fields={4} onChange={handleVerificationCode} onComplete={setEnableVerify} /></div>
+          <button style={{ opacity: !enableVerify ? 0.5 : 1 }} className="button px-30 mt-50 ml-50 fw-400 text-14 -blue-1 bg-blue-1 h-50 text-white" type="button" onClick={verify} disabled={!enableVerify}>Verifiy</button>
 
         </div>
       </>}
-      {isRegister && isVerified && <div class="success"><p>Thanks for Signup. <br />Your account will be activate after approval form our end</p></div>}
+      {isRegister && isVerified && <div class="success"><p>Thanks for Signup. <br />Redirection to Login page</p> <Hourglass
+        visible={true}
+        height="80"
+        width="80"
+        ariaLabel="hourglass-loading"
+        wrapperStyle={{}}
+        wrapperClass=""
+        colors={['#306cce', '#72a1ed']}
+      /></div>}
+
+<Dialog
+        open={loader}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+
+      >
+        <DialogTitle id="alert-dialog-title">
+          
+        </DialogTitle>
+        <DialogContent style={{ width: '100%', textAlign:'center' }}>
+        <Hourglass
+        visible={true}
+        height="80"
+        width="80"
+        ariaLabel="hourglass-loading"
+        wrapperStyle={{}}
+        wrapperClass=""
+        colors={['#306cce', '#72a1ed']}
+      />
+        </DialogContent>
+      </Dialog>
+
     </>
 
   );

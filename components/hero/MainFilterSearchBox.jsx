@@ -35,7 +35,7 @@ const MainFilterSearchBox = () => {
               onClick={() => dispatch(addCurrentTab(tab?.name))}
             >
               <i className={`${tab.icon} text-20 mr-10`}></i>
-              {tab?.name}
+              <span className="descktopScreen" title={tab?.name}>{tab?.name}</span>
             </button>
           ))}
         </div>

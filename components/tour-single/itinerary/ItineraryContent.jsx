@@ -31,7 +31,7 @@ const ItineraryContent = ({ data }) => {
           <div className="accordion__item ">
             <div className="d-flex">
               <div className="accordion__icon size-40 flex-center bg-blue-2 text-blue-1 rounded-full">
-                <div className="text-14 fw-500">{item.itemNo}</div>
+                <div className="text-12 fw-500">Day {item.itemNo}</div>
               </div>
               {/* End item number */}
 
@@ -45,7 +45,7 @@ const ItineraryContent = ({ data }) => {
                   id={item.targetCollapse}
                   data-bs-parent="#itineraryContent"
                 >
-                  <div className="pt-15 pb-15">
+                  {item.img && <div className="pt-15 pb-15">
                     <Image
                       width={350}
                       height={160}
@@ -54,7 +54,7 @@ const ItineraryContent = ({ data }) => {
                       className="rounded-4 mt-15"
                     />
                     <div className="text-14 lh-17 mt-15">{item.content}</div>
-                  </div>
+                  </div>}
                 </div>
                 {/* End accordion conent */}
 
