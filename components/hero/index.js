@@ -61,7 +61,8 @@ const index = () => {
 
 
   return (
-    <section className="masthead -type-3 z-5" style={{height: '600px'}}>
+<>
+    <section className="descktopScreen masthead -type-3 z-5" style={{height: '600px'}}>
       <div className="masthead__bg" style={{ background: 'none', cursor: 'pointer', height: '200px' }}>
         
         {/* {tours && tours.data && tours.data.length > 0 && tours.data[tours.data.length-1] && tours.data[tours.data.length-1]?.gallery && <img alt="image" src={tours.data[tours.data.length-1]['gallery'][0] ?? ''} className="js-lazy" />} */}
@@ -130,6 +131,25 @@ const index = () => {
       </div>
       </div>
     </section>
+
+    <section className="mobileScreen masthead -type-3 z-5 bg-light-1"  style={{
+                     backgroundImage: `url(${tours[0]?.gallery[0]})`,
+                     backgroundRepeat: "no-repeat",
+                     cursor: 'pointer',
+                     backgroundSize: "cover", backgroundRepeat: 'no',
+                     backgroundColor: 'transparent',
+                 }}>
+    <div className="container">
+      <div className="row">
+        <div className="col-12">
+        {/* End text-center */}
+          <MainFilterSearchBox />
+        </div>
+        {/* End col-12 */}
+      </div>
+    </div>
+    </section>
+    </>
   );
 };
 

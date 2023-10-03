@@ -19,6 +19,33 @@ let reviewSchema = new Schema(
     },
     rating:{
         type: String
+    },
+    location:{
+        type: String
+    },
+    money:{
+        type: String
+    },
+    staff:{
+      type: String
+    },
+    clean:{
+      type: String
+    },
+    facility:{
+      type: String
+    },
+    comfort:{
+      type: String
+    },
+    wifi:{
+      type: String
+    },
+    photo: {
+      type: Array
+    },
+    date: {
+      type: String
     }
   },
   {

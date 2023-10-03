@@ -15,11 +15,19 @@ import { setUser, setToken } from '../../app/features/user/userSlice';
 const Header = () => {
   const [navbar, setNavbar] = useState(false);
 
-  
-  const loginUser = useSelector((state) => state.user.loginUser);
-  const userToken = useSelector((state) => state.user.token);
-  const dispatch = useDispatch()
-console.log(loginUser);
+
+  const [loginUser, setLoginUser] = useState(null);
+  const [userToken, setUserToken] = useState("");
+
+  //const loginUser = useSelector((state) => state.user.loginUser);
+  //const userToken = useSelector((state) => state.user.token);
+
+  useEffect(() => {
+    setLoginUser(JSON.parse(sessionStorage.getItem("loginUser")));
+    setUserToken(sessionStorage.getItem("token"));
+  }, []);
+
+  const dispatch = useDispatch();
 
 
 
@@ -34,8 +42,11 @@ console.log(loginUser);
   const logOut = () => {
     dispatch(setToken(''));
     dispatch(setUser(null));
+    sessionStorage.clear();
+    setTimeout(() => {
     Router.push("/others-pages/login");
-  } 
+    }, 1000);
+  }
 
   useEffect(() => {
     window.addEventListener("scroll", changeBackground);
@@ -49,7 +60,7 @@ console.log(loginUser);
             <div className="col-auto">
               <div className="d-flex items-center">
                 <Link href="/" className="header-logo mr-20">
-                <img src="/img/general/logo.png" alt="logo icon" />
+                  <img src="/img/general/logo.png" alt="logo icon" />
                   {/* <img src="/img/general/logo-dark.svg" alt="logo icon" />
                   <img src="/img/general/logo-dark.svg" alt="logo icon" /> */}
                 </Link>
@@ -87,14 +98,14 @@ console.log(loginUser);
                 {/* End language and currency selector */}
 
                 {/* Start btn-group */}
-                {!userToken &&<div className="d-flex items-center ml-20 is-menu-opened-hide md:d-none">
-                <Link
+                {!userToken && <div className="d-flex items-center ml-20 is-menu-opened-hide md:d-none">
+                  <Link
                     href="/others-pages/become-expert"
                     className="button px-30 fw-400 text-14 -blue-1 bg-blue-1 h-50 text-white"
                   >
                     Become An Expert
-                  </Link> 
-                  
+                  </Link>
+
                   <Link
                     href="/others-pages/signup"
                     className="button px-30 fw-400 text-14 -outline-blue-1 h-50 text-blue-1 ml-20"

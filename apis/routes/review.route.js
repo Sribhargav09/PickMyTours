@@ -65,11 +65,17 @@ reviewExpressRoute
       });
   });
 // Create user
-reviewExpressRoute.post("/create-review", (req, res, next) => {
+reviewExpressRoute.post("/create-review", upload.fields([{ name: 'photo', maxCount: 1 }]), (req, res, next) => {
     
     const url = req.protocol + '://' + req.get('host')
 
-    //req.body.photo = url + '/reviews/' + req.files['photo'][0].filename;
+    if (req.files && req.files['photo']) {
+      req.body.photo = url + '/reviews/' + req.files['photo'][0].filename;
+    } else {
+      req.body.photo = 'avatar.png';
+    }
+
+    req.body.date =  new Date(Date.now()).toISOString();
 
    ReviewSchema.create(req.body)
     .then((result) => {

@@ -16,10 +16,13 @@ const Header = () => {
   const [navbar, setNavbar] = useState(false);
 
   
-  const loginUser = useSelector((state) => state.user.loginUser);
-  const userToken = useSelector((state) => state.user.token);
+  // const loginUser = useSelector((state) => state.user.loginUser);
+  // const userToken = useSelector((state) => state.user.token);
+
+  const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
+  const userToken = sessionStorage.getItem("token");
   const dispatch = useDispatch()
-console.log(loginUser);
+  //console.log(loginUser);
 
 
 
@@ -34,6 +37,8 @@ console.log(loginUser);
   const logOut = () => {
     dispatch(setToken(''));
     dispatch(setUser(null));
+    sessionStorage.clear();
+
     Router.push("/others-pages/login");
   } 
 

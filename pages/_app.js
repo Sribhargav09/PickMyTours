@@ -10,7 +10,14 @@ import "aos/dist/aos.css";
 import "../styles/index.scss";
 import { Provider } from "react-redux";
 import { store } from "../app/store";
-import Spinner from "../components/common/Spinner";
+import { Hourglass } from "react-loader-spinner";
+
+
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 
 if (typeof window !== "undefined") {
@@ -19,10 +26,14 @@ if (typeof window !== "undefined") {
 
 export default function App({ Component, pageProps }) {
 
+  const [loader, setLoader] = useState(false);
+
+
   useEffect(() => {
+    setLoader(true);
     setTimeout(() => {
-        //showLoader(false);
-    }, 1200)
+      setLoader(false);
+    }, 1500)
   }, []);
 
   return (
@@ -30,8 +41,37 @@ export default function App({ Component, pageProps }) {
       <Provider store={store}>
         <Component {...pageProps} />
         <SrollTop />
-        <Spinner />
+        {/* <Spinner /> */}
       </Provider>
+      
+      {loader && 
+      
+      
+      <div className="loaderPopup">
+        
+        <Dialog
+        open={loader}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+
+      >
+        <DialogTitle id="alert-dialog-title">
+          
+        </DialogTitle>
+        <DialogContent style={{ width: '100%', textAlign:'center' }}>
+        <Hourglass
+        visible={true}
+        height="80"
+        width="80"
+        ariaLabel="hourglass-loading"
+        wrapperStyle={{}}
+        wrapperClass=""
+        colors={['#306cce', '#72a1ed']}
+      />
+        </DialogContent>
+      </Dialog>
+
+        </div>}
     </main>
   );
 }

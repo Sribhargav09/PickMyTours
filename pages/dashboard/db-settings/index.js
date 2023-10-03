@@ -1,10 +1,16 @@
+'use client';
 import Seo from "../../../components/common/Seo";
 import Sidebar from "../common/Sidebar";
-import Header from "../../../components/header/dashboard-header";
+// import Header from "../../../components/header/dashboard-header";
+import Header from "../../../components/header";
+
 import SettingsTabs from "./components/index";
 import Footer from "../common/Footer";
+import { useEffect, useState } from "react";
 
 const index = () => {
+
+
   return (
     <>
       <Seo pageTitle="Settings" />
