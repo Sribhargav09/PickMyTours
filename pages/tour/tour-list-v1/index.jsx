@@ -123,10 +123,10 @@ const index = () => {
               <div className="mt-30"></div>
               {/* End mt--30 */}
               <div className="row y-gap-30">
-              <Stack direction="row" spacing={1}>
+              {/* <Stack direction="row" spacing={1}>
                   <Chip label="Deletable" onDelete={handleDelete} />
                   <Chip label="Deletable" variant="outlined" onDelete={handleDelete} />
-                </Stack>
+                </Stack> */}
                 {tours && tours.length > 0 && <TourProperties toursData={tours} />}
                 {(!tours || tours.length == 0) && <Noresults />}
               </div>

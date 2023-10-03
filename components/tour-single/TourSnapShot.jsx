@@ -6,7 +6,7 @@ const TourSnapShot = ({tourData}) => {
           <i className="icon-clock text-22 text-blue-1 mr-10"></i>
           <div className="text-15 lh-15">
             Duration:
-            <br /> {tourData.duration}h
+            <br /> {tourData?.duration ?? 5} Hrs
           </div>
         </div>
       </div>
@@ -17,7 +17,7 @@ const TourSnapShot = ({tourData}) => {
           <i className="icon-customer text-22 text-blue-1 mr-10"></i>
           <div className="text-15 lh-15">
             Group size:
-            <br /> {tourData?.noOfPersons}
+            <br /> {tourData?.noOfPersons ?? 10}
           </div>
         </div>
       </div>
@@ -34,7 +34,7 @@ const TourSnapShot = ({tourData}) => {
       </div>
       {/* End .col */}
 
-      <div className="col-md-auto col-6">
+      {/* <div className="col-md-auto col-6">
         <div className="d-flex">
           <i className="icon-access-denied text-22 text-blue-1 mr-10"></i>
           <div className="text-15 lh-15">
@@ -44,7 +44,7 @@ const TourSnapShot = ({tourData}) => {
             </a>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* End .col */}
     </div>
   );

@@ -16,14 +16,23 @@ import {
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from 'react-redux'
 import { setUser, setToken } from '../../app/features/user/userSlice';
+import { useState, useEffect } from "react";
 
 
 const MainMenu = ({ style = "" }) => {
   
-  const loginUser = useSelector((state) => state.user.loginUser);
-  const userToken = useSelector((state) => state.user.token);
-  const router = useRouter();
+  const [loginUser, setLoginUser] = useState(null);
+  const [userToken, setUserToken] = useState("");
 
+  //const loginUser = useSelector((state) => state.user.loginUser);
+  //const userToken = useSelector((state) => state.user.token);
+
+  useEffect(() => {
+    setLoginUser(JSON.parse(sessionStorage.getItem("loginUser")));
+    setUserToken(sessionStorage.getItem("token"));
+  }, []);
+  
+  const router = useRouter();
   return (
     <nav className="menu js-navList">
       <ul className={`menu__nav ${style} -is-active`}>

@@ -3,7 +3,7 @@ const Overview = ({tourData}) => {
     <>
       <div className="row x-gap-40 y-gap-40">
         <div className="col-12">
-          <h3 className="text-22 fw-500">Overview</h3>
+          {/* <h3 className="text-22 fw-500">Overview</h3> */}
 
           <p className="text-dark-1 text-15 mt-20">
            {tourData.description}
@@ -17,31 +17,16 @@ const Overview = ({tourData}) => {
           </a>
         </div>
 
-        <div className="col-md-6">
+        {/* <div className="col-md-6">
           <h5 className="text-16 fw-500">Available languages</h5>
           <div className="text-15 mt-10">
           
           </div>
-        </div>
+        </div> */}
 
-        <div className="col-md-6">
-          <h5 className="text-16 fw-500">Cancellation policy</h5>
-          <div className="text-15 mt-10">
-          {tourData.cancellation}
-          </div>
-        </div>
-
-        <div className="col-12">
-          <h5 className="text-16 fw-500">Highlights</h5>
-          <ul className="list-disc text-15 mt-10">
-          {tourData?.highlights && tourData.highlights.map((h) => {
-            return <li>{h}</li>
-          })}
-          </ul>
-        </div>
       </div>
 
-      <div className="mt-40 border-top-light">
+      {/* <div className="mt-40 border-top-light">
         <div className="row x-gap-40 y-gap-40 pt-40">
           <div className="col-12">
             <h3 className="text-22 fw-500">What&lsquo;s Included</h3>
@@ -67,7 +52,7 @@ const Overview = ({tourData}) => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

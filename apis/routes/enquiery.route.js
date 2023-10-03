@@ -1,10 +1,10 @@
 const express = require("express");
-const enquieryExpressRoute = express.Router();
+const queryExpressRoute = express.Router();
 let uuidv4 = require('uuid/v4'),
 multer = require('multer'),
     router = express.Router();
 
-const DIR = './public/enquierys/';
+const DIR = './public/quierys/';
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -33,7 +33,7 @@ const cors = require("cors");
 
 
 
-let EnquierySchema = require("../model/enquiery.model");
+let quieryschema = require("../model/query.model");
 // CORS OPTIONS
 var whitelist = ["http://localhost:8100", "http://localhost:4000"];
 var corsOptionsDelegate = function (req, callback) {
@@ -49,10 +49,10 @@ var corsOptionsDelegate = function (req, callback) {
   callback(null, corsOptions);
 };
 // Get users
-enquieryExpressRoute
-  .route("/enquierys", cors(corsOptionsDelegate))
+queryExpressRoute
+  .route("/quierys", cors(corsOptionsDelegate))
   .get(async (req, res, next) => {
-    await EnquierySchema.find()
+    await quieryschema.find()
       .then((result) => {
         res.json({
           data: result,
@@ -65,13 +65,13 @@ enquieryExpressRoute
       });
   });
 // Create user
-enquieryExpressRoute.post("/create-enquiery", (req, res, next) => {
+queryExpressRoute.post("/create-query", (req, res, next) => {
     
     const url = req.protocol + '://' + req.get('host')
 
-    //req.body.photo = url + '/enquierys/' + req.files['photo'][0].filename;
+    //req.body.photo = url + '/quierys/' + req.files['photo'][0].filename;
 
-   EnquierySchema.create(req.body)
+   quieryschema.create(req.body)
     .then((result) => {
       console.log(result);
       res.json({
@@ -86,8 +86,8 @@ enquieryExpressRoute.post("/create-enquiery", (req, res, next) => {
     });
 });
 // Get single user
-enquieryExpressRoute.route("/enquiery/:id").get(async (req, res, next) => {
-  await EnquierySchema.findById(req.params.id, req.body)
+queryExpressRoute.route("/query/:id").get(async (req, res, next) => {
+  await quieryschema.findById(req.params.id, req.body)
     .then((result) => {
       res.json({
         data: result,
@@ -100,8 +100,8 @@ enquieryExpressRoute.route("/enquiery/:id").get(async (req, res, next) => {
     });
 });
 // Update user
-enquieryExpressRoute.route("/update-enquiery/:id").put(async (req, res, next) => {
-  await EnquierySchema.findByIdAndUpdate(req.params.id, {
+queryExpressRoute.route("/update-query/:id").put(async (req, res, next) => {
+  await quieryschema.findByIdAndUpdate(req.params.id, {
     $set: req.body,
   })
     .then((result) => {
@@ -115,8 +115,8 @@ enquieryExpressRoute.route("/update-enquiery/:id").put(async (req, res, next) =>
     });
 });
 // Delete student
-enquieryExpressRoute.route("/remove-enquiery/:id").delete(async (req, res) => {
-  await EnquierySchema.findByIdAndRemove(req.params.id)
+queryExpressRoute.route("/remove-query/:id").delete(async (req, res) => {
+  await quieryschema.findByIdAndRemove(req.params.id)
     .then(() => {
       res.json({
         msg: "Data successfully updated.",
@@ -126,4 +126,4 @@ enquieryExpressRoute.route("/remove-enquiery/:id").delete(async (req, res) => {
       return next(err);
     });
 });
-module.exports = enquieryExpressRoute;
+module.exports = queryExpressRoute;

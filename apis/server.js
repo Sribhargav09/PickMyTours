@@ -1,10 +1,14 @@
 const express = require("express");
+const https = require("http");
+const hostname = 'pickmytours.com';        
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const createError = require("http-errors");
 const passport = require('passport');
 const mailer = require('nodemailer');
+const fs = require("fs");
+
 
 // Connecting MongoDB
 async function mongoDbConnection() {
@@ -59,9 +63,9 @@ app.use("/", stripeRoute)
 app.use(express.static(__dirname +'/public'));
 // PORT
 const port = process.env.PORT || 8080;
-app.listen(port, () => {
-  console.log("PORT Connected on: " + port);
-});
+// app.listen(port, () => {
+//   console.log("PORT Connected on: " + port);
+// });
 // Find 404 and hand over to error handler
 app.use((req, res, next) => {
   next(createError(404));
@@ -72,3 +76,14 @@ app.use(function (err, req, res, next) {
   if (!err.statusCode) err.statusCode = 500;
   res.status(err.statusCode).send(err.message);
 });
+
+const options = {
+  // key: fs.readFileSync("certs/server.key"),                  //Change Private Key Path here
+  // cert: fs.readFileSync("certs/certificate.crt"),            //Change Main Certificate Path here
+  // ca: fs.readFileSync('certs/intermediate.crt'),             //Change Intermediate Certificate Path here
+  };
+  
+  https.createServer(options, app)
+  .listen(8080, function (req, res) {                        //Change Port Number here (if required, 443 is the standard port for https)
+  console.log("Server started at port 3000");                //and here 
+  });

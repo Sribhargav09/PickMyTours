@@ -7,6 +7,7 @@ import LoginWithSocial from "../../components/common/LoginWithSocial";
 import LoginForm from "../../components/common/LoginForm";
 
 const LogIn = () => {
+
   return (
     <>
       <Seo pageTitle="Login" />

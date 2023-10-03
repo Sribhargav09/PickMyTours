@@ -1,6 +1,6 @@
 import Seo from "../../../components/common/Seo";
 import Sidebar from "../common/Sidebar";
-import Header from "../../../components/header/index";
+import Header from "../../../components/header";
 import Footer from "../common/Footer";
 import BookingTable from "./components/BookingTable";
 import { useState, useEffect } from "react";
@@ -11,18 +11,31 @@ import { setUser, setToken } from '../../../app/features/user/userSlice';
 
 
 const index = () => {
+ 
+  const [loginUser, setLoginUser] = useState(null);
+  const [userToken, setUserToken] = useState("");
 
-  const loginUser = useSelector((state) => state.user.loginUser);
-  const userToken = useSelector((state) => state.user.token);
+  //const loginUser = useSelector((state) => state.user.loginUser);
+  //const userToken = useSelector((state) => state.user.token);
+
+  useEffect(() => {
+    setLoginUser(JSON.parse(sessionStorage.getItem("loginUser")));
+    setUserToken(sessionStorage.getItem("token"));
+    // if(!userToken){
+    //   Router.push("/others-pages/login");
+    // }
+  }, []);
+
   const dispatch = useDispatch()
 
   const router = useRouter();
 
-  useEffect(() => {
-    if(!userToken){
-      Router.push("/others-pages/login");
-    }
-  })
+  // useEffect(() => {
+  //   console.log("hii123");
+  //   if(!userToken){
+  //     Router.push("/others-pages/login");
+  //   }
+  // })
 
   return (
     <>

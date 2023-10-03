@@ -1,7 +1,7 @@
 import Seo from "../../../components/common/Seo";
 import DashboardCard from "./components/DashboardCard";
 import Sidebar from "../common/Sidebar";
-import Header from "../../../components/header/dashboard-header";
+import Header from "../../../components/header";
 import ChartSelect from "./components/ChartSelect";
 import ChartMain from "./components/ChartMain";
 import Link from "next/link";
@@ -9,6 +9,11 @@ import RercentBooking from "./components/RercentBooking";
 import Footer from "../common/Footer";
 
 const index = () => {
+
+  
+  //const loginUser = useSelector((state) => state.user.loginUser);
+  //const userToken = useSelector((state) => state.user.token);
+
   return (
     <>
       <Seo pageTitle="Dashboard" />

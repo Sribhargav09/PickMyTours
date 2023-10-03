@@ -18,6 +18,10 @@ class SignupDataService {
     return http2.post("/login", data);
   }
 
+  verify(data) {
+    return http2.post("/verify", data);
+  }
+
   update(id, data) {
     return http.put(`/update-user/${id}`, data);
   }
