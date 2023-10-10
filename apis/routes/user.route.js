@@ -136,19 +136,19 @@ userExpressRoute.post("/create-user", upload.fields([{ name: 'photo', maxCount: 
             smtpProtocol.close();
           });
 
-          client.messages
-            .create({
-              from: process.env.TWILIO_PHONE_NUMBER,
-              from: TWILIO_PHONE_NUMBER,
-              to: req.body.phone,
-              body: "Your verfication code is "+otp
-            })
-            .then(() => {
-              res.send(JSON.stringify({ success: true }));
-            })
-            .catch(err => {
-              res.send(JSON.stringify({ success: false }));
-            });
+          // client.messages
+          //   .create({
+          //     from: process.env.TWILIO_PHONE_NUMBER,
+          //     from: TWILIO_PHONE_NUMBER,
+          //     to: req.body.phone,
+          //     body: "Your verfication code is "+otp
+          //   })
+          //   .then(() => {
+          //     res.send(JSON.stringify({ success: true }));
+          //   })
+          //   .catch(err => {
+          //     res.send(JSON.stringify({ success: false }));
+          //   });
 
 
         

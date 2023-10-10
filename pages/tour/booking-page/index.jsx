@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import TourDataService from "../../../services/tour.service";
 
 import {loadStripe} from '@stripe/stripe-js';
+import Header from "../../../components/header";
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
@@ -57,7 +58,7 @@ const index = () => {
       <div className="header-margin"></div>
       {/* header top margin */}
 
-      <Header11 />
+      <Header />
       {/* End Header 1 */}
 
       <section className="pt-40 layout-pb-md">
