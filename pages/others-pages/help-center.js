@@ -6,6 +6,7 @@ import DefaultHeader from "../../components/header/default-header";
 import DefaultFooter from "../../components/footer/default";
 import HelpSearchBlock from "../../components/block/HelpSearchBlock";
 import HelpBlock from "../../components/block/HelpBlock";
+import Contact from "../contact";
 
 const HelpCenter = () => {
   return (
@@ -38,10 +39,17 @@ const HelpCenter = () => {
           </div>
           {/* End .row */}
 
+          
+          <div className="row y-gap-30 pt-60 lg:pt-40">
+            <Contact />
+          </div>
+
           <div className="row y-gap-30 pt-60 lg:pt-40">
             <HelpBlock />
           </div>
           {/* End .row */}
+
+          
         </div>
       </section>
       {/* End search and search block section */}
