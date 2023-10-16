@@ -26,7 +26,7 @@ const Privacy = () => {
 
       <section className="section-bg layout-pt-lg layout-pb-md">
         <div className="section-bg__item col-12">
-          <Image
+        <img
             width={1920}
             height={400}
             src="/img/pages/about/1.png"
@@ -58,7 +58,7 @@ const Privacy = () => {
             <div className="col-auto">
               <div className="sectionTitle -right">
                 <p className=" sectionTitle__text mt-5 sm:mt-0">
-                Thank you for visiting Puck My Tours's website and considering our services. We value your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you interact with our website and when you book tours and services with us. By using our website and services, you consent to the practices described in this Privacy Policy.
+                Thank you for visiting Pick My Tours's website and considering our services. We value your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you interact with our website and when you book tours and services with us. By using our website and services, you consent to the practices described in this Privacy Policy.
                 </p>
               </div>
 

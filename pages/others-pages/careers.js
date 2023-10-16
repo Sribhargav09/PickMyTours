@@ -26,7 +26,7 @@ const Careers = () => {
 
       <section className="section-bg layout-pt-lg layout-pb-md">
         <div className="section-bg__item col-12">
-          <Image
+          <img
             width={1920}
             height={400}
             src="/img/pages/about/1.png"

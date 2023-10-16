@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
+import { useEffect } from 'react';
 
 
 
@@ -13,7 +14,7 @@ const currencyContent = [
     { id: 7, name: "Azerbaijan Manat", currency: "AZN", rate: "", symbol: "₼" },
     { id: 8, name: "Colombia Peso", currency: "COP", rate: "", symbol: "$" },
     { id: 9, name: "Oman Rial", currency: "OMR", rate: "", symbol: "﷼" },
-    { id: 10, name: "India Rupee", currency: "INR", rate: "", symbol: "₹" },
+    { id: 10, name: "India Rupee", currency: "INR", rate: "1", symbol: "₹" },
     { id: 11, name: "Iran Rial", currency: "IRR", rate: "", symbol: "﷼" },
     { id: 12, name: "Japan Yen", currency: "JPY", rate: "", symbol: "£" },
     { id: 13, name: "Jersey Pound", currency: "JEP", rate: "", symbol: "£" },
@@ -26,16 +27,30 @@ const currencyContent = [
     { id: 20, name: "Nepal Rupee", currency: "NPR", rate: "", symbol: "Nepal Rupee" },
   ];
 
+  let currency =  currencyContent[9];
+  
+  if(typeof window !== 'undefined'){
+    console.log(sessionStorage.getItem('currency'));
+    if(!sessionStorage.getItem('currency')){
+      sessionStorage.setItem('currency', currencyContent[9]);
+    }else{
+      currency = JSON.parse(sessionStorage.getItem('currency'));
+    }
+
+  }
 
 export const currencySlice = createSlice({
   name: 'currency',
   initialState: {
     currencies: currencyContent,
-    selectedCurrency: currencyContent[9]
+    selectedCurrency: currency
   },
   reducers: {
     changeCurrency: (state, action) => {
       console.log(action.payload);
+      if(typeof window !== 'undefined'){
+        sessionStorage.setItem('currency', JSON.stringify(action.payload));
+      }
       state.selectedCurrency = action.payload;
     },
   },

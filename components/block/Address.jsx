@@ -5,7 +5,7 @@ const Address = () => {
       colClass: "col-lg-3",
       title: "Address",
       content: (
-        <>328 Queensberry Street, North Melbourne VIC 3051, Australia.</>
+        <>H.No 2, 23-522/78/A, Krishnaveni Nagar, Tulasi Nagar, HMT Hills, Kukatpally, Hyderabad, Telangana 500072, India.</>
       ),
     },
     {
@@ -14,7 +14,7 @@ const Address = () => {
       title: "Toll Free Customer Care",
       content: (
         <>
-          <a href="tel:+4733378901">+47 333 78 901</a>
+          <a href="tel:+4733378901">(+91) 9000319957</a>
         </>
       ),
     },

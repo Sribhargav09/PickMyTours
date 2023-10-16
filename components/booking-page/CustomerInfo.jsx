@@ -1,16 +1,36 @@
 import Link from "next/link";
 import BookingDetails from "./sidebar/BookingDetails";
 import stripeService from "../../services/stripe.service";
+import axios from "axios";
 
 import { useState ,useEffect} from "react";
 import { TextField, InputLabel, Button, Select, MenuItem } from "@mui/material";
 import {  useRouter } from "next/router";
+import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
 import signupServer from "../../services/signup.server";
 import PaymentInfo from "./PaymentInfo";
+import logo from './logo.svg'
+
+import { Hourglass } from "react-loader-spinner";
+
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
 
 
 const CustomerInfo = ({tour}) => {
+
+  const selectedCurrency = useSelector((state) => state.currency.selectedCurrency);
+  const [currency, setCurrency] = useState(selectedCurrency);
+
+  useEffect(() => {
+    setCurrency(selectedCurrency);
+  }, [selectedCurrency])
+
 
   const [customerId, setCustomerId] = useState('');
   const [isCustomerRegistered, setIsCustomerRegistered] = useState(false);
@@ -44,38 +64,142 @@ const CustomerInfo = ({tour}) => {
     postalCode: '',
   });
 
+  function loadScript(src) {
+    return new Promise((resolve) => {
+        const script = document.createElement("script");
+        script.src = src;
+        script.onload = () => {
+            resolve(true);
+        };
+        script.onerror = () => {
+            resolve(false);
+        };
+        document.body.appendChild(script);
+    });
+}
+
+async function displayRazorpay() {
+  setLoader(true);
+    const res = await loadScript(
+        "https://checkout.razorpay.com/v1/checkout.js"
+    );
+
+    if (!res) {
+        alert("Razorpay SDK failed to load. Are you online?");
+        return;
+    }
+
+    const result = await axios.post("http://localhost:8080/orders", {'amount': (tour?.price * selectedCurrency?.rate).toFixed(2), 'currency': selectedCurrency ? selectedCurrency.currency : 'INR'});
+
+    if (!result) {
+        alert("Server error. Are you online?");
+        return;
+    }else{
+      setLoader(false);
+    }
+
+    const { amount, id: order_id, currency } = result.data;
+
+    const options = {
+        key: "rzp_test_GEkrv0JEPX9JyB", // Enter the Key ID generated from the Dashboard
+        amount: amount.toString(),
+        currency: currency,
+        name: "Pick My Tours",
+        description: "Test Transaction",
+        image: { logo },
+        order_id: order_id,
+        handler: async function (response) {
+            const data = {
+                orderCreationId: order_id,
+                razorpayPaymentId: response.razorpay_payment_id,
+                razorpayOrderId: response.razorpay_order_id,
+                razorpaySignature: response.razorpay_signature,
+            };
+
+            //const result = await axios.post("https://pickmytours.com/payment/success", data);
+
+            console.log(result);
+            alert("Your Payment Success");
+        },
+        prefill: {
+            name: firstName + ' ' + lastName,
+            email: email,
+            contact: phone,
+        },
+        notes: {
+            address: address1+', '+ address2+', '+city+', '+state+', '+zipcode
+        },
+        theme: {
+            color: "#3554d1",
+        },
+    };
+
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+}
+
+  // const paymentHandler = async (e) => {
+  //   const API_URL = 'http://localhost:8080/razropay/';
+  //   //const API_URL = 'httpa://pcikmytours.com:8000/';
+  //   e.preventDefault();
+  //   const orderUrl = `${API_URL}order`;
+  //   const response = await axios.get(orderUrl);
+  //   const { data } = response;
+  //   const options = {
+  //     key: "rzp_test_GEkrv0JEPX9JyB",
+  //     name: "Pick My tours",
+  //     description: "Tours and Travles Wensite",
+  //     order_id: data.id,
+  //     handler: async (response) => {
+  //       try {
+  //        const paymentId = response.razorpay_payment_id;
+  //        const url = `${API_URL}capture/${paymentId}`;
+  //        const captureResponse = await Axios.post(url, {})
+  //        console.log(captureResponse.data);
+  //       } catch (err) {
+  //         console.log(err);
+  //       }
+  //     },
+  //     theme: {
+  //       color: "#686CFD",
+  //     },
+  //   };
+  //   const rzp1 = new window.Razorpay(options);
+  //   rzp1.open();
+  //   };
+
 
   const router = useRouter();
   const id = '';
 
-  useEffect(() => {
-    if (!id) {
-      //setLoading(false);
-    }
-    else {
-      signupServer.get(id)
-        .then(response => {
-          setFirstName(response.data.data.firstName);
-          setLastName(response.data.data.lastName);
-          setPhotos([]);
-          setEmail(response.data.data.email);
-          setPassword(response.data.data.password);
-          setConfirmPassword(response.data.data.conformpassword);
-          setPhoneNumber(response.data.data.phoneNumber);
+  // useEffect(() => {
+  //   if (!id) {
+  //     //setLoading(false);
+  //   }
+  //   else {
+  //     signupServer.get(id)
+  //       .then(response => {
+  //         setFirstName(response.data.data.firstName);
+  //         setLastName(response.data.data.lastName);
+  //         setPhotos([]);
+  //         setEmail(response.data.data.email);
+  //         setPassword(response.data.data.password);
+  //         setConfirmPassword(response.data.data.conformpassword);
+  //         setPhoneNumber(response.data.data.phoneNumber);
 
-          setTimeout(() => {
-            setLoading(false)
-            console.log('This will run after 1 second!')
-          }, 1000);
-          console.log(add - user);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    }
+  //         setTimeout(() => {
+  //           setLoading(false)
+  //           console.log('This will run after 1 second!')
+  //         }, 1000);
+  //         console.log(add - user);
+  //       })
+  //       .catch(e => {
+  //         console.log(e);
+  //       });
+  //   }
 
-    return () => { };
-  }, [id]);
+  //   return () => { };
+  // }, [id]);
 
   const addUser = () => {
     let haveError = false;
@@ -98,44 +222,37 @@ const CustomerInfo = ({tour}) => {
     // }
 
     if (!haveError) {
-      signupServer.create({ firstName, lastName, email, password, phone, role: userRole, photo:[] })
-        .then(response => {
-          //Router.push("/vendor-dashboard/users")
-          setIsRegister(true);
-          console.log(response.data);
-          stripeService.registerCustomer({ email, name: firstName + " "+ lastName, password, phone })
-          .then(response => {
+      // signupServer.create({ firstName, lastName, email, password, phone, role: userRole, photo:[] })
+      //   .then(response => {
+      //     //Router.push("/vendor-dashboard/users")
+      //     setIsRegister(true);
+      //     console.log(response.data);
+      //     stripeService.registerCustomer({ email, name: firstName + " "+ lastName, password, phone })
+      //     .then(response => {
 
-            setCustomerId(response.data.data.id);
-            setAddress({
-              country: 'India',
-              state,
-              city,
-              line: address1,
-              postalCode: zipcode,
-            });
-            setIsCustomerRegistered(true);
-            console.log(response);
+      //       setCustomerId(response.data.data.id);
+      //       setAddress({
+      //         country: 'India',
+      //         state,
+      //         city,
+      //         line: address1,
+      //         postalCode: zipcode,
+      //       });
+      //       setIsCustomerRegistered(true);
+      //       console.log(response);
 
-          })
-          .catch(e => {
-            console.log(e);
-          })
+      //     })
+      //     .catch(e => {
+      //       console.log(e);
+      //     })
 
-        })
-        .catch(e => {
-          console.log(e);
-        });
+      //   })
+      //   .catch(e => {
+      //     console.log(e);
+      //   });
 
-    }
-    if (id) {
-      signupServer.delete(id)
-        .then(response => {
-          Router.push('/vendor-dashboard/add-user')
-          console.log(response.data);
-        }).catch(e => {
-          console.log(e);
-        });
+      displayRazorpay();
+
     }
 
   }
@@ -308,6 +425,27 @@ const CustomerInfo = ({tour}) => {
 
       
       {/*  */}
+      <Dialog
+        open={loader}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+
+      >
+        <DialogTitle id="alert-dialog-title">
+          
+        </DialogTitle>
+        <DialogContent style={{ width: '100%', textAlign:'center' }}>
+        <Hourglass
+        visible={true}
+        height="80"
+        width="80"
+        ariaLabel="hourglass-loading"
+        wrapperStyle={{}}
+        wrapperClass=""
+        colors={['#306cce', '#72a1ed']}
+      />
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import Router from "next/router";
 
 import { useEffect, useState, useRef } from "react";
+import Link from "next/link";
+
 
 const SidebarRight = ({ tour }) => {
 
@@ -17,12 +19,13 @@ const SidebarRight = ({ tour }) => {
 
   return (
     <div className="d-flex justify-end js-pin-content">
+      <div className="descktopScreen">
       <div className="w-360 lg:w-full d-flex flex-column items-center">
         <div className="px-30 py-30 rounded-4 border-light bg-white shadow-4">
           <div className="text-14 text-light-1">
             From{" "}
             <span className="text-20 fw-500 text-dark-1 ml-5">
-            {currency.symbol}{(tour?.price * currency.rate).toFixed(2)}
+              {currency.symbol}{(tour?.price * currency.rate).toFixed(2)}
 
             </span>
           </div>
@@ -51,6 +54,25 @@ const SidebarRight = ({ tour }) => {
           </div>
         </div>
         {/* End div */}
+      </div>
+      </div>
+
+      <div className="mobileScreen justify-between mobileBookNow d-flex bg-white ">
+        <div className="text-14 text-light-1">
+          <span className="text-20 fw-500 text-dark-1 ml-5">
+            {currency.symbol}{(tour?.price * currency.rate).toFixed(2)}
+
+          </span>
+        </div>
+
+        <div className="button-item">
+        <Link
+          href={`/tour/booking-page?id=${tour._id}`}
+          className="button -dark-1 py-15 px-35 h-60 col-12 rounded-4 bg-blue-1 text-white"
+        >
+          Book Now
+        </Link>
+        </div>
       </div>
     </div>
   );

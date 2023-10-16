@@ -3,11 +3,21 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper";
 //import toursData from "../../../data/tours";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 
 
 const TourProperties = ({toursData}) => {
+
+  const selectedCurrency = useSelector((state) => state.currency.selectedCurrency);
+  const [currency, setCurrency] = useState(selectedCurrency);
+
+  useEffect(() => {
+    setCurrency(selectedCurrency);
+  }, [selectedCurrency])
+
 
   useEffect(() => {
     console.log(toursData);
@@ -126,6 +136,8 @@ const TourProperties = ({toursData}) => {
                 <div className="text-14 text-light-1 mt-50 md:mt-20">From</div>
                 <div className="text-22 lh-12 fw-600 mt-5">
                   US${item?.price}
+                  {currency.symbol}{(item?.price * currency.rate).toFixed(2)}
+
                 </div>
                 <div className="text-14 text-light-1 mt-5">per adult</div>
 
