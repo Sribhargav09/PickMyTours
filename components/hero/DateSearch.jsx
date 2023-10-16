@@ -7,14 +7,11 @@ const DateSearch = ({value, setValue}) => {
   //   "December 09 2020",
   //   1597994736000, //unix time in milliseconds (August 21 2020)
   // ]);
-  const [dates, setDates] = useState([
-    new DateObject(),
-    new DateObject().setDay(14).add(1, "month"),
-  ]);
+  const [dates, setDates] = useState([]);
 
   const hadleDates = (dates) => {
     setDates(dates);
-    //setValue(dates);
+    setValue(dates);
   }
 
   return (

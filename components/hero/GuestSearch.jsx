@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 const counters = [
-  { name: "Adults", defaultValue: 2 },
-  { name: "Children", defaultValue: 1 },
+  { name: "Adults", defaultValue: 0 },
+  { name: "Children", defaultValue: 0 },
   // { name: "Rooms", defaultValue: 1 },
 ];
 
@@ -60,13 +60,19 @@ const Counter = ({ name, defaultValue, onCounterChange }) => {
 
 const GuestSearch = ({value, setValue}) => {
   const [guestCounts, setGuestCounts] = useState({
-    Adults: 2,
-    Children: 1
+    Adults: 0,
+    Children: 0
   });
+
+  useEffect(() => {
+    console.log(guestCounts);
+    setValue(guestCounts);
+  }, [guestCounts]);
+
   const handleCounterChange = (name, value) => {
     setGuestCounts((prevState) => ({ ...prevState, [name]: value }));
-    //setValue(guestCounts);
   };
+
   return (
     <div className="searchMenu-guests px-30 lg:py-20 lg:px-0 js-form-dd js-form-counters position-relative">
       <div

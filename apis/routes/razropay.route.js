@@ -34,11 +34,12 @@ const instance = new Razorpay({
 
 razropayExpressRoute
 .route("/orders", cors(corsOptionsDelegate))
-.get((req, res, next) => {
+.post((req, res, next) => {
+  console.log(req);
   try {
     const options = {
-      amount: 10 * 100, // amount == Rs 10
-      currency: "INR",
+      amount: Math.round(req.body.amount), // amount == Rs 10
+      currency: req.body.currency,
       receipt: "receipt#1",
       payment_capture: 0,
  // 1 for automatic capture // 0 for manual capture

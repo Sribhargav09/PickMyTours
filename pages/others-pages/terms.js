@@ -26,7 +26,7 @@ const Terms = () => {
 
       <section className="section-bg layout-pt-lg layout-pb-md">
         <div className="section-bg__item col-12">
-          <Image
+          <img
             width={1920}
             height={400}
             src="/img/pages/about/1.png"
@@ -65,6 +65,29 @@ const Terms = () => {
                 </p>
               </div>
 
+              <div className="sectionTitle -right">
+                <h2 className="sectionTitle__title mt-20">Booking Terms & Conditions</h2>
+                <p className=" sectionTitle__text mt-5 sm:mt-0">
+                  <div>The standard check-in time is 11 AM, and early check-in is subject to availability. Your cooperation is greatly appreciated.</div>
+
+                  <div>The Transportation will be provided as per the itinerary and will not be available at your disposal. Please note that air conditioning may not be operational in hilly areas.</div>
+
+                  <div>The Package rates are subject to change without prior notice due to Force Majeure events, strikes, fairs, festivals, weather conditions, traffic problems, overbooking of hotels/flights, flight cancellations/rerouting, closure of places of visit, entry restrictions, and other unforeseen circumstances. While we will make every effort to arrange suitable alternatives, we cannot be held responsible for any refunds or compensation claims resulting from these situations.</div>
+
+                  <div>We reserve the right to cancel bookings, even after payment has been accepted, without providing a reason. In such cases, the company will refund the money to the guest.</div>
+
+                  <div>We retain the right to dismiss any guest from the tour for misbehavior, particularly if it impacts the group. This includes instances of physical or verbal assault directed at the Tour Manager, with no refunds provided.</div>
+
+                  <div>We may need to change hotels or tour programs due to unforeseeable circumstances.</div>
+
+                  <div>Once registration is booked, it cannot be canceled, transferred, or exchanged.</div>
+
+                  <div>In case of a vehicle breakdown, travelers must be prepared to wait for repairs.</div>
+
+                  <div>Travelers are solely responsible for any mishaps, theft, loss, injuries, or engagement in illegal activities, such as carrying banned drugs or participating in unlawful activities during the tour.</div>
+                </p>
+              </div>
+
 
               <div className="sectionTitle -right">
                 <h2 className="sectionTitle__title mt-20">Cancellation and Refunds</h2>
@@ -72,6 +95,15 @@ const Terms = () => {
                   <div><strong>Cancellation by Client:</strong> Cancellation policies are outlined in each tour package. Clients are responsible for reviewing and understanding these policies. Refunds, if applicable, will be processed based on these policies.</div>
 
                   <div><strong>Cancellation by Pick My tours:</strong> We reserve the right to cancel a tour due to unforeseen circumstances, such as extreme weather or insufficient bookings. In such cases, clients will be provided with alternative options or a full refund.</div>
+
+                  <div><strong>Cancellation Policy: </strong>
+                    Registration fees are both non-refundable and non-transferable.
+                    If you cancel your booking within two days before the trip's scheduled start date, you will be subject to a 100% cancellation fee based on the total booking value.
+                    Should you decide to cancel your booking seven days before the trip's start date, a 50% cancellation fee will be applied.
+                    Cancellations made 15 days before the trip's commencement will incur a 25% cancellation fee.
+                    In cases of unforeseen weather conditions or government-imposed restrictions, certain activities may be canceled. In such instances, we will make every effort to offer an alternative feasible activity. However, no refunds will be issued.
+                    In the event of a destination lockdown, a credit shell will be issued, which you can utilize for future bookings. Please note that this credit will be provided after deducting any IRCTC/Airline Cancellation Charges.
+                  </div>
                 </p>
               </div>
 

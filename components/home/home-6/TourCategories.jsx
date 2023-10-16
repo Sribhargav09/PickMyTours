@@ -62,9 +62,9 @@ const TourCategories = () => {
               <h4 className="text-dark-1 text-16 fw-500 mt-50 md:mt-30">
                 {item.name}
               </h4>
-              <p className="text-light-1 lh-14 text-14 mt-5">
+              {/* <p className="text-light-1 lh-14 text-14 mt-5">
                 {'10'} Tours From ${item.price}
-              </p>
+              </p> */}
             </div>
           </Link>
         </div>

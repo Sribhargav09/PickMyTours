@@ -57,7 +57,7 @@ const CurrenctyMegaMenu = ({ textClass }) => {
           onClick={handleCurrency}
         >
           <span className="js-currencyMenu-mainTitle">
-            {selectedCurrency.currency} 
+            {selectedCurrency?.currency} 
           </span>
           <i className="icon-chevron-sm-down text-7 ml-10" />
         </button>
@@ -83,7 +83,7 @@ const CurrenctyMegaMenu = ({ textClass }) => {
             {currencyContent.map((item) => (
               <li
                 className={`modalGrid__item js-item ${
-                  selectedCurrency.currency === item.currency ? "active" : ""
+                  selectedCurrency?.currency === item.currency ? "active" : ""
                 }`}
                 key={item.id}
                 onClick={() => handleItemClick(item)}

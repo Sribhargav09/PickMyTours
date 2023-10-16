@@ -1,6 +1,18 @@
 import Image from "next/image";
 
+import { useSelector, useDispatch } from "react-redux";
+
+import { useEffect, useState, useRef } from "react";
+
 const BookingDetails = ({tour}) => {
+
+  const selectedCurrency = useSelector((state) => state.currency.selectedCurrency);
+  const [currency, setCurrency] = useState(selectedCurrency);
+
+  useEffect(() => {
+    setCurrency(selectedCurrency);
+  }, [selectedCurrency])
+
   console.log(tour)
   return (
     <div className="px-30 py-30 border-light rounded-4">
@@ -49,7 +61,8 @@ const BookingDetails = ({tour}) => {
 
       <div className="border-top-light mt-30 mb-20" />
       <div className="row y-gap-20 justify-between">
-      <div className="text-20 fw-500 mb-10">Rs. {tour.price}</div>
+      <div className="text-20 fw-500 mb-10">{currency.symbol}{(tour.price * currency.rate).toFixed(2)}
+</div>
         {/* <div className="col-auto">
           <div className="text-15">Check-in</div>
           <div className="fw-500">Thu 21 Apr 2022</div>

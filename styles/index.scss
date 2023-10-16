@@ -244,7 +244,7 @@ span.error{
   position:fixed;
   top:100px;
   z-index:10000;
-  right:30px;
+  right:5px;
 }
 
 
@@ -253,7 +253,7 @@ span.error{
 }
 
 .mobileScreen{
-  display: none;
+  display: none !important;
  }
 
  .descktopScreen{
@@ -262,10 +262,39 @@ span.error{
 
 @media (max-width: 767px) {
  .mobileScreen{
-  display: block;
+  display: block !important;
  }
 
  .descktopScreen{
   display: none;
  }
+ 
+ .mobileBookNow{
+  position:fixed;
+  bottom:5px;
+  padding:10px;
+  border-top:1px solid #575383;
+  width:100%;
+  padding-left:20px;
+  z-index: 100000;
+ }
+}
+
+.suggestions{
+  position: absolute;
+  z-index: 100000;
+  top:60px;
+  width:90%;
+padding: 10px;
+box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+background-color: white !important;
+}
+.suggestions li{
+  height: 30px;
+  padding: 5px;
+}
+
+.suggestions li.active{
+  background-color: #575383 !important;
+  color:white !important;
 }
