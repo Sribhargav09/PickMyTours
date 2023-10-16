@@ -77,7 +77,7 @@ export const pageItems = [
   // },
   {
     name: "Careers",
-    routePath: "/Careers",
+    routePath: "/others-pages/careers",
   },
   // {
   //   name: "Login",
@@ -123,7 +123,7 @@ export const userItems = [
   // },
   {
     name: "Careers",
-    routePath: "/Careers",
+    routePath: "/others-pages/careers",
   },
   {
     name: "My Profile",

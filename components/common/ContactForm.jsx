@@ -7,8 +7,8 @@ const ContactForm = () => {
   };
 
   return (
-    <form className="row y-gap-20 pt-20" onSubmit={handleSubmit}>
-      <div className="col-12">
+    <form className="row pt-20" onSubmit={handleSubmit}>
+      <div className="col-12 mt-10">
         <div className="form-input">
           <input type="text" id="name" required />
           <label htmlFor="name" className="lh-1 text-16 text-light-1">
@@ -16,7 +16,7 @@ const ContactForm = () => {
           </label>
         </div>
       </div>
-      <div className="col-12">
+      <div className="col-12 mt-10">
         <div className="form-input">
           <input type="email" id="email" required />
           <label htmlFor="email" className="lh-1 text-16 text-light-1">
@@ -24,7 +24,7 @@ const ContactForm = () => {
           </label>
         </div>
       </div>
-      <div className="col-12">
+      <div className="col-12 mt-10">
         <div className="form-input">
           <input type="text" id="subject" required />
           <label htmlFor="subject" className="lh-1 text-16 text-light-1">
@@ -32,7 +32,7 @@ const ContactForm = () => {
           </label>
         </div>
       </div>
-      <div className="col-12">
+      <div className="col-12 mt-10">
         <div className="form-input">
           <textarea id="message" required rows="4"></textarea>
           <label htmlFor="message" className="lh-1 text-16 text-light-1">

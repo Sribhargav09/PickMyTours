@@ -6,10 +6,19 @@ import isTextMatched from "../../utils/isTextMatched";
 import { useEffect, useState } from "react";
 import tourService from "../../services/tour.service";
 
+import { useSelector, useDispatch } from "react-redux";
+
 const Tours = () => {
 
+  const selectedCurrency = useSelector((state) => state.currency.selectedCurrency);
+  const [currency, setCurrency] = useState(selectedCurrency);
 
   const [tours, setTours] = useState([]);
+
+  useEffect(() => {
+    setCurrency(selectedCurrency);
+  }, [selectedCurrency])
+
 
   useEffect(() => {
     tourService.getAll()
@@ -112,7 +121,6 @@ const Tours = () => {
                             src={slide}
                             alt="image"
                           />
-                          dsdsd
                         </div>
                       </div>
                 })}
@@ -184,7 +192,7 @@ const Tours = () => {
                       From
                       <span className="text-16 fw-500 text-dark-1">
                         {" "}
-                        US${item.price}
+                        {currency.symbol}{(item?.price * currency.rate).toFixed(2)}
                       </span>
                     </div>
                   </div>
