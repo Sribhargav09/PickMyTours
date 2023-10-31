@@ -16,7 +16,7 @@ const CurrenctyMegaMenu = ({ textClass }) => {
   const handleItemClick = (currencyItem) => {
     setClick(false);
     const to = (currencyItem.currency)?.toLowerCase();
-    const from = (selectedCurrency.currency)?.toLowerCase();
+    const from = 'inr';
     axios.get(
       `https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/${from}.json`)
             .then((res) => {
@@ -32,19 +32,19 @@ const CurrenctyMegaMenu = ({ textClass }) => {
     setSelectedCurrency(selectedCurrencyValue);
 }, [selectedCurrencyValue]);
 
-  useEffect(() => {
-    const to =  'inr';
-    const from = 'inr';
+  // useEffect(() => {
+  //   const to =  'inr';
+  //   const from = 'inr';
 
-    axios.get(
-      `https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/${from}.json`)
-            .then((res) => {
-              console.log(res)
-              const rates = res.data[from];
-              const updateCurrencyItem = {...selectedCurrency, rate:rates[to]};
-              dispatch(changeCurrency(updateCurrencyItem));
-            })
-  }, []);
+  //   axios.get(
+  //     `https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/${from}.json`)
+  //           .then((res) => {
+  //             console.log(res)
+  //             const rates = res.data[from];
+  //             const updateCurrencyItem = {...selectedCurrency, rate:rates[to]};
+  //             dispatch(changeCurrency(updateCurrencyItem));
+  //           })
+  // }, []);
 
 
 

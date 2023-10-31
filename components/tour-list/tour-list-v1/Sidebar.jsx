@@ -43,13 +43,7 @@ const Sidebar = () => {
       </div>
       {/* End style filter */}
 
-      <div className="sidebar__item">
-        <h5 className="text-18 fw-500 mb-10">Languages</h5>
-        <div className="sidebar-checkbox">
-          <Languages />
-        </div>
-        {/* End Sidebar-checkbox */}
-      </div>
+      
       {/* End Aminities filter */}
     </>
   );
