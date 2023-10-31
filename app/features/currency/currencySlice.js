@@ -28,15 +28,18 @@ const currencyContent = [
   ];
 
   let currency =  currencyContent[9];
+
+  
   
   if(typeof window !== 'undefined'){
     console.log(sessionStorage.getItem('currency'));
     if(!sessionStorage.getItem('currency')){
-      sessionStorage.setItem('currency', currencyContent[9]);
+      console.log('h1');
+      sessionStorage.setItem('currency', JSON.stringify(currencyContent[9]));
     }else{
+      console.log('h2');
       currency = JSON.parse(sessionStorage.getItem('currency'));
     }
-
   }
 
 export const currencySlice = createSlice({
@@ -48,10 +51,24 @@ export const currencySlice = createSlice({
   reducers: {
     changeCurrency: (state, action) => {
       console.log(action.payload);
+      let data = action.payload;
+
+      const to = (data.currency)?.toLowerCase();
+
+      axios.get(`https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/inr.json`)
+        .then((res) => {
+          console.log(res)
+          const rates = res.data['inr'];
+          //currencyItem.rate = JSON.stringify(rates[to]);
+          data = {...data, rate:rates[to]};
+        });
+  
+
       if(typeof window !== 'undefined'){
-        sessionStorage.setItem('currency', JSON.stringify(action.payload));
+        sessionStorage.setItem('currency', JSON.stringify(data));
       }
-      state.selectedCurrency = action.payload;
+      state.selectedCurrency = data;
+  
     },
   },
 })
