@@ -19,6 +19,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import OrderSubmittedInfo from "./OrderSubmittedInfo";
 
 
 
@@ -34,6 +35,7 @@ const CustomerInfo = ({tour}) => {
 
   const [customerId, setCustomerId] = useState('');
   const [isCustomerRegistered, setIsCustomerRegistered] = useState(false);
+  const [orderPlaced, setOrderPlaced] = useState(false);
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -54,6 +56,8 @@ const CustomerInfo = ({tour}) => {
   const [zipcode, setZipcode] = useState('');
 
   const [loading, setLoading] = useState(true);
+  
+  const [loader, setLoader] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
 
   const [address, setAddress] = useState({
@@ -119,7 +123,8 @@ async function displayRazorpay() {
             //const result = await axios.post("https://pickmytours.com/payment/success", data);
 
             console.log(result);
-            alert("Your Payment Success");
+            //alert("Your Payment Success");
+            setOrderPlaced(true)
         },
         prefill: {
             name: firstName + ' ' + lastName,
@@ -420,7 +425,9 @@ async function displayRazorpay() {
       </>
       }
 
-      {isCustomerRegistered && <PaymentInfo tour={tour} firstName={firstName} lastName={lastName} email={email} phone={phone} address={address} customerId={customerId}/>}
+
+      {orderPlaced && <OrderSubmittedInfo firstName={firstName} lastName={lastName} email={email} phone={phone} address={address} amount={tour.price} />}
+
       {/* End .col-xl-7 */}
 
       
