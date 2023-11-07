@@ -44,7 +44,7 @@ const CustomerInfo = ({tour}) => {
   const [ConfirmPassword, setConfirmPassword] = useState('');
   const [phone, setPhone] = useState('');
   const [userRole, setUserRole] = useState('user');
-  const [errors, setErrors] = useState({ firstName: '', lastName:'', email: '', password: '', phoneNumber: '', userRole: '', photos: '' })
+  const [errors, setErrors] = useState({ firstName: '', lastName:'', email: '', password: '', phoneNumber: '', userRole: '', photos: '', address1: '', address2: '', city: '', state: '', country: '', zipcode: '' })
   const [photo, setPhoto] = useState(null);
   const [photos, setPhotos] = useState([]);
   const [images, setImages] = useState(null);
@@ -54,6 +54,8 @@ const CustomerInfo = ({tour}) => {
   const [state, setState] = useState('');
   const [city, setCity] = useState('');
   const [zipcode, setZipcode] = useState('');
+  const [country, setCountry] = useState('');
+  const [order, setOrder] = useState(null);
 
   const [loading, setLoading] = useState(true);
   
@@ -65,8 +67,25 @@ const CustomerInfo = ({tour}) => {
     state:'',
     city:'',
     line: '',
-    postalCode: '',
+    zipcode: '',
   });
+
+  
+  useEffect(() => {
+    setAddress({...address, city:city});
+  }, [city]);
+
+  useEffect(() => {
+    setAddress({...address, state:state});
+  }, [state]);
+
+  useEffect(() => {
+    setAddress({...address, zipcode:zipcode});
+  }, [zipcode]);
+
+  useEffect(() => {
+    setAddress({...address, country:country});
+  }, [country]);
 
   function loadScript(src) {
     return new Promise((resolve) => {
@@ -124,6 +143,7 @@ async function displayRazorpay() {
 
             console.log(result);
             //alert("Your Payment Success");
+            setOrder(result.data);
             setOrderPlaced(true)
         },
         prefill: {
@@ -211,16 +231,74 @@ async function displayRazorpay() {
     if (firstName.length == 0) {
       setErrors({ ...errors, name: ' Name can not be empty' });
       haveError = true;
-    } else if (email.length == 0) {
+    }else{
+      setErrors({ ...errors, name: '' });
+    } 
+    
+    if (email.length == 0) {
       setErrors({ ...errors, email: 'email is required' });
       haveError = true;
-    } else if (password.length == 0) {
+    }else{
+      setErrors({ ...errors, email: '' });
+    } 
+    
+    if (password.length == 0) {
       setErrors({ ...errors, password: 'password is required' });
       haveError = true;
-    } else if (phone.length < 10) {
+    }else{
+      setErrors({ ...errors, password: '' });
+    } 
+    
+    if (phone.length < 10) {
       setErrors({ ...errors, phone: 'phoneNumber is required' });
       haveError = true;
+    }else{
+      setErrors({ ...errors, phone: '' });
+    } 
+    
+    if (city == '') {
+      setErrors({ ...errors, city: ' City can not be empty' });
+      haveError = true;
+    }else{
+      setErrors({ ...errors, city: '' });
+    } 
+    
+    if (state.length == 0) {
+      setErrors({ ...errors, state: ' State can not be empty' });
+      haveError = true;
+    }else{
+      setErrors({ ...errors, state: '' });
+    } 
+    
+    if (country.length == 0) {
+      setErrors({ ...errors, country: ' Country can not be empty' });
+      haveError = true;
+    }else{
+      setErrors({ ...errors, country: '' });
+    } 
+    
+    if (zipcode.length == 0) {
+      setErrors({ ...errors, zipcode: ' ZipCode can not be empty' });
+      haveError = true;
+    } else{
+      setErrors({ ...errors, zipcode: '' });
     }
+    
+    if (address1.length == 0) {
+      setErrors({ ...errors, address1: ' Address1 can not be empty' });
+      haveError = true;
+    }else{
+      setErrors({ ...errors, address1: '' });
+    } 
+    
+    if (address2.length == 0) {
+      setErrors({ ...errors, address2: ' Address2 can not be empty' });
+      haveError = true;
+    }else{
+      setErrors({ ...errors, address2: '' });
+    }
+
+
     // } else if (userRole.length == 0) {
     //   setErrors({ ...errors, userRole: 'userRole is required' });
     //   haveError = true;
@@ -264,7 +342,7 @@ async function displayRazorpay() {
 
   return (
     <>
-      {!isCustomerRegistered && <><div className="col-xl-7 col-lg-8 mt-30">
+      {!orderPlaced && <><div className="col-xl-7 col-lg-8 mt-30">
         <div className="py-15 px-20 rounded-4 text-15 bg-blue-1-05">
           Sign in to book with your saved details or{" "}
           <Link href="/others-pages/signup" className="text-blue-1 fw-500">
@@ -387,6 +465,16 @@ async function displayRazorpay() {
           </div>
           {/* End col-12 */}
 
+          <div className="col-12">
+            <div className="form-input ">
+              <input type="text" required value={country} onChange={(event) =>setCountry(event.target.value)} />
+              <label className="lh-1 text-16 text-light-1">
+                Country
+              </label>
+              <span class="error">{errors && errors.country}</span>
+            </div>
+          </div>
+
           {/* <div className="col-12">
             <div className="form-input ">
               <textarea required rows={6} defaultValue={""} />
@@ -426,7 +514,7 @@ async function displayRazorpay() {
       }
 
 
-      {orderPlaced && <OrderSubmittedInfo firstName={firstName} lastName={lastName} email={email} phone={phone} address={address} amount={tour.price} />}
+      {orderPlaced && <OrderSubmittedInfo itinerary={tour?.itinerarys} tourId={tour?._id} firstName={firstName} lastName={lastName} email={email} phone={phone} address={address} order={order} />}
 
       {/* End .col-xl-7 */}
 
