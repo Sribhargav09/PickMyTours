@@ -1,5 +1,7 @@
 const express = require("express");
 var Razorpay = require('razorpay');
+const mailer = require('nodemailer');
+
 
 const razropayExpressRoute = express.Router();
 
@@ -78,6 +80,32 @@ razropayExpressRoute.post("/capture/:paymentId", (req, res, next) => {
          message: "Something Went Wrong",
        }); 
      }
+
+
+        // smtpProtocol = mailer.createTransport({
+        //   service: "Outlook",
+        //   auth: {
+        //     user: "admin@pickmytours.com",
+        //     pass: "TravelStories@9"
+        //   }
+        // });
+
+        // var mailoption = {
+        //   from: "admin@pickmytours.com",
+        //   to: req.body.email,
+        //   subject: "Your Trip Confrimed - Itineary details",
+        //   html: '<body style="background-color:grey"><p>The verificaiton code to verify your emil address to complete registraiton is as below</p><div><strong>' + req.body.code + '</strong></div></body>'
+        // }
+
+        // smtpProtocol.sendMail(mailoption, function (err, response) {
+        //   if (err) {
+        //     console.log(err);
+        //   }
+        //   //console.log('Message Sent' + response);
+        //   smtpProtocol.close();
+        // });
+
+
       console.log("Status:", response.statusCode);
       console.log("Headers:", JSON.stringify(response.headers));
       console.log("Response:", body);

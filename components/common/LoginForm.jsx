@@ -17,7 +17,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import signupServer from "../../services/signup.server";
 
 
-const LoginForm = () => {
+const LoginForm = ({ redirectTo = '', modal = false }) => {
   const [loader, setLoader] = useState(false);
   const [userToken, setUserToken] = useState(false);
 
@@ -30,17 +30,19 @@ const LoginForm = () => {
   const [errors, setErrors] = useState({ email: '', password: '', loginError: '' });
 
   useEffect(() => {
-    setLoader(true);
-    setUserToken(sessionStorage.getItem("token"));
-    setTimeout(() => {
-      setLoader(false);
-    if(!userToken){
-      Router.push("/others-pages/login");
-    }else{
-      Router.push("/");
+    if (!modal) {
+      setLoader(true);
+      setUserToken(sessionStorage.getItem("token"));
+      setTimeout(() => {
+        setLoader(false);
+        if (!userToken) {
+          Router.push("/others-pages/login");
+        } else {
+          Router.push("/");
+        }
+      }, 1200);
     }
-    }, 1200);
-  }, []);
+  }, [modal]);
 
   const validateEmailAddress = (emailAddress) => {
     var atSymbol = emailAddress.indexOf("@");
@@ -62,7 +64,7 @@ const LoginForm = () => {
 
   const vaidPhoneNumber = (inputtxt) => {
     var phoneno = /^\d{10}$/;
-    if (inputtxt.value.match(phoneno)){
+    if (inputtxt.value.match(phoneno)) {
       return true;
     }
     else {
@@ -83,14 +85,14 @@ const LoginForm = () => {
     } else {
 
       var check = {};
-      if(validateEmailAddress(email)){
-        check = {email, password}; 
-      }else if(vaidPhoneNumber(email)){
-        check = {phone:email, password}; 
+      if (validateEmailAddress(email)) {
+        check = { email, password };
+      } else if (vaidPhoneNumber(email)) {
+        check = { phone: email, password };
       }
 
       setLoader(true);
-    
+
       signupServer.login({ email, password })
         .then(response => {
           //Router.push("/vendor-dashboard/users")
@@ -103,20 +105,24 @@ const LoginForm = () => {
           dispatch(setToken(response.data.token));
           setTimeout(() => {
             setLoader(false);
-          
-            Router.push("/dashboard/db-booking");
+
+            if (!redirectTo) {
+              Router.push(redirectTo);
+            } else {
+              Router.push("/dashboard/db-booking");
+            }
 
           }, 1500);
         })
         .catch(e => {
-          
-          setTimeout(() => {
-          if (e && e.response.data && e.response.data.message) {
-            setErrors({ loginError: e.response.data.message });
-            window.scrollTo({ top: 100, behavior: "smooth" });
 
-          }
-          console.log(e);
+          setTimeout(() => {
+            if (e && e.response.data && e.response.data.message) {
+              setErrors({ loginError: e.response.data.message });
+              window.scrollTo({ top: 100, behavior: "smooth" });
+
+            }
+            console.log(e);
             //Router.push("/dashboard/db-booking");
             setLoader(false);
           }, 1200);
@@ -128,79 +134,79 @@ const LoginForm = () => {
 
   return (
     <>
-    <form className="row y-gap-20" >
-      <div className="col-12">
-        <h1 className="text-22 fw-500">Welcome back</h1>
-        <p className="mt-10">
-          Don&apos;t have an account yet?{" "}
-          <Link href="/others-pages/signup" className="text-blue-1">
-            Sign up for free
-          </Link>
-        </p>
-      </div>
-      {/* End .col */}
-
-      <span class="error col-12">{errors && errors.loginError}</span>
-
-      <div className="col-12">
-        <div className="form-input ">
-          <input type="text" value={email} onChange={(event) => setEmail(event.target.value)} required />
-          <label className="lh-1 text-14 text-light-1">Email or Phone number*</label>
+      <form className="row y-gap-20" >
+        <div className="col-12">
+          <h1 className="text-22 fw-500">Welcome back</h1>
+          <p className="mt-10">
+            Don&apos;t have an account yet?{" "}
+            <Link href="/others-pages/signup" className="text-blue-1">
+              Sign up for free
+            </Link>
+          </p>
         </div>
-      </div>
-      {/* End .col */}
-      <span class="error col-12">{errors && errors.email}</span>
+        {/* End .col */}
 
+        <span class="error col-12">{errors && errors.loginError}</span>
 
-      <div className="col-12">
-        <div className="form-input ">
-          <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} required />
-          <label className="lh-1 text-14 text-light-1">Password*</label>
+        <div className="col-12">
+          <div className="form-input ">
+            <input type="text" value={email} onChange={(event) => setEmail(event.target.value)} required />
+            <label className="lh-1 text-14 text-light-1">Email or Phone number*</label>
+          </div>
         </div>
-      </div>
-      {/* End .col */}
-      <span class="error col-12">{errors && errors.password}</span>
+        {/* End .col */}
+        <span class="error col-12">{errors && errors.email}</span>
 
 
-      <div className="col-12">
-        <a href="#" className="text-14 fw-500 text-blue-1 underline">
-          Forgot your password?
-        </a>
-      </div>
-      {/* End .col */}
+        <div className="col-12">
+          <div className="form-input ">
+            <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} required />
+            <label className="lh-1 text-14 text-light-1">Password*</label>
+          </div>
+        </div>
+        {/* End .col */}
+        <span class="error col-12">{errors && errors.password}</span>
 
-      <div className="col-12">
-        <button
-          type="button"
-          onClick={add}
-          className="button py-20 -dark-1 bg-blue-1 text-white w-100"
-        >
-          Sign In <div className="icon-arrow-top-right ml-15" />
-        </button>
-      </div>
-      {/* End .col */}
-      
-    </form>
-    
-    <Dialog
+
+        <div className="col-12">
+          <a href="#" className="text-14 fw-500 text-blue-1 underline">
+            Forgot your password?
+          </a>
+        </div>
+        {/* End .col */}
+
+        <div className="col-12">
+          <button
+            type="button"
+            onClick={() => add()}
+            className="button py-20 -dark-1 bg-blue-1 text-white w-100"
+          >
+            Sign In <div className="icon-arrow-top-right ml-15" />
+          </button>
+        </div>
+        {/* End .col */}
+
+      </form>
+
+      <Dialog
         open={loader}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
 
       >
         <DialogTitle id="alert-dialog-title">
-          
+
         </DialogTitle>
-        <DialogContent style={{ width: '100%', textAlign:'center' }}>
-        <Hourglass
-        visible={true}
-        height="80"
-        width="80"
-        ariaLabel="hourglass-loading"
-        wrapperStyle={{}}
-        wrapperClass=""
-        colors={['#306cce', '#72a1ed']}
-      />
+        <DialogContent style={{ width: '100%', textAlign: 'center' }}>
+          <Hourglass
+            visible={true}
+            height="80"
+            width="80"
+            ariaLabel="hourglass-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+            colors={['#306cce', '#72a1ed']}
+          />
         </DialogContent>
       </Dialog>
 
