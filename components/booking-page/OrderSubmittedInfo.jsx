@@ -1,7 +1,43 @@
-const OrderSubmittedInfo = ({firstName, lastName, email,  phone, address, amount=100}) => {
+import { useState, useEffect } from "react";
+
+import { Hourglass } from "react-loader-spinner";
+
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import orderService from "../../services/order.service";
+
+
+
+const OrderSubmittedInfo = ({tourId, itinerary, firstName, lastName, email,  phone, address, order}) => {
+
+  const [loader, setLoader] = useState(false);
+
+
+  useEffect(() => {
+
+    setLoader(true);
+
+  
+    orderService.create({ tourId, itinerary, firstName, lastName, email,  phone, city:address.city, state:address.state, country:address.country, zipcode:address.zipcode, orderId: order.id, amount: order.amount, currency: order.currency})
+    .then(response => {
+      consolelog(response);
+      setTimeout(() => {
+        setLoader(false);
+      }, 1500);
+    })
+    .catch(e => {
+      
+      setLoader(false);
+    });
+    
+  }, [tourId, firstName, lastName, email,  phone, address, order])
+
   return (
     <>
-      <div className="col-xl-8 col-lg-8">
+      <div className="col-xl-8 col-lg-8 row">
         <div className="order-completed-wrapper">
           <div className="d-flex flex-column items-center mt-40 lg:md-40 sm:mt-24">
             <div className="size-80 flex-center rounded-full bg-dark-3">
@@ -21,7 +57,7 @@ const OrderSubmittedInfo = ({firstName, lastName, email,  phone, address, amount
               <div className="col-lg-3 col-md-6">
                 <div className="text-15 lh-12">Order Number</div>
                 <div className="text-15 lh-12 fw-500 text-blue-1 mt-10">
-                  13119
+                  {order.id}
                 </div>
               </div>
               {/* End .col */}
@@ -35,7 +71,7 @@ const OrderSubmittedInfo = ({firstName, lastName, email,  phone, address, amount
               <div className="col-lg-3 col-md-6">
                 <div className="text-15 lh-12">Total</div>
                 <div className="text-15 lh-12 fw-500 text-blue-1 mt-10">
-                  Rs. {amount}
+                  {order.currency} {order.amount}
                 </div>
               </div>
               {/* End .col */}
@@ -144,6 +180,28 @@ const OrderSubmittedInfo = ({firstName, lastName, email,  phone, address, amount
           {/* End order information */}
         </div>
       </div>
+
+      <Dialog
+        open={loader}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+
+      >
+        <DialogTitle id="alert-dialog-title">
+          
+        </DialogTitle>
+        <DialogContent style={{ width: '100%', textAlign:'center' }}>
+        <Hourglass
+        visible={true}
+        height="80"
+        width="80"
+        ariaLabel="hourglass-loading"
+        wrapperStyle={{}}
+        wrapperClass=""
+        colors={['#306cce', '#72a1ed']}
+      />
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

@@ -34,23 +34,61 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Share from "../../dashboard/common/Share";
+import LoginForm from "../../../components/common/LoginForm";
+import wishlistService from "../../../services/wishlist.service";
 
 
 
 const TourSingleV1Dynamic = () => {
   const [isOpen, setOpen] = useState(false);
   const [isShare, setIsShare] = useState(false); 
+  const [isWish, setIsWish] = useState(false);
+  const [wishMsg, setWishMsg] = useState('');
   const router = useRouter();
   const [tour, setTour] = useState({});
   const [tourId, setTourId] = useState('');
   const id = router.query.id;
+  const [loginUser, setLoginUser] = useState(null);
 
   const [isSticky, setIsSticky] = useState(false);
   const [currentTab, setCurrentTab] = useState('Overview');
+  const [loader, setLoader] = useState(false);
+  const [addedToWishlist, setAddedToWishlist] = useState(false);
+
+
+  useEffect(() => {
+    setLoginUser(JSON.parse(sessionStorage.getItem("loginUser")));
+  }, []);
 
   const handleCloseShare = () => {
     const share = isShare;
     setIsShare(!share);
+  }
+
+  const handleCloseWish = () => {
+    const wish = isWish;
+    
+    if(loginUser){
+      setLoader(true);
+        console.log(loginUser);
+        
+      wishlistService.create({ tourId, userId:loginUser._id})
+        .then(response => {
+          consolelog(response);
+        })
+        .catch(e => {
+          
+          setLoader(false);
+        });
+
+        
+        setLoader(false);
+        setAddedToWishlist(true);
+        setWishMsg("Added ths tour to your wish list Succesfully!");
+        setIsWish(!wish);
+        
+    }
+    
   }
 
   const getFieldsData = (field) => {
@@ -227,7 +265,7 @@ const TourSingleV1Dynamic = () => {
               <h1 className="text-30 fw-600">{tour?.name}</h1>
               <div className="row x-gap-20 y-gap-20 items-center pt-10">
                 <div className="col-auto">
-                  <div className="d-flex items-center">
+                  <a href="#reviews" className="d-flex items-center">
                     <div className="d-flex x-gap-5 items-center">
                       <i className="icon-star text-10 text-yellow-1"></i>
 
@@ -241,9 +279,9 @@ const TourSingleV1Dynamic = () => {
                     </div>
 
                     <div className="text-14 text-light-1 ml-10">
-                      {tour?.rating} reviews
+                      <a >{tour?.rating} reviews</a>
                     </div>
-                  </div>
+                  </a>
                 </div>
 
                 <div className="col-auto">
@@ -281,10 +319,14 @@ const TourSingleV1Dynamic = () => {
                 </div>
 
                 <div className="col-auto">
-                  <button className="button px-15 py-10 -blue-1 bg-light-2">
+                  {!addedToWishlist && <button onClick={handleCloseWish} className={"button px-15 py-10 -blue-1 bg-light-2"}>
                     <i className="icon-heart mr-10"></i>
                     Save
-                  </button>
+                  </button>}
+
+                  {addedToWishlist && <button onClick={handleCloseWish} className={"button px-15 py-10 -red-1"}>
+                    <i style={{color:'red'}} className="icon-heart mr-10"></i>
+                  </button>}
                 </div>
               </div>
             </div>
@@ -519,7 +561,7 @@ const TourSingleV1Dynamic = () => {
 
       {/* End Faq about sections */}
 
-      <section className="mt-40 border-top-light pt-40">
+      <section id="reviews" className="mt-40 border-top-light pt-40">
         <div className="container">
           <div className="row y-gap-40 justify-between">
             <div className="col-xl-3">
@@ -597,6 +639,18 @@ const TourSingleV1Dynamic = () => {
         </DialogTitle>
         <DialogContent style={{ width: '600px' }}>
           <Share title="Pick My Tours" shareUrl={'https://pickmytours.com/tour/tour-single/'+tour._id} />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={isWish}
+        onClose={handleCloseWish}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+
+      >
+        <DialogContent style={{ width: '600px' }}>
+            {sessionStorage.getItem("loginUser") ? wishMsg : <LoginForm modal={true} redirectTo={"/tour/tour-single/"+tour._id}/>}
         </DialogContent>
       </Dialog>
     </>

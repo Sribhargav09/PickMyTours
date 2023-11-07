@@ -36,6 +36,8 @@ const reviewRoute = require("./routes/review.route");
 const testinomialRoute = require("./routes/testinomial.route");
 const enquieryRoute = require("./routes/enquiery.route");
 const razropayRoute = require("./routes/razropay.route");
+const ordersRoute = require("./routes/orders.route");
+const wishlistRoute = require("./routes/wishlist.route");
 
 
 
@@ -59,6 +61,8 @@ app.use("/", reviewRoute);
 app.use("/", testinomialRoute);
 app.use("/", razropayRoute);
 app.use("/", enquieryRoute);
+app.use("/", ordersRoute);
+app.use("/", wishlistRoute);
 
 
 app.use(express.static(__dirname +'/public'));
