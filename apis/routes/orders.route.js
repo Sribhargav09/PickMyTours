@@ -70,10 +70,16 @@ ordersExpressRoute.post("/create-order",  (req, res, next) => {
       req.body.itinerary = '';
 
     
-      for(var index = 0; index<itinerary.length; index++){
-        const element = itinerary[index];
+      itinerary.forEach((element, index) => {
         ItinearyTxt += '<p><h1>Day '+index+'</h1><h3>'+element.name+'</h3><p>'+element.details+'</p><div><strong>Duration:-</strong>'+element.duration+'</div></p>';
-      }
+      });
+
+      const emailTemplatePath = path.join(__dirname, 'itinerary-email-template.html');
+    const emailTemplate = fs.readFileSync(emailTemplatePath, 'utf8');
+
+  const htmlEmail = emailTemplate
+    .replace('{name}', req.body.firstName+" "+req.body.lastName)
+    .replace('{tourDetails}', ItinearyTxt);
 
       //console.log(ItinearyTxt);
 
@@ -81,7 +87,7 @@ ordersExpressRoute.post("/create-order",  (req, res, next) => {
         from: "admin@pickmytours.com",
         to: req.body.email,
         subject: "Your Tour Confirmed",
-        html: '<body style="background-color:grey"><p>Your tour Itinerary details are below</p>'+ItinearyTxt+'</body>'
+        html: htmlEmail
       }
     
       smtpProtocol.sendMail(mailoption, function (err, response) {
