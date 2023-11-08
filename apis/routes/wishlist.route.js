@@ -62,9 +62,9 @@ var corsOptionsDelegate = function (req, callback) {
 
 // Get users
 wishlistExpressRoute
-  .route("/get", cors(corsOptionsDelegate))
+  .route("/getWishList/:id")
   .get(async (req, res, next) => {
-    await UserSchema.find()
+    await wishListSchema.find({"tourId": req.params.id})
       .then((result) => {
         res.json({
           data: result,

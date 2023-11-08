@@ -1,5 +1,8 @@
 const express = require("express");
 const mailer = require('nodemailer');
+const fs = require('fs');
+const path = require('path');
+
 
 const ordersExpressRoute = express.Router();
 let uuidv4 = require('uuid/v4'),
@@ -66,12 +69,12 @@ ordersExpressRoute.post("/create-order",  (req, res, next) => {
 
       let ItinearyTxt = '';
 
-      const itinerary = req.body.itinerary;
+      const itinerary = JSON.parse(req.body.itinerary);
       req.body.itinerary = '';
 
     
       itinerary.forEach((element, index) => {
-        ItinearyTxt += '<p><h1>Day '+index+'</h1><h3>'+element.name+'</h3><p>'+element.details+'</p><div><strong>Duration:-</strong>'+element.duration+'</div></p>';
+        ItinearyTxt += '<p><h1>Day '+(index + 1)+'</h1><h3>'+element.name+'</h3><p>'+element.details+'</p><div><strong>Duration:-</strong>'+element.duration+'</div></p>';
       });
 
       const emailTemplatePath = path.join(__dirname, 'itinerary-email-template.html');

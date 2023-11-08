@@ -27,6 +27,7 @@ const DateSearch = ({value, setValue}) => {
         rangeHover
         format="MMMM DD"
         minDate={new Date()}
+        placeholder="Select Travel Dates"
       />
     </div>
   );
