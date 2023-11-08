@@ -9,7 +9,7 @@ let ordersSchema = new Schema(
       type: String,
     },
     itinerary: {
-      type: String,
+      type: Array,
     },
     amount: {
       type: String,
