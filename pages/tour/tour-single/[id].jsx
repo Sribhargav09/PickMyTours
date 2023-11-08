@@ -60,6 +60,25 @@ const TourSingleV1Dynamic = () => {
     setLoginUser(JSON.parse(sessionStorage.getItem("loginUser")));
   }, []);
 
+
+  useEffect(() => {
+    console.log(tourId);
+    if(tourId !== '' && loginUser){
+    wishlistService.getByTourId(tourId)
+        .then(response => {
+          response.data.data.forEach((wdata) => {
+            if(wdata.userId === loginUser._id){
+              setAddedToWishlist(true);
+            }
+          })
+        })
+        .catch(e => {
+          
+          setLoader(false);
+        });
+      }
+  }, [tourId, loginUser]);
+
   const handleCloseShare = () => {
     const share = isShare;
     setIsShare(!share);
@@ -87,6 +106,9 @@ const TourSingleV1Dynamic = () => {
         setWishMsg("Added ths tour to your wish list Succesfully!");
         setIsWish(!wish);
         
+    }else{
+      setLoader(false);
+      setIsWish(!wish);
     }
     
   }
@@ -324,9 +346,8 @@ const TourSingleV1Dynamic = () => {
                     Save
                   </button>}
 
-                  {addedToWishlist && <button onClick={handleCloseWish} className={"button px-15 py-10 -red-1"}>
-                    <i style={{color:'red'}} className="icon-heart mr-10"></i>
-                  </button>}
+                  {addedToWishlist &&
+                    <i style={{color:'red'}} className="icon-heart mr-10"></i>}
                 </div>
               </div>
             </div>
@@ -649,8 +670,14 @@ const TourSingleV1Dynamic = () => {
         aria-describedby="alert-dialog-description"
 
       >
+      <DialogTitle id="alert-dialog-title">
+          <div class="d-flex justify-content-between">
+          <div>{"Add to Wish List"}</div>
+          <i style={{cursor: 'pointer'}} onClick={handleCloseWish} class="icon-close"></i>
+          </div>
+        </DialogTitle>
         <DialogContent style={{ width: '600px' }}>
-            {sessionStorage.getItem("loginUser") ? wishMsg : <LoginForm modal={true} redirectTo={"/tour/tour-single/"+tour._id}/>}
+            {loginUser ? wishMsg : <LoginForm modal={true} redirectTo={"/tour/tour-single/"+tour._id}/>}
         </DialogContent>
       </Dialog>
     </>

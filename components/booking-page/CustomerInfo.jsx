@@ -142,6 +142,7 @@ async function displayRazorpay() {
             //const result = await axios.post("https://pickmytours.com/payment/success", data);
 
             console.log(result);
+            paymentObject.close();
             //alert("Your Payment Success");
             setOrder(result.data);
             setOrderPlaced(true)
@@ -228,79 +229,88 @@ async function displayRazorpay() {
 
   const addUser = () => {
     let haveError = false;
-    if (firstName.length == 0) {
-      setErrors({ ...errors, name: ' Name can not be empty' });
+    let errs = errors;
+    if (firstName == '') {
+      errs = { ...errs, firstName: 'First Name can not be empty' };
       haveError = true;
     }else{
-      setErrors({ ...errors, name: '' });
+      errs = { ...errs, firstName: '' };
+    } 
+
+    if (lastName == '') {
+      errs = { ...errs, lastName: 'Last Name can not be empty' };
+      haveError = true;
+    }else{
+      errs = { ...errs, lastName: '' };
     } 
     
     if (email.length == 0) {
-      setErrors({ ...errors, email: 'email is required' });
+      errs = { ...errs, email: 'email is required' };
       haveError = true;
     }else{
-      setErrors({ ...errors, email: '' });
+      errs = { ...errs, email: '' };
     } 
     
     if (password.length == 0) {
-      setErrors({ ...errors, password: 'password is required' });
+      errs = { ...errs, password: 'password is required' };
       haveError = true;
     }else{
-      setErrors({ ...errors, password: '' });
+      errs = { ...errs, password: '' };
     } 
     
     if (phone.length < 10) {
-      setErrors({ ...errors, phone: 'phoneNumber is required' });
+      errs = { ...errs, phone: 'phoneNumber is required' };
       haveError = true;
     }else{
-      setErrors({ ...errors, phone: '' });
+      errs = { ...errs, phone: '' };
     } 
     
     if (city == '') {
-      setErrors({ ...errors, city: ' City can not be empty' });
+      errs = { ...errs, city: ' City can not be empty' };
       haveError = true;
     }else{
-      setErrors({ ...errors, city: '' });
+      errs = { ...errs, city: '' };
     } 
     
     if (state.length == 0) {
-      setErrors({ ...errors, state: ' State can not be empty' });
+      errs = { ...errs, state: ' State can not be empty' };
       haveError = true;
     }else{
-      setErrors({ ...errors, state: '' });
+      errs = { ...errs, state: '' };
     } 
     
     if (country.length == 0) {
-      setErrors({ ...errors, country: ' Country can not be empty' });
+      errs = { ...errs, country: ' Country can not be empty' };
       haveError = true;
     }else{
-      setErrors({ ...errors, country: '' });
+      errs = { ...errs, country: '' };
     } 
     
     if (zipcode.length == 0) {
-      setErrors({ ...errors, zipcode: ' ZipCode can not be empty' });
+      errs = { ...errs, zipcode: ' ZipCode can not be empty' };
       haveError = true;
     } else{
-      setErrors({ ...errors, zipcode: '' });
+      errs = { ...errs, zipcode: '' };
     }
     
     if (address1.length == 0) {
-      setErrors({ ...errors, address1: ' Address1 can not be empty' });
+      errs = { ...errs, address1: ' Address1 can not be empty' };
       haveError = true;
     }else{
-      setErrors({ ...errors, address1: '' });
+      errs = { ...errs, address1: '' };
     } 
     
     if (address2.length == 0) {
-      setErrors({ ...errors, address2: ' Address2 can not be empty' });
+      errs = { ...errs, address2: ' Address2 can not be empty' };
       haveError = true;
     }else{
-      setErrors({ ...errors, address2: '' });
+      errs = { ...errs, address2: '' };
     }
 
+    setErrors(errs);
 
     // } else if (userRole.length == 0) {
-    //   setErrors({ ...errors, userRole: 'userRole is required' });
+    //   errs = { ...errs, userRole: 'userRole is required' });
     //   haveError = true;
     // }
 
@@ -361,35 +371,43 @@ async function displayRazorpay() {
             <div className="form-input ">
               <input type="text" value={firstName} onChange={(event) => setFirstName(event.target.value)} required />
               <label className="lh-1 text-16 text-light-1">First Name</label>
-              <span class="error">{errors && errors.firstName}</span>
             </div>
+            
+            <span style={{display: 'block'}} class="error">{errors && errors.firstName}</span>
           </div>
 
           <div className="col-6">
             <div className="form-input ">
               <input type="text" value={lastName} onChange={(event) => setLastName(event.target.value)} required />
               <label className="lh-1 text-16 text-light-1">Last Name</label>
-              <span class="error">{errors && errors.lastName}</span>
             </div>
+            
+          <span style={{display: 'block'}} class="error">{errors && errors.lastName}</span>
           </div>
+          
           {/* End col-12 */}
 
           <div className="col-md-6">
             <div className="form-input ">
               <input type="text" value={email} onChange={(event) =>setEmail(event.target.value)} required />
               <label className="lh-1 text-16 text-light-1">Email</label>
-              <span class="error">{errors && errors.email}</span>
             </div>
+            
+          <span style={{display: 'block'}} class="error">{errors && errors.email}</span>
           </div>
+
+          
           {/* End col-12 */}
 
           <div className="col-md-6">
             <div className="form-input ">
               <input type="text" autoComplete="off" value={phone} onChange={(event) =>setPhone(event.target.value)} required />
               <label className="lh-1 text-16 text-light-1">Phone Number</label>
-              <span class="error">{errors && errors.phone}</span>
             </div>
+            
+          <span style={{display: 'block'}} class="error">{errors && errors.phone}</span>
           </div>
+          
           {/* End col-12 */}
 
 
@@ -397,18 +415,22 @@ async function displayRazorpay() {
             <div className="form-input ">
               <input type="password" autoComplete="off" value={password} onChange={(event) =>setPassword(event.target.value)} required />
               <label className="lh-1 text-16 text-light-1">Password</label>
-              <span class="error">{errors && errors.password}</span>
             </div>
+            
+          <span style={{display: 'block'}} class="error">{errors && errors.password}</span>
           </div>
+          
           {/* End col-12 */}
 
           <div className="col-md-6">
             <div className="form-input ">
               <input type="password"autoComplete="off" value={ConfirmPassword} onChange={(event) =>setConfirmPassword(event.target.value)} required />
               <label className="lh-1 text-16 text-light-1">Confirm Password</label>
-              <span class="error">{errors && errors.conformpassword}</span>
             </div>
+            
+          <span style={{display: 'block'}} class="error">{errors && errors.conformpassword}</span>
           </div>
+          
           {/* End col-12 */}
 
           <div className="col-12">
@@ -417,8 +439,9 @@ async function displayRazorpay() {
               <label className="lh-1 text-16 text-light-1">
                 Address line 1
               </label>
-              <span class="error">{errors && errors.address1}</span>
             </div>
+            
+            <span style={{display: 'block'}} class="error">{errors && errors.address1}</span>
           </div>
           {/* End col-12 */}
 
@@ -428,8 +451,9 @@ async function displayRazorpay() {
               <label className="lh-1 text-16 text-light-1">
                 Address line 2
               </label>
-              <span class="error">{errors && errors.address2}</span>
             </div>
+            
+            <span style={{display: 'block'}} class="error">{errors && errors.address2}</span>
           </div>
           {/* End col-12 */}
 
@@ -439,8 +463,9 @@ async function displayRazorpay() {
               <label className="lh-1 text-16 text-light-1">
                 State
               </label>
-              <span class="error">{errors && errors.state}</span>
             </div>
+            
+            <span style={{display: 'block'}} class="error">{errors && errors.state}</span>
           </div>
 
           <div className="col-md-4">
@@ -449,8 +474,9 @@ async function displayRazorpay() {
               <label className="lh-1 text-16 text-light-1">
                 City
               </label>
-              <span class="error">{errors && errors.city}</span>
             </div>
+            
+            <span style={{display: 'block'}} class="error">{errors && errors.city}</span>
           </div>
           {/* End col-12 */}
 
@@ -460,8 +486,9 @@ async function displayRazorpay() {
               <label className="lh-1 text-16 text-light-1">
                 ZIP code/Postal code
               </label>
-              <span class="error">{errors && errors.zipcode}</span>
             </div>
+            
+            <span style={{display: 'block'}} class="error">{errors && errors.zipcode}</span>
           </div>
           {/* End col-12 */}
 
@@ -471,8 +498,9 @@ async function displayRazorpay() {
               <label className="lh-1 text-16 text-light-1">
                 Country
               </label>
-              <span class="error">{errors && errors.country}</span>
             </div>
+            
+            <span style={{display: 'block'}} class="error">{errors && errors.country}</span>
           </div>
 
           {/* <div className="col-12">

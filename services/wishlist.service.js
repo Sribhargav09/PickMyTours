@@ -5,6 +5,10 @@ class WishlistDataService {
     console.log(data);
     return http2.post("/addtowishlist", data);
   }
+
+  getByTourId(id) {
+    return http2.get(`/getWishList/${id}`);
+  }
 }
 
 export default new WishlistDataService();
