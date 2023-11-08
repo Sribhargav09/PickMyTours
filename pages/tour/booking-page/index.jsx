@@ -1,6 +1,5 @@
 import CallToActions from "../../../components/common/CallToActions";
 import Seo from "../../../components/common/Seo";
-import Header11 from "../../../components/header/header-11";
 import DefaultFooter from "../../../components/footer/default";
 import StepperBooking from "../../../components/booking-page/stepper-booking";
 import { useRouter } from "next/router";
@@ -48,9 +47,6 @@ const index = () => {
 
 
   return (
-    // <Elements stripe={stripePromise} options={options}>
-    //   <CheckoutForm />
-    // </Elements>
     <>
       <Seo pageTitle="Tour Booking Page" />
       {/* End Page Title */}

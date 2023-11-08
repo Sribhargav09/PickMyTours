@@ -81,6 +81,7 @@ const AutoComplete = ({ setLocation, data }) => {
         onChange={handleChange}
         onClick={handleChange}
         onKeyDown={handleKeyDown}
+        placeholder={'Enter Location'}
       />
       {suggestionsActive && <Suggestions />}
     </div>
