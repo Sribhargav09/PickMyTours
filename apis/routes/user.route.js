@@ -136,19 +136,19 @@ userExpressRoute.post("/create-user", upload.fields([{ name: 'photo', maxCount: 
             smtpProtocol.close();
           });
 
-          // client.messages
-          //   .create({
-          //     from: process.env.TWILIO_PHONE_NUMBER,
-          //     from: TWILIO_PHONE_NUMBER,
-          //     to: req.body.phone,
-          //     body: "Your verfication code is "+otp
-          //   })
-          //   .then(() => {
-          //     res.send(JSON.stringify({ success: true }));
-          //   })
-          //   .catch(err => {
-          //     res.send(JSON.stringify({ success: false }));
-          //   });
+          client.messages
+            .create({
+              from: process.env.TWILIO_PHONE_NUMBER,
+              from: TWILIO_PHONE_NUMBER,
+              to: req.body.phone,
+              body: "Your verfication code is "+otp
+            })
+            .then(() => {
+              res.send(JSON.stringify({ success: true }));
+            })
+            .catch(err => {
+              res.send(JSON.stringify({ success: false }));
+            });
 
 
         
@@ -180,6 +180,41 @@ userExpressRoute.post("/verify", (req, res) => {
         data: result,
         msg: "Data successfully updated.",
       });
+
+      const emailTemplatePath = path.join(__dirname, 'signup-email-template.html');
+      const emailTemplate = fs.readFileSync(emailTemplatePath, 'utf8');
+  
+      const htmlEmail = emailTemplate
+      .replace('{name}', req.body.firstName+" "+req.body.lastName)
+      .replace('{email}', req.body.email)
+      .replace('{password}', req.body.password);
+  
+
+      smtpProtocol = mailer.createTransport({
+        service: "Outlook",
+        auth: {
+          user: "admin@pickmytours.com",
+          pass: "TravelStories@9"
+        }
+      });
+
+      var otp = req.body.code;
+
+      var mailoption = {
+        from: "admin@pickmytours.com",
+        to: req.body.email,
+        subject: "Veriy your Email Address - PickMyTours",
+        html: htmlEmail
+      }
+
+      smtpProtocol.sendMail(mailoption, function (err, response) {
+        if (err) {
+          console.log(err);
+        }
+        //console.log('Message Sent' + response);
+        smtpProtocol.close();
+      });
+
     })
     .catch((err) => {
       console.log(err);

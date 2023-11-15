@@ -28,6 +28,18 @@ const CustomerInfo = ({tour}) => {
   const selectedCurrency = useSelector((state) => state.currency.selectedCurrency);
   const [currency, setCurrency] = useState(selectedCurrency);
 
+  
+  const [loginUser, setLoginUser] = useState(null);
+  const [userToken, setUserToken] = useState("");
+
+  //const loginUser = useSelector((state) => state.user.loginUser);
+  //const userToken = useSelector((state) => state.user.token);
+
+  useEffect(() => {
+    setLoginUser(JSON.parse(sessionStorage.getItem("loginUser")));
+    setUserToken(sessionStorage.getItem("token"));
+  }, []);
+
   useEffect(() => {
     setCurrency(selectedCurrency);
   }, [selectedCurrency])
@@ -542,7 +554,7 @@ async function displayRazorpay() {
       }
 
 
-      {orderPlaced && <OrderSubmittedInfo itinerary={tour?.itinerarys} tourId={tour?._id} firstName={firstName} lastName={lastName} email={email} phone={phone} address={address} order={order} />}
+      {orderPlaced && <OrderSubmittedInfo user={loginUser} itinerary={tour?.itinerarys} tourId={tour?._id} firstName={firstName} lastName={lastName} email={email} phone={phone} address={address} order={order} />}
 
       {/* End .col-xl-7 */}
 

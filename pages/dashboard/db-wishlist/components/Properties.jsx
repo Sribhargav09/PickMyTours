@@ -1,27 +1,52 @@
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { hotelsData } from "../../../../data/hotels";
+import { useSelector, useDispatch } from "react-redux";
 
-const Properties = () => {
+
+const Properties = ({ tours }) => {
+
+  const selectedCurrency = useSelector((state) => state.currency.selectedCurrency);
+  const [currency, setCurrency] = useState(selectedCurrency);
+
+  useEffect(() => {
+    setCurrency(selectedCurrency);
+  }, [selectedCurrency])
+
+
+
+  const [loginUser, setLoginUser] = useState(null);
+  const [userToken, setUserToken] = useState("");
+
+  //const loginUser = useSelector((state) => state.user.loginUser);
+  //const userToken = useSelector((state) => state.user.token);
+
+  useEffect(() => {
+    setLoginUser(JSON.parse(sessionStorage.getItem("loginUser")));
+    setUserToken(sessionStorage.getItem("token"));
+  }, []);
+
+
   return (
     <>
-      {hotelsData.slice(0, 5).map((item) => (
+      {tours.map((item) => (
         <div className="col-12" key={item.id}>
           <div className="row x-gap-20 y-gap-30">
             <div className="col-md-auto">
               <div className="cardImage ratio ratio-1:1 w-200 md:w-1/1 rounded-4">
                 <div className="cardImage__content">
-                  <Image
+                  <img
                     width={200}
                     height={200}
                     className="rounded-4 col-12 js-lazy"
-                    src={item.img}
+                    src={item.featurePhoto[0]}
                     alt="image"
                   />
                 </div>
                 <div className="cardImage__wishlist">
-                  <button className="button -blue-1 bg-white size-30 rounded-full shadow-2">
+                  {/* <button className="button -blue-1 bg-white size-30 rounded-full shadow-2">
                     <i className="icon-heart text-12" />
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>
@@ -40,25 +65,30 @@ const Properties = () => {
               <div className="row x-gap-10 y-gap-10 items-center pt-20">
                 <div className="col-auto">
                   <p className="text-14">
-                    Westminster Borough, London
-                    <button
+                    {item?.location}
+                    {/* <button
                       data-x-click="mapFilter"
                       className="text-blue-1 underline ml-10"
                     >
                       Show on map
-                    </button>
+                    </button> */}
                   </p>
                 </div>
                 <div className="col-auto">
                   <div className="size-3 rounded-full bg-light-1" />
                 </div>
                 <div className="col-auto">
-                  <p className="text-14">2 km to city center</p>
+                  {/* <p className="text-14">2 km to city center</p> */}
                 </div>
               </div>
               {/* End .row */}
 
               <div className="row x-gap-10 y-gap-10 pt-20">
+                {item?.name}
+                <p>{(item?.description).substring(0, 200)}...</p>
+              </div>
+
+              {/* <div className="row x-gap-10 y-gap-10 pt-20">
                 <div className="col-auto">
                   <div className="border-light rounded-100 py-5 px-20 text-14 lh-14">
                     Breakfast
@@ -79,7 +109,7 @@ const Properties = () => {
                     Bar
                   </div>
                 </div>
-              </div>
+              </div> */}
               {/* End .row */}
             </div>
             {/* End col */}
@@ -88,9 +118,9 @@ const Properties = () => {
               <div className="d-flex flex-column justify-between h-full">
                 <div className="row x-gap-10 y-gap-10 justify-end items-center md:justify-start">
                   <div className="col-auto">
-                    <div className="text-14 lh-14 fw-500">Exceptional</div>
-                    <div className="text-14 lh-14 text-light-1">
-                      3,014 reviews
+                    <div className="pt-24">
+                      <div className="fw-500">Starting from</div>
+                      <span className="fw-500 text-blue-1">{currency.symbol}{(item?.price * currency.rate).toFixed(2)}</span>
                     </div>
                   </div>
                   <div className="col-auto">
@@ -99,10 +129,7 @@ const Properties = () => {
                     </div>
                   </div>
                 </div>
-                <div className="pt-24">
-                  <div className="fw-500">Starting from</div>
-                  <span className="fw-500 text-blue-1">US$72</span> / night
-                </div>
+
               </div>
             </div>
             {/* End col */}

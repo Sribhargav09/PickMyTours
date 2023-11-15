@@ -17,6 +17,9 @@ let userSchema = new Schema(
     phone: {
         type: String
     },
+    dob: {
+      type: String
+    },
     role: {
       type: String
     },
@@ -24,6 +27,24 @@ let userSchema = new Schema(
       type: Array
     },
     code: {
+      type: String
+    },
+    about: {
+      type: String
+    },
+    address1: {
+      type: String
+    },
+    address2: {
+      type: String
+    },
+    city: {
+      type: String
+    },
+    state: {
+      type: String
+    },
+    zipcode: {
       type: String
     },
     active: {

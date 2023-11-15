@@ -4,6 +4,7 @@ import Header from "../../../components/header";
 import Footer from "../common/Footer";
 import WishlistTable from "./components/WishlistTable";
 
+
 const index = () => {
 
   return (
@@ -29,7 +30,7 @@ const index = () => {
               <div className="col-12">
                 <h1 className="text-30 lh-14 fw-600">Wishlist</h1>
                 <div className="text-15 text-light-1">
-                  Lorem ipsum dolor sit amet, consectetur.
+                  All your Wish List.
                 </div>
               </div>
               {/* End .col-12 */}

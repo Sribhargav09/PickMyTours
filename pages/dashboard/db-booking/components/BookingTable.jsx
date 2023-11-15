@@ -1,23 +1,87 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Pagination from "../../common/Pagination";
 import ActionsButton from "../components/ActionsButton";
+import orderService from "../../../../services/order.service";
+import tourService from "../../../../services/tour.service";
+import { useSelector, useDispatch } from "react-redux";
+
 
 const BookingTable = () => {
   const [activeTab, setActiveTab] = useState(0);
+  
+
+  const selectedCurrency = useSelector((state) => state.currency.selectedCurrency);
+  const [currency, setCurrency] = useState(selectedCurrency);
+
+  useEffect(() => {
+    setCurrency(selectedCurrency);
+  }, [selectedCurrency])
+
+
+  
+  const [bookingTours, setBookingTours] = useState([]);
+  const [bookings, setBookings] = useState([]);
+
+
+  
+  const [loginUser, setLoginUser] = useState(null);
+  const [userToken, setUserToken] = useState("");
+
+  //const loginUser = useSelector((state) => state.user.loginUser);
+  //const userToken = useSelector((state) => state.user.token);
+
+  useEffect(() => {
+    setLoginUser(JSON.parse(sessionStorage.getItem("loginUser")));
+    setUserToken(sessionStorage.getItem("token"));
+  }, []);
 
   const handleTabClick = (index) => {
     setActiveTab(index);
   };
 
+  useEffect(() => {
+    if(bookings){
+    tourService.getAll()
+      .then(response => {
+       const bts = [];
+       response.data.data.forEach((t) => {
+            const bnks = bookings.filter((bt) => bt.tourId === t._id);
+            if(bnks && bnks.length > 0){
+              bts.push(t);
+            }
+        });
+        console.log(bts)
+        setBookingTours(bts);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }
+  }, [bookings])
+
+  useEffect(() => {
+    if(loginUser){
+    orderService.getBookings(loginUser._id)
+      .then(response => {
+        console.log(response.data.data)
+        setBookings(response.data.data);
+        
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }
+  }, [loginUser])
+
   const tabItems = [
-    "All Booking",
-    "Completed",
-    "Processing",
-    "Confirmed",
-    "Cancelled",
-    "Paid",
-    "Unpaid",
-    "Partial Payment",
+    "All Bookings",
+    // "Completed",
+    // "Processing",
+    // "Confirmed",
+    // "Cancelled",
+    // "Paid",
+    // "Unpaid",
+    // "Partial Payment",
   ];
 
   return (
@@ -57,17 +121,19 @@ const BookingTable = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>Hotel</td>
-                    <td>The May Fair Hotel</td>
-                    <td>04/04/2022</td>
+                  {bookingTours && bookingTours.map((bt) => {
+                  return <tr>
+                    <td>{bt.type}</td>
+                    <td>{bt.name}</td>
+                    <td>** 04/04/2022</td>
                     <td className="lh-16">
                       Check in : 05/14/2022
                       <br />
                       Check out : 05/29/2022
                     </td>
-                    <td className="fw-500">$130</td>
-                    <td>$0</td>
+                    <td className="fw-500">{currency.symbol}{(bt?.price * currency.rate).toFixed(2)}
+</td>
+                    <td>Yes</td>
                     <td>$35</td>
                     <td>
                       <span className="rounded-100 py-4 px-10 text-center text-14 fw-500 bg-yellow-4 text-yellow-3">
@@ -78,90 +144,7 @@ const BookingTable = () => {
                       <ActionsButton />
                     </td>
                   </tr>
-                  <tr>
-                    <td>Hotel</td>
-                    <td>The May Fair Hotel</td>
-                    <td>04/04/2022</td>
-                    <td className="lh-16">
-                      Check in : 05/14/2022
-                      <br />
-                      Check out : 05/29/2022
-                    </td>
-                    <td className="fw-500">$130</td>
-                    <td>$0</td>
-                    <td>$35</td>
-                    <td>
-                      <span className="rounded-100 py-4 px-10 text-center text-14 fw-500 bg-blue-1-05 text-blue-1">
-                        Confirmed
-                      </span>
-                    </td>
-                    <td>
-                      <ActionsButton />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Hotel</td>
-                    <td>The May Fair Hotel</td>
-                    <td>04/04/2022</td>
-                    <td className="lh-16">
-                      Check in : 05/14/2022
-                      <br />
-                      Check out : 05/29/2022
-                    </td>
-                    <td className="fw-500">$130</td>
-                    <td>$0</td>
-                    <td>$35</td>
-                    <td>
-                      <span className="rounded-100 py-4 px-10 text-center text-14 fw-500 bg-red-3 text-red-2">
-                        Rejected
-                      </span>
-                    </td>
-                    <td>
-                      <ActionsButton />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Hotel</td>
-                    <td>The May Fair Hotel</td>
-                    <td>04/04/2022</td>
-                    <td className="lh-16">
-                      Check in : 05/14/2022
-                      <br />
-                      Check out : 05/29/2022
-                    </td>
-                    <td className="fw-500">$130</td>
-                    <td>$0</td>
-                    <td>$35</td>
-                    <td>
-                      <span className="rounded-100 py-4 px-10 text-center text-14 fw-500 bg-blue-1-05 text-blue-1">
-                        Confirmed
-                      </span>
-                    </td>
-                    <td>
-                      <ActionsButton />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Hotel</td>
-                    <td>The May Fair Hotel</td>
-                    <td>04/04/2022</td>
-                    <td className="lh-16">
-                      Check in : 05/14/2022
-                      <br />
-                      Check out : 05/29/2022
-                    </td>
-                    <td className="fw-500">$130</td>
-                    <td>$0</td>
-                    <td>$35</td>
-                    <td>
-                      <span className="rounded-100 py-4 px-10 text-center text-14 fw-500 bg-blue-1-05 text-blue-1">
-                        Confirmed
-                      </span>
-                    </td>
-                    <td>
-                      <ActionsButton />
-                    </td>
-                  </tr>
+                  })}
                 </tbody>
               </table>
             </div>

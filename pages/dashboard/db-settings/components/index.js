@@ -1,14 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import PasswordInfo from "./PasswordInfo";
 import LocationInfo from "./LocationInfo";
 import PersonalInfo from "./PersonalInfo";
 
 const Index = () => {
+
+  const [loginUser, setLoginUser] = useState(null);
+  const [userToken, setUserToken] = useState("");
+
+  //const loginUser = useSelector((state) => state.user.loginUser);
+  //const userToken = useSelector((state) => state.user.token);
+
+  useEffect(() => {
+    setLoginUser(JSON.parse(sessionStorage.getItem("loginUser")));
+    setUserToken(sessionStorage.getItem("token"));
+    // if(!userToken){
+    //   Router.push("/others-pages/login");
+    // }
+  }, []);
+
+
+
   const tabs = [
     {
       label: "Personal Information",
-      content: <PersonalInfo />,
+      content: <PersonalInfo loginUser={loginUser} />,
     },
     {
       label: "Location Information",
