@@ -1,31 +1,42 @@
+import { useState, useEffect } from "react";
 import AvatarUploader from "./AvatarUploader";
 
-const PersonalInfo = () => {
+const PersonalInfo = ({loginUser}) => {
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    if(loginUser){
+      console.log(loginUser);
+      setUser(loginUser);
+    }
+  }, [loginUser])
+
   return (
     <>
       <form>
-        <AvatarUploader />
+        <AvatarUploader photo={user?.photo}/>
         {/* End AvatarUploader*/}
 
         <div className="border-top-light mt-30 mb-30" />
 
         <div className="col-xl-9">
           <div className="row x-gap-20 y-gap-20">
-            <div className="col-12">
+            {/* <div className="col-12">
               <div className="form-input ">
                 <input type="text" required />
                 <label className="lh-1 text-16 text-light-1">
                   Business Name
                 </label>
               </div>
-            </div>
+            </div> */}
             {/* End col-12 */}
-            <div className="col-12">
+            {/* <div className="col-12">
               <div className="form-input ">
                 <input type="text" required />
                 <label className="lh-1 text-16 text-light-1">User Name</label>
               </div>
-            </div>
+            </div> */}
             {/* End col-12 */}
 
             <div className="col-md-6">
@@ -46,7 +57,7 @@ const PersonalInfo = () => {
 
             <div className="col-md-6">
               <div className="form-input ">
-                <input type="text" required />
+                <input type="text" required value={user?.email} />
                 <label className="lh-1 text-16 text-light-1">Email</label>
               </div>
             </div>
@@ -54,7 +65,7 @@ const PersonalInfo = () => {
 
             <div className="col-md-6">
               <div className="form-input ">
-                <input type="text" required />
+                <input type="text" required value={user?.phone} />
                 <label className="lh-1 text-16 text-light-1">
                   Phone Number
                 </label>

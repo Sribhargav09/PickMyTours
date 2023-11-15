@@ -16,15 +16,24 @@ import MainFilterSearchBox from "../../../components/hero/MainFilterSearchBox";
 import Noresults from "../../../components/tour-list/tour-list-v1/NoResults";
 import Header from '../../../components/header';
 import { useDispatch } from 'react-redux';
-import { setLoader } from '../../../app/features/hero/findPlaceSlice';
+import Router from "next/router";
+
+import { Hourglass } from "react-loader-spinner";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
 
 
 const index = () => {
   const [tours, setTours] = useState([]);
+  const [filteredTours, setFilteredTours] = useState([]);
   const dispatch = useDispatch();
+  const [loader, setLoader] = useState(false);
   
   const router = useRouter();
-  console.log(router.query);
   const location = router.query.location ?? '';
   const type = router.query.type ?? '';
 
@@ -32,29 +41,127 @@ const index = () => {
 
   }
 
+  const generateQueryString = (afilters) => {
+    console.log(afilters);
+    const queryString = Object.entries(afilters)
+      .map((values) => {
+        console.log(values);
+        return values[1].map((value) => `${values[0]}=${value}`).join('&')
+      }).join('&');
+      console.log(queryString);
+    const query =  queryString.length > 0 ? `?${queryString}` : '';
+    Router.push("/tour/tour-list-v1/"+query);
+  };
+
+
+  const [filters, setFilters] = useState({
+    location: [],
+    type: [],
+  });
+
+  const [appliedFilters, setAppliedFilters] = useState([]);
+
+  const handleFilterChange = (filterName, value) => {
+    setFilters({
+      ...filters,
+      [filterName]: value,
+    });
+
+    if (!filters[filterName]) {
+      setAppliedFilters([...appliedFilters, filters]);
+    } else {
+      const updatedFilters = appliedFilters.filter((filter) => filter !== filterName);
+      setAppliedFilters(updatedFilters);
+    }
+
+  };
+
+  const applyFilters = (name, value) => {
+    console.log(value);
+    handleFilterChange(name, value);
+    generateQueryString({...filters, [name]: value});
+  }
+
+  const removeFilter = (name, value) => {
+    console.log(filters);
+        const places = filters[name].filter((place) => (place).toLowerCase() !== value.toLowerCase());
+        console.log(places);
+        applyFilters(name, places);
+  }
+  
+  const clearAllFilters = () => {
+    setFilters({
+      location: [],
+      type: [],
+    });
+    setAppliedFilters([]);
+  };
+
   useEffect(() => {
-    dispatch(setLoader(true));
+    if(location){
+      if(Array.isArray(location)){
+        const lts = location.map(v => v.toLowerCase());
+        handleFilterChange('location', lts);
+      }else{
+        handleFilterChange('location', [location.toLowerCase()]);
+      }
+    }
+
+    if(type){
+      if(Array.isArray(type)){
+        handleFilterChange('type', type);
+      }else{
+        handleFilterChange('type', [type]);
+      }
+    }
+  }, [location, type])
+
+  useEffect(() => {
+    if(filters){
+      setLoader(true);
+      let toursData = [];
+
+      console.log(filters);
+
+      if(filters["type"]){
+        toursData = tours?.filter((t) => filters["type"].includes((t.type).toLowerCase())); 
+      }
+
+      if(filters["location"]){
+        toursData = tours?.filter((t) => filters["location"].includes((t.location).toLowerCase())); 
+      }
+
+      console.log(toursData);
+
+      setFilteredTours(toursData);
+
+        setTimeout(() => {
+          setLoader(false);
+        window.scrollTo({ top: 100, behavior: "smooth" });
+
+        }, 1000);
+    }
+  }, [filters])
+
+
+
+  useEffect(() => {
+    setLoader(true);
     TourDataService.getAll()
       .then(response => {
         let toursData = response.data;
         // console.log(toursData);
         // const tdata = [];
-        if(type){
-          toursData = toursData.data?.filter((t) => (t.type).toLowerCase() === type.toLowerCase()); 
-        }
-
-        if(location){
-          toursData = toursData.data?.filter((t) => t.location.toLowerCase() === location.toLowerCase()); 
-        }
-       setTours(toursData);
-        console.log(toursData);
-        dispatch(setLoader(false));
+        
+       setTours(toursData.data);
+        console.log(toursData.data);
+        setLoader(false);
       })
       .catch(e => {
         console.log(e);
-        dispatch(setLoader(false));
+        setLoader(false);
       })
-  }, [location, type])
+  }, [])
 
   return (
     <>
@@ -85,7 +192,7 @@ const index = () => {
           <div className="row y-gap-30">
             <div className="col-xl-3">
               <aside className="sidebar y-gap-40 xl:d-none">
-                <Sidebar />
+                <Sidebar filters={filters} handleFilterChange={applyFilters}/>
               </aside>
               {/* End sidebar for desktop */}
 
@@ -119,16 +226,43 @@ const index = () => {
             {/* End col */}
 
             <div className="col-xl-9 ">
-              <TopHeaderFilter count={tours?.data?.length ?? 0} />
+              <TopHeaderFilter count={filteredTours?.data?.length ?? 0} />
               <div className="mt-30"></div>
               {/* End mt--30 */}
               <div className="row y-gap-30">
-              {/* <Stack direction="row" spacing={1}>
-                  <Chip label="Deletable" onDelete={handleDelete} />
-                  <Chip label="Deletable" variant="outlined" onDelete={handleDelete} />
-                </Stack> */}
-                {tours && tours.length > 0 && <TourProperties toursData={tours} />}
-                {(!tours || tours.length == 0) && <Noresults />}
+              
+
+                <div>
+        <div>
+          Applied Filters:
+          <div className='d-flex'>
+          {filters['location'].map((value, index) => {
+            return (<>
+               {index ===  0 && <div><strong style={{marginLeft: '10px'}}>Location</strong></div>}
+               {value && <Stack direction="row" spacing={1} style={{marginLeft: '10px'}}>
+                  <Chip label={(value.charAt(0)).toUpperCase() + value.slice(1)}  variant="outlined" onDelete={() => removeFilter('location', value)} />
+                </Stack>}
+              <br/>
+              </>);
+            })}
+          </div>
+
+          <div className='mt-20 d-flex'>
+          {filters['type'].map((value, index) => {
+            return (<>
+               {index ===  0 && <div><strong style={{marginLeft: '10px'}}>{'Type'}</strong></div>}
+               {value && <Stack direction="row" spacing={1} style={{marginLeft: '10px'}}>
+                  <Chip label={(value.charAt(0)).toUpperCase() + value.slice(1)}  variant="outlined" onDelete={() => removeFilter('type', value)} />
+                </Stack>}
+              <br/>
+              </>);
+            })}
+          </div>
+        </div>
+        <button onClick={clearAllFilters}>Clear All Filters</button>
+      </div>
+                {filteredTours && filteredTours.length > 0 && <TourProperties toursData={filteredTours} />}
+                {(!filteredTours || filteredTours.length == 0) && <Noresults />}
               </div>
               {/* End .row */}
               {/* <Pagination /> */}
@@ -145,6 +279,30 @@ const index = () => {
       {/* End Call To Actions Section */}
 
       <DefaultFooter />
+
+      
+<Dialog
+        open={loader}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+
+      >
+        <DialogTitle id="alert-dialog-title">
+          
+        </DialogTitle>
+        <DialogContent style={{ width: '100%', textAlign:'center' }}>
+        <Hourglass
+        visible={true}
+        height="80"
+        width="80"
+        ariaLabel="hourglass-loading"
+        wrapperStyle={{}}
+        wrapperClass=""
+        colors={['#306cce', '#72a1ed']}
+      />
+        </DialogContent>
+      </Dialog>
+
     </>
   );
 };

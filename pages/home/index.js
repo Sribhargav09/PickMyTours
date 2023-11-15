@@ -130,7 +130,7 @@ const home = () => {
           </div>
           {/* End .row */}
 
-          <div className=" y-gap-20 mt-20">
+          <div className="row y-gap-20 mt-20">
             <WhyChoose />
           </div>
           {/* End row */}
@@ -153,7 +153,7 @@ const home = () => {
           </div>
           {/* End .row */}
 
-          <div className="row y-gap-40 justify-between pt-40 sm:pt-20">
+          <div className="row y-gap-40 justify-between pt-20 sm:pt-20">
             <TopDestinations />
           </div>
           {/* End .row */}

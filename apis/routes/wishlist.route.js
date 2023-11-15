@@ -60,7 +60,6 @@ var corsOptionsDelegate = function (req, callback) {
   callback(null, corsOptions);
 };
 
-// Get users
 wishlistExpressRoute
   .route("/getWishList/:id")
   .get(async (req, res, next) => {
@@ -76,6 +75,22 @@ wishlistExpressRoute
         return next(err);
       });
   });
+
+wishlistExpressRoute
+  .route("/getUsersWishList/:id")
+  .get(async (req, res, next) => {
+    await wishListSchema.find({"userId": req.params.id})
+      .then((result) => {
+        res.json({
+          data: result,
+          message: "Data successfully fetched!",
+          status: 200,
+        });
+      })
+      .catch((err) => {
+        return next(err);
+      });
+});  
 
 
 // Create user

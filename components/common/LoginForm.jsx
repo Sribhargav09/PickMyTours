@@ -106,11 +106,13 @@ const LoginForm = ({ redirectTo = '', modal = false }) => {
           setTimeout(() => {
             setLoader(false);
 
-            if (!redirectTo) {
-              Router.push(redirectTo);
-            } else {
-              Router.push("/dashboard/db-booking");
-            }
+            // if (!redirectTo) {
+            //   Router.push(redirectTo);
+            // } else {
+            //   Router.push("/dashboard/db-booking");
+            // }
+
+            Router.push("/dashboard/db-booking");
 
           }, 1500);
         })

@@ -1,17 +1,83 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Pagination from "../../common/Pagination";
 import Properties from "./Properties";
+import wishlistService from "../../../../services/wishlist.service";
+import tourService from "../../../../services/tour.service";
+import { useSelector, useDispatch } from "react-redux";
+
+
 
 const WishlistTable = () => {
   const [activeTab, setActiveTab] = useState(0);
+
+  
+  const selectedCurrency = useSelector((state) => state.currency.selectedCurrency);
+  const [currency, setCurrency] = useState(selectedCurrency);
+
+  useEffect(() => {
+    setCurrency(selectedCurrency);
+  }, [selectedCurrency])
+
+
+  
+  const [bookingTours, setBookingTours] = useState([]);
+  const [bookings, setBookings] = useState([]);
+
+
+  
+  const [loginUser, setLoginUser] = useState(null);
+  const [userToken, setUserToken] = useState("");
+
+  //const loginUser = useSelector((state) => state.user.loginUser);
+  //const userToken = useSelector((state) => state.user.token);
+
+  useEffect(() => {
+    setLoginUser(JSON.parse(sessionStorage.getItem("loginUser")));
+    setUserToken(sessionStorage.getItem("token"));
+  }, []);
+
+  useEffect(() => {
+    if(bookings){
+    tourService.getAll()
+      .then(response => {
+       const bts = [];
+       response.data.data.forEach((t) => {
+            const bnks = bookings.filter((bt) => bt.tourId === t._id);
+            if(bnks && bnks.length > 0){
+              bts.push(t);
+            }
+        });
+        console.log(bts)
+        setBookingTours(bts);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }
+  }, [bookings])
+
+  useEffect(() => {
+    if(loginUser){
+      
+      wishlistService.getByUserId(loginUser._id)
+      .then(response => {
+        console.log(response.data.data)
+        setBookings(response.data.data);
+        
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }
+  }, [loginUser])
 
   const handleTabClick = (index) => {
     setActiveTab(index);
   };
 
   const tabItems = [
-    "Hotel",
     "Tour",
+    "Hotel",
     "Activity",
     "Holiday Rental",
     "Cars",
@@ -40,7 +106,7 @@ const WishlistTable = () => {
         <div className="tabs__content pt-30 js-tabs-content">
           <div className="tabs__pane -tab-item-1 is-tab-el-active">
             <div className="row y-gap-20">
-              <Properties />
+              <Properties tours={bookingTours}/>
             </div>
           </div>
         </div>

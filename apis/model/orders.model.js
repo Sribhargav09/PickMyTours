@@ -8,6 +8,9 @@ let ordersSchema = new Schema(
     tourId: {
       type: String,
     },
+    userId: {
+      type: String,
+    },
     itinerary: {
       type: Array,
     },

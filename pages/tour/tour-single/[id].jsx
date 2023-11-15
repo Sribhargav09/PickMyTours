@@ -492,7 +492,7 @@ const TourSingleV1Dynamic = () => {
 
 
                 <TabPanel key={'Overview'}>
-                  <section className="border-top-light  mt-40 pt-40">
+                  <section className="border-top-light  mt-40 pt-40 mobile-tab">
                     <div className="container">
                       <h3 className="text-22 fw-500 mb-20">Overview</h3>
                       <Overview tourData={tour} />
@@ -503,7 +503,7 @@ const TourSingleV1Dynamic = () => {
 
 
                 <TabPanel key={'Itinerary'}>
-                  <section className="border-top-light  mt-40 pt-40">
+                  <section className="border-top-light  mt-40 pt-40 mobile-tab">
                     <div className="container">
                       <h3 className="text-22 fw-500 mb-20">Itinerary</h3>
                       <Itinerary tourData={tour} />
