@@ -6,14 +6,91 @@ import isTextMatched from "../../utils/isTextMatched";
 import { useEffect, useState } from "react";
 import tourService from "../../services/tour.service";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import LoginForm from "../../components/common/LoginForm";
+import wishlistService from "../../services/wishlist.service";
+
 
 const Tours = () => {
 
   const selectedCurrency = useSelector((state) => state.currency.selectedCurrency);
   const [currency, setCurrency] = useState(selectedCurrency);
+  const [addedToWishlist, setAddedToWishlist] = useState(false);
+  const [isWish, setIsWish] = useState(false);
+  const [wishMsg, setWishMsg] = useState('');
+  const [loader, setLoader] = useState(false);
+
+  
+  const [loginUser, setLoginUser] = useState(null);
+  const [userToken, setUserToken] = useState("");
+
+  //const loginUser = useSelector((state) => state.user.loginUser);
+  //const userToken = useSelector((state) => state.user.token);
+
+  useEffect(() => {
+    setLoginUser(JSON.parse(sessionStorage.getItem("loginUser")));
+    setUserToken(sessionStorage.getItem("token"));
+    // if(!userToken){
+    //   Router.push("/others-pages/login");
+    // }
+  }, []);
+
 
   const [tours, setTours] = useState([]);
+
+  const isInWishList = (tourId) => {
+    console.log(tourId);
+    if(tourId !== '' && loginUser){
+    wishlistService.getByTourId(tourId)
+        .then(response => {
+          response.data.data.forEach((wdata) => {
+            if(wdata.userId === loginUser._id){
+              return true;
+            }else{
+              return false;
+            }
+          })
+        })
+        .catch(e => {
+          return false;
+        });
+      }
+  }
+
+  
+  const handleCloseWish = () => {
+    const wish = isWish;
+    
+    if(loginUser){
+      setLoader(true);
+        console.log(loginUser);
+        
+      wishlistService.create({ tourId, userId:loginUser._id})
+        .then(response => {
+          consolelog(response);
+        })
+        .catch(e => {
+          
+          setLoader(false);
+        });
+
+        
+        setLoader(false);
+        setAddedToWishlist(true);
+        setWishMsg("Added ths tour to your wish list Succesfully!");
+        setIsWish(!wish);
+        
+    }else{
+      setLoader(false);
+      setIsWish(!wish);
+    }
+    return false;
+  }
+
 
   useEffect(() => {
     setCurrency(selectedCurrency);
@@ -127,9 +204,15 @@ const Tours = () => {
                   </Slider>
 
                   <div className="cardImage__wishlist">
-                    <button className="button -blue-1 bg-white size-30 rounded-full shadow-2">
-                      <i className="icon-heart text-12" />
-                    </button>
+                    
+                  {!isInWishList(item._id) && <button  className={"button -blue-1 bg-white size-30 rounded-full shadow-2"}>
+                    <i className="icon-heart"></i>
+                  </button>}
+
+                  {isInWishList(item._id) &&
+                    <button className={"button -blue-1 bg-white size-30 rounded-full shadow-2"}>
+                    <i style={{color:'red'}} className="icon-heart mr-10"></i></button>}
+                    
                   </div>
 
                   <div className="cardImage__leftBadge">
@@ -202,6 +285,26 @@ const Tours = () => {
           </div>
         ))}
       </Slider>
+
+ 
+      <Dialog
+        open={isWish}
+        onClose={handleCloseWish}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+
+      >
+      <DialogTitle id="alert-dialog-title">
+          <div class="d-flex justify-content-between">
+          <div>{"Add to Wish List"}</div>
+          <i style={{cursor: 'pointer'}} onClick={handleCloseWish} class="icon-close"></i>
+          </div>
+        </DialogTitle>
+        <DialogContent style={{ width: '600px' }}>
+            {loginUser ? wishMsg : <LoginForm modal={true} />}
+        </DialogContent>
+      </Dialog>
+
     </>
   );
 };

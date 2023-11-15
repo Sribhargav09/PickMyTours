@@ -117,6 +117,21 @@ ordersExpressRoute.post("/create-order",  (req, res, next) => {
       return next(err);
     });
 });
+
+ordersExpressRoute.route("/bookings/:userId").get(async (req, res, next) => {
+  await orderschema.find({"userId": req.params.userId})
+    .then((result) => {
+      res.json({
+        data: result,
+        message: "Data successfully retrieved.",
+        status: 200,
+      });
+    })
+    .catch((err) => {
+      return next(err);
+    });
+});
+
 // // Get single user
 // ordersExpressRoute.route("/location/:id").get(async (req, res, next) => {
 //   await orderschema.findById(req.params.id, req.body)

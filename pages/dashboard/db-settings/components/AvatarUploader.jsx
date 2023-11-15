@@ -1,10 +1,14 @@
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const AvatarUploader = () => {
+const AvatarUploader = ({photo}) => {
   const [image, setImage] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    setImage(photo);
+  }, [photo])
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -42,10 +46,10 @@ const AvatarUploader = () => {
       <div className="col-auto">
         {image ? (
           <div className="d-flex ratio ratio-1:1 w-200">
-            <Image
+            <img
               width={200}
               height={200}
-              src={image}
+              src={photo}
               alt="avatar"
               className="img-ratio rounded-4"
             />

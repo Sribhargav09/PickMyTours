@@ -278,6 +278,15 @@ span.error{
   padding-left:20px;
   z-index: 100000;
  }
+
+ .tourSticky .react-tabs ul li button{
+  font-size:8px !important;
+ }
+
+ .tourSticky .react-tabs ul li{
+  padding-left:2px;
+  padding-right:2px;
+ }
 }
 
 .suggestions{

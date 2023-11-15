@@ -11,7 +11,7 @@ import orderService from "../../services/order.service";
 
 
 
-const OrderSubmittedInfo = ({tourId, itinerary, firstName, lastName, email,  phone, address, order}) => {
+const OrderSubmittedInfo = ({user, tourId, itinerary, firstName, lastName, email,  phone, address, order}) => {
 
   const [loader, setLoader] = useState(false);
 
@@ -21,7 +21,7 @@ const OrderSubmittedInfo = ({tourId, itinerary, firstName, lastName, email,  pho
     setLoader(true);
 
   
-    orderService.create({ tourId, itinerary, firstName, lastName, email,  phone, city:address.city, state:address.state, country:address.country, zipcode:address.zipcode, orderId: order.id, amount: order.amount, currency: order.currency})
+    orderService.create({ userId: user ? user._id : '', tourId, itinerary, firstName, lastName, email,  phone, city:address.city, state:address.state, country:address.country, zipcode:address.zipcode, orderId: order.id, amount: order.amount, currency: order.currency})
     .then(response => {
       consolelog(response);
       setTimeout(() => {
