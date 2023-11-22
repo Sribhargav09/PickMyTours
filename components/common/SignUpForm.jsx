@@ -215,7 +215,7 @@ const SignUpForm = () => {
 
         <div className="col-12">
           <div className="form-input ">
-            <input type="text" value={firstName} onChange={(event) => setFirstName(event.target.value)} required />
+            <input type="text" value={firstName} onChange={(event) => {setErrors({...errors, firstName:''});setFirstName(event.target.value)}} required />
             <label className="lh-1 text-14 text-light-1">First Name*</label>
           </div>
         </div>
@@ -225,7 +225,7 @@ const SignUpForm = () => {
 
         <div className="col-12">
           <div className="form-input ">
-            <input type="text" value={lastName} onChange={(event) => setLastName(event.target.value)} required />
+            <input type="text" value={lastName} onChange={(event) => {setErrors({...errors, lastName:''});setLastName(event.target.value)}} required />
             <label className="lh-1 text-14 text-light-1">Last Name*</label>
           </div>
         </div>
@@ -235,7 +235,7 @@ const SignUpForm = () => {
 
         <div className="col-12">
           <div className="form-input ">
-            <input type="text" value={email} onChange={(event) => setEmail(event.target.value)} required />
+            <input type="text" value={email} onChange={(event) => {setErrors({...errors, email:''});setEmail(event.target.value)}} required />
             <label className="lh-1 text-14 text-light-1">Email*</label>
           </div>
         </div>
@@ -245,7 +245,7 @@ const SignUpForm = () => {
 
         <div className="col-12">
           <div className="form-input ">
-            <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} required />
+            <input type="password" value={password} onChange={(event) => {setErrors({...errors, password:''});setPassword(event.target.value)}} required />
             <label className="lh-1 text-14 text-light-1">Password*</label>
           </div>
         </div>
@@ -255,7 +255,7 @@ const SignUpForm = () => {
 
         <div className="col-12">
           <div className="form-input ">
-            <input type="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} required />
+            <input type="password" value={confirmPassword} onChange={(event) => {setErrors({...errors, confirmPassword:''});setConfirmPassword(event.target.value)}} required />
             <label className="lh-1 text-14 text-light-1">Confirm Password*</label>
           </div>
         </div>
@@ -264,7 +264,7 @@ const SignUpForm = () => {
         {/* End .col */}
         <div className="col-12">
           <div className="form-input ">
-            <input type="number" value={phone} onChange={(event) => setPhone(event.target.value)} required />
+            <input type="number" value={phone} onChange={(event) => {setErrors({...errors, phone:''});setPhone(event.target.value)}} required />
             <label className="lh-1 text-14 text-light-1">Phone</label>
           </div>
         </div>
@@ -302,7 +302,7 @@ const SignUpForm = () => {
                     id="featurePhotoUpload"
                     accept="image/png, image/jpeg"
                     className="d-none"
-                    onChange={handlePhotoUpload}
+                    onChange={(event) => {setErrors({...errors, photo:''});handlePhotoUpload(event)}}
                   />
                   <div className="text-start mt-10 text-14 text-light-1">
                     PNG or JPG no bigger than 800px wide and tall.

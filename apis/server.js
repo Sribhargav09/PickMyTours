@@ -38,6 +38,7 @@ const enquieryRoute = require("./routes/enquiery.route");
 const razropayRoute = require("./routes/razropay.route");
 const ordersRoute = require("./routes/orders.route");
 const wishlistRoute = require("./routes/wishlist.route");
+const stripeRoute = require("./routes/stripe-pay.route");
 
 
 
@@ -63,6 +64,7 @@ app.use("/", razropayRoute);
 app.use("/", enquieryRoute);
 app.use("/", ordersRoute);
 app.use("/", wishlistRoute);
+app.use("/", stripeRoute);
 
 
 app.use(express.static(__dirname +'/public'));
