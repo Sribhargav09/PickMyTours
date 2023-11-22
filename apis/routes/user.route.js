@@ -6,11 +6,13 @@ let uuidv4 = require('uuid/v4'),
   router = express.Router();
 const TWILIO_PHONE_NUMBER = '+17698889434';
 const TWILIO_ACCOUNT_SID = 'AC0ebe3760ab0fa3443eaf9ffcdf5ef308';
-const TWILIO_AUTH_TOKEN = 'e503ba86046a4cd2946c07fbe698bc73';  
+const TWILIO_AUTH_TOKEN = 'e503ba86046a4cd2946c07fbe698bc73';
 const client = require('twilio')(
   TWILIO_ACCOUNT_SID,
   TWILIO_AUTH_TOKEN
 );
+const fs = require('fs');
+const path = require('path');
 
 const DIR = './public/users/';
 
@@ -45,6 +47,8 @@ const cors = require("cors");
 
 
 let UserSchema = require("../model/user.model");
+
+let SubscribtionSchema = require("../model/subscribtion.model");
 // CORS OPTIONS
 var whitelist = ["http://localhost:8100", "http://localhost:4000"];
 var corsOptionsDelegate = function (req, callback) {
@@ -141,7 +145,7 @@ userExpressRoute.post("/create-user", upload.fields([{ name: 'photo', maxCount: 
               from: process.env.TWILIO_PHONE_NUMBER,
               from: TWILIO_PHONE_NUMBER,
               to: req.body.phone,
-              body: "Your verfication code is "+otp
+              body: "Your verfication code is " + otp
             })
             .then(() => {
               res.send(JSON.stringify({ success: true }));
@@ -151,7 +155,7 @@ userExpressRoute.post("/create-user", upload.fields([{ name: 'photo', maxCount: 
             });
 
 
-        
+
         })
         .catch((err) => {
           console.log(req.body);
@@ -175,72 +179,72 @@ userExpressRoute.post("/verify", (req, res) => {
     user[0].active = true;
 
     UserSchema.findByIdAndUpdate(user[0]._id, user[0], { useFindAndModify: false })
-    .then((result) => {
-      res.json({
-        data: result,
-        msg: "Data successfully updated.",
-      });
+      .then((result) => {
+        res.json({
+          data: result,
+          msg: "Data successfully updated.",
+        });
 
-      const emailTemplatePath = path.join(__dirname, 'signup-email-template.html');
-      const emailTemplate = fs.readFileSync(emailTemplatePath, 'utf8');
-  
-      const htmlEmail = emailTemplate
-      .replace('{name}', req.body.firstName+" "+req.body.lastName)
-      .replace('{email}', req.body.email)
-      .replace('{password}', req.body.password);
-  
+        const emailTemplatePath = path.join(__dirname, 'signup-email-template.html');
+        const emailTemplate = fs.readFileSync(emailTemplatePath, 'utf8');
 
-      smtpProtocol = mailer.createTransport({
-        service: "Outlook",
-        auth: {
-          user: "admin@pickmytours.com",
-          pass: "TravelStories@9"
+        const htmlEmail = emailTemplate
+          .replace('{name}', req.body.name)
+          .replace('{email}', req.body.email)
+          .replace('{password}', req.body.password);
+
+
+        smtpProtocol = mailer.createTransport({
+          service: "Outlook",
+          auth: {
+            user: "admin@pickmytours.com",
+            pass: "TravelStories@9"
+          }
+        });
+
+        var otp = req.body.code;
+
+        var mailoption = {
+          from: "admin@pickmytours.com",
+          to: req.body.email,
+          subject: "Veriy your Email Address - PickMyTours",
+          html: htmlEmail
         }
+
+        smtpProtocol.sendMail(mailoption, function (err, response) {
+          if (err) {
+            console.log(err);
+          }
+          //console.log('Message Sent' + response);
+          smtpProtocol.close();
+        });
+
+      })
+      .catch((err) => {
+        console.log(err);
+        return next(err);
       });
-
-      var otp = req.body.code;
-
-      var mailoption = {
-        from: "admin@pickmytours.com",
-        to: req.body.email,
-        subject: "Veriy your Email Address - PickMyTours",
-        html: htmlEmail
-      }
-
-      smtpProtocol.sendMail(mailoption, function (err, response) {
-        if (err) {
-          console.log(err);
-        }
-        //console.log('Message Sent' + response);
-        smtpProtocol.close();
-      });
-
-    })
-    .catch((err) => {
-      console.log(err);
-      return next(err);
-    });
 
   });
 });
 
 userExpressRoute.post("/login", (req, res) => {
-  console.log(req.body);
+  console.log('req', req.body);
 
   const check = {}
-  if(req.body.email){
+  if (req.body.email) {
     check.email = req.body.email;
-  }else if(req.body.phone){
+  } else if (req.body.phone) {
     check.phone = req.body.phone;
   }
 
   UserSchema.findOne(check).then((user) => {
-    console.log(user);
+    console.log('user', user);
     if (!user) {
-      return res.status(404).send({ message: "User Not found." });
+      return res.status(404).send({ message: "User Not found.ddddd" });
     }
 
-    if(user && !user.active){
+    if (user && !user.active) {
       return res.status(404).send({ message: "Your account is not verified." });
     }
 
@@ -347,5 +351,31 @@ userExpressRoute.route("/remove-user/:id").delete(async (req, res) => {
     .catch((err) => {
       return next(err);
     });
+});
+
+userExpressRoute.route("/subscribe").post(async (req, res) => {
+  //console.log(req); return;
+  const email = req.body.email;
+  console.log(email);
+  const existingSubscriber = await SubscribtionSchema.findOne({ email });
+  console.log('existingSubscriber', existingSubscriber);
+  if (existingSubscriber) {
+    res.json({ msg: "alreadySubscribed" });
+  } else {
+    let userId = null;
+    const existingUser = await UserSchema.findOne({ email });
+
+    // If the user exists, retrieve userId and update Subscriber
+    if (existingUser) {
+      userId = existingUser._id;
+    }
+    const newSubscriber = new SubscribtionSchema({ email, userId });
+    const result = await newSubscriber.save();
+
+    console.log(`User subscribed with email: ${email}`);
+    console.log(`Inserted document id: ${result._id}`);
+    res.json({ msg: "subscribed" });
+  }
+
 });
 module.exports = userExpressRoute;

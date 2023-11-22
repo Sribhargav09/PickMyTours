@@ -22,6 +22,10 @@ class SignupDataService {
     return http2.post("/verify", data);
   }
 
+  subscribe(data) {
+    return http2.post("/subscribe", data);
+  }
+
   update(id, data) {
     return http.put(`/update-user/${id}`, data);
   }

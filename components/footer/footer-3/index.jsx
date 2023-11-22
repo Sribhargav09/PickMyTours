@@ -5,7 +5,9 @@ import FooterContent from "./FooterContent";
 import Social from "../../common/social/Social";
 import Subscribe from "./Subscribe";
 
+
 const index = () => {
+ 
   return (
     <footer className="footer -type-2 bg-light-2">
       <div className="container">
