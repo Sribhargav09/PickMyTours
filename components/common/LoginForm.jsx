@@ -63,6 +63,7 @@ const LoginForm = ({ redirectTo = '', modal = false }) => {
   }
 
   const vaidPhoneNumber = (inputtxt) => {
+    return true;
     var phoneno = /^\d{10}$/;
     if (inputtxt.value.match(phoneno)) {
       return true;

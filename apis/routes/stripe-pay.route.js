@@ -149,6 +149,15 @@ stripeRoute.post("/payment/method/attach", async (req, res) => {
         //confirmation_method: "manual", // For 3D Security
         description: "Buy Product",
         automatic_payment_methods: {enabled: true, allow_redirects: "never"},
+        payment_method_options: {
+          card: {
+            installment: {
+              plans: [
+                { installment_plan: 'standard', interval: 'monthly' },
+              ],
+            },
+          },
+        },
       });
   
       /* Add the payment intent record to your datbase if required */
