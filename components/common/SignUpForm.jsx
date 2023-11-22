@@ -41,7 +41,7 @@ const SignUpForm = () => {
     setLoader(true);
     setErrors({ registerError: '' });
     console.log({ code: verificationCode, id: userId });
-    signupServer.verify({ code: verificationCode, id: userId })
+    signupServer.verify({ code: verificationCode, id: userId, email: email })
       .then(response => {
         setTimeout(() => {
           setLoader(false);

@@ -11,6 +11,8 @@ const client = require('twilio')(
   TWILIO_ACCOUNT_SID,
   TWILIO_AUTH_TOKEN
 );
+const fs = require('fs');
+const path = require('path');
 
 const DIR = './public/users/';
 
