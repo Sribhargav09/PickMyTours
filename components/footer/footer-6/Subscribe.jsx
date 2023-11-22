@@ -8,7 +8,8 @@ const Subscribe = () => {
         required
       />
       <button
-        type="submit"
+       
+        onClick={subscribeHandler}
         className="absolute px-20 h-full text-15 fw-500 underline  button bg-blue-1 text-white"
       >
         Subscribe

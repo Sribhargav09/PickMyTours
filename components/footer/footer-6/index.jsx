@@ -2,8 +2,20 @@ import ContactInfo from "./ContactInfo";
 import Copyright from "./Copyright";
 import FooterContent from "./FooterContent";
 import Subscribe from "./Subscribe";
+import axios from 'axios';
 
 const index = () => {
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+
+  const subscribeHandler = async () => {
+    try {
+      const response = await axios.post('http://localhost:3001/subscribe', { email });
+      setMessage(response.data.message);
+    } catch (error) {
+      setMessage('Error subscribing. Please try again.');
+    }
+  };
   return (
     <footer className="footer -type-3 text-white bg-dark-1">
       <div className="container">

@@ -2,13 +2,19 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 let enquierySchema = new Schema(
   {
-    topicId: {
+    offerId: {
+      type: String,
+    },
+    offerInformation: {
       type: String,
     },
     name: {
       type: String,
     },
     email: {
+      type: String,
+    },
+    phone: {
       type: String,
     },
     type: {
