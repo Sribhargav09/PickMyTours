@@ -22,7 +22,6 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY, {
 
 
 
-
 stripeRoute.post('/create-payment-intent', async (req, res) => {
   
   const { amount, description, shipping, currency, payment_method } = req.body;
@@ -34,8 +33,8 @@ stripeRoute.post('/create-payment-intent', async (req, res) => {
       amount,
       currency,
       //payment_method,
-      automatic_payment_methods: { enabled: true }
-      // payment_method_types: ['card'],
+      automatic_payment_methods: { enabled: true },
+       //payment_method_types: ['card', 'google_pay'],
       // payment_method_options: {
       //   card: {
       //     mandate_options: {

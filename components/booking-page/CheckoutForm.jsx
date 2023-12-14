@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { CardElement, useStripe, useElements, PaymentElement,
-    LinkAuthenticationElement } from '@stripe/react-stripe-js';
+import {
+    CardElement, useStripe, useElements, PaymentElement,
+    LinkAuthenticationElement, ExpressCheckoutElement
+} from '@stripe/react-stripe-js';
 import axios from 'axios';
 import './CheckoutForm.css';
 
@@ -12,7 +14,7 @@ const CheckoutForm = ({ placeOrder, tourId, amount, currency, name, email, addre
     const [message, setMessage] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
 
-    
+
 
     const [billingDetials, setBillingDetials] = useState({
         name,
@@ -26,6 +28,7 @@ const CheckoutForm = ({ placeOrder, tourId, amount, currency, name, email, addre
         }
     });
 
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -37,39 +40,46 @@ const CheckoutForm = ({ placeOrder, tourId, amount, currency, name, email, addre
 
         try {
 
+            // Create the PaymentIntent and obtain clientSecret
+            const res = await fetch('https://pickmytours.com:8080/create-payment-intent', {
+                method: 'POST',
+            });
+            const { client_secret: clientSecret } = await res.json();
+
             const { error, paymentIntent } = await stripe.confirmPayment({
                 elements,
+                clientSecret,
                 confirmParams: {
-                    return_url: `http://localhost:3000/tour/${tourId}`,
+                    return_url: `https://pickmytours.com/tour/${tourId}`,
                 },
-                redirect: 'if_required' 
+                redirect: 'if_required'
 
-              });
+            });
 
-              console.log(error);
-              console.log(paymentIntent);
-          
-              // This point will only be reached if there is an immediate error when
-              // confirming the payment. Otherwise, your customer will be redirected to
-              // your `return_url`. For some payment methods like iDEAL, your customer will
-              // be redirected to an intermediate site first to authorize the payment, then
-              // redirected to the `return_url`.
-             
-              if (error && error.type === "card_error" || error && error.type === "validation_error") {
+            console.log(error);
+            console.log(paymentIntent);
+
+            // This point will only be reached if there is an immediate error when
+            // confirming the payment. Otherwise, your customer will be redirected to
+            // your `return_url`. For some payment methods like iDEAL, your customer will
+            // be redirected to an intermediate site first to authorize the payment, then
+            // redirected to the `return_url`.
+
+            if (error && error.type === "card_error" || error && error.type === "validation_error") {
                 setErrorMessage(error.message);
-              }else if (paymentIntent && paymentIntent.status === "succeeded") {
+            } else if (paymentIntent && paymentIntent.status === "succeeded") {
                 setMessage("Payment succeeded");
                 // handleSuccess();
-                
-                    placeOrder({id:paymentIntent.id});
-              } else {
+
+                placeOrder({ id: paymentIntent.id });
+            } else {
                 setErrorMessage("Payment failed");
                 // handleOther();
-              }
-              setLoading(false);
+            }
+            setLoading(false);
 
-            
-          
+
+
 
 
             // // Create a PaymentMethod
@@ -122,8 +132,8 @@ const CheckoutForm = ({ placeOrder, tourId, amount, currency, name, email, addre
             // }
         } catch (error) {
             console.error(error);
-            
-        setLoading(false);
+
+            setLoading(false);
         }
 
     };
@@ -131,28 +141,23 @@ const CheckoutForm = ({ placeOrder, tourId, amount, currency, name, email, addre
 
 
     return (
-        <form  id="payment-form" className="checkout-form" onSubmit={handleSubmit}>
-
+        <div id="payment-form" className="checkout-form">
             {/* <CardElement className="card-element" /> */}
+            <form id="payment-form" onSubmit={handleSubmit}>
 
-            <LinkAuthenticationElement id="link-authentication-element"
-        // Access the email value like so:
-        // onChange={(event) => {
-        //  setEmail(event.value.email);
-        // }}
-        //
-        // Prefill the email field like so:
-        // options={{defaultValues: {email: 'foo@bar.com'}}}
-        />
-      <PaymentElement id="payment-element" />
+            <LinkAuthenticationElement id="link-authentication-element" />
+            <PaymentElement id="payment-element" />
       <button disabled={loading || !stripe || !elements} id="submit" className="pay-button">
         <span id="button-text">
           {loading ? <div className="spinner" id="spinner"></div> : "Pay now"}
         </span>
       </button>
-      {/* Show any error or success messages */}
-      {message && <div id="message">{message}</div>}
-      {errorMessage && <div id="payment-message" class="error">{message}</div>}
+
+            {/* <ExpressCheckoutElement onConfirm={handleSubmit} /> */}
+
+            {/* Show any error or success messages */}
+            {message && <div id="message">{message}</div>}
+            {errorMessage && <div id="payment-message" class="error">{message}</div>}
 
             {/* <div className="row x-gap-20 y-gap-20 pt-20">
                 <div className="col-6">
@@ -220,9 +225,9 @@ const CheckoutForm = ({ placeOrder, tourId, amount, currency, name, email, addre
                 {loading ? 'Processing...' : 'Pay'}
             </button> */}
 
+            </form>
 
-
-        </form>
+        </div>
     );
 };
 

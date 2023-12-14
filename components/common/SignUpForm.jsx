@@ -72,66 +72,125 @@ const SignUpForm = () => {
       });
   }
 
+  const validateEmailAddress = (emailAddress) => {
+    var atSymbol = emailAddress.indexOf("@");
+    var dotSymbol = emailAddress.lastIndexOf(".");
+    var spaceSymbol = emailAddress.indexOf(" ");
+
+    if ((atSymbol != -1) &&
+      (atSymbol != 0) &&
+      (dotSymbol != -1) &&
+      (dotSymbol != 0) &&
+      (dotSymbol > atSymbol + 1) &&
+      (emailAddress.length > dotSymbol + 1) &&
+      (spaceSymbol == -1)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  const validatePhoneNumber = (inputtxt) => {
+    return true;
+    var phoneno = /^\d{10}$/;
+    if (inputtxt.value.match(phoneno)) {
+      return true;
+    }
+    else {
+      alert("message");
+      return false;
+    }
+  }
+
+  const validate = (name, value, label) => {
+    if(value === ''){
+      setErrors({...errors, [name]: label +" is required"})
+    }else{
+      setErrors({...errors, [name]:''});
+    }
+  }
+
   const add = () => {
     setLoader(true);
     let error = false;
-    const rerrors = {}
+    const rerrors = {};
+
     if (firstName.length == 0) {
-      rerrors['firstName'] = 'The firstname can not be empty';
+      rerrors['firstName'] = 'First Name is required';
       error = true;
     }
 
     if (lastName.length == 0) {
-      rerrors['lastName'] = 'The lastname can not be empty';
+      rerrors['lastName'] = 'Last Name is required';
       error = true;
     }
 
     if (email.length == 0) {
-      rerrors['email'] = 'The email is required';
+      rerrors['email'] = 'Email is required';
+      error = true;
+    }else if (!validateEmailAddress(email)) {
+      rerrors['email'] = 'Please enter valid Email' ;
       error = true;
     }
 
     if (password.length == 0) {
-      rerrors['password'] = 'The password is required';
+      rerrors['password'] = 'Password is required';
       error = true;
     }
 
-    if (phone.length < 10) {
-      rerrors['phone'] = 'The phone is required';
+    if (confirmPassword.length == 0) {
+      rerrors['confirmPassword'] = 'Confirm Password is required';
+      error = true;
+    }else if (confirmPassword  != password) {
+      rerrors['confirmPassword'] = 'Password and Confirm Password must be same';
+      error = true;
+    } 
+
+    if (phone.length == 0) {
+      rerrors['phone'] = 'Phone Number is required';
+      error = true;
+    }else if (!validatePhoneNumber(phone)) {
+      rerrors['phone'] = 'Please enter valid Phone Number' ;
       error = true;
     }
+
 
     if (photos.length == 0) {
       error = true;
-      rerrors['photos'] = 'Upload a photo can not be empty';
+      rerrors['photos'] = 'Photo is required';
     }
 
     if (!error) {
       signupServer.create({ firstName, lastName, email, password, phone: phone, role: userRole, photo })
         .then(response => {
           console.log(response.data);
-          window.scrollTo({ top: 50, behavior: "smooth" });
+          
 
           // setTimeout(() => {
           //   Router.push("/others-pages/login");
           // }, 1000);
           setIsRegister(true);
           setUserId(response.data.data._id);
-          setTimeout(() => { setLoader(false); }, 1200)
+          setTimeout(() => { setLoader(false); window.scrollTo({ top: 10, behavior: "smooth" }); }, 1200)
         })
         .catch(e => {
-
-          window.scrollTo({ top: 100, behavior: "smooth" });
+          console.log(e);
+          
           if (e && e.code) {
-            setErrors({ registerError: e.message });
+            if(e.response && e.response.data){
+              if(e.response.data.email){
+                setErrors({ registerError: e.response.data.email });
+              }
+            }else{
+              setErrors({ registerError: e.message });
+            }
           }
-          setTimeout(() => { setLoader(false); }, 1200)
+          setTimeout(() => { setLoader(false); window.scrollTo({ top: 10, behavior: "smooth" }); }, 1200)
         });
 
     } else {
-      setTimeout(() => { setLoader(false); }, 1200)
+      setTimeout(() => { setLoader(false); window.scrollTo({ top: 10, behavior: "smooth" });}, 1200)
       setErrors(rerrors);
-      window.scrollTo({ top: 100, behavior: "smooth" });
     }
 
   }
@@ -215,7 +274,7 @@ const SignUpForm = () => {
 
         <div className="col-12">
           <div className="form-input ">
-            <input type="text" value={firstName} onChange={(event) => {setErrors({...errors, firstName:''});setFirstName(event.target.value)}} required />
+            <input type="text" value={firstName} onChange={(event) => { validate('firstName', event.target.value, 'First Name');setFirstName(event.target.value)}} required />
             <label className="lh-1 text-14 text-light-1">First Name*</label>
           </div>
         </div>
@@ -225,7 +284,7 @@ const SignUpForm = () => {
 
         <div className="col-12">
           <div className="form-input ">
-            <input type="text" value={lastName} onChange={(event) => {setErrors({...errors, lastName:''});setLastName(event.target.value)}} required />
+            <input type="text" value={lastName} onChange={(event) => {validate('lastName', event.target.value, 'Last Name');setLastName(event.target.value)}} required />
             <label className="lh-1 text-14 text-light-1">Last Name*</label>
           </div>
         </div>
@@ -235,7 +294,7 @@ const SignUpForm = () => {
 
         <div className="col-12">
           <div className="form-input ">
-            <input type="text" value={email} onChange={(event) => {setErrors({...errors, email:''});setEmail(event.target.value)}} required />
+            <input type="text" value={email} onChange={(event) => {validate('email', event.target.value, 'Email');setEmail(event.target.value)}} required />
             <label className="lh-1 text-14 text-light-1">Email*</label>
           </div>
         </div>
@@ -245,7 +304,7 @@ const SignUpForm = () => {
 
         <div className="col-12">
           <div className="form-input ">
-            <input type="password" value={password} onChange={(event) => {setErrors({...errors, password:''});setPassword(event.target.value)}} required />
+            <input type="password" value={password} onChange={(event) => {validate('password', event.target.value, 'Password');setPassword(event.target.value)}} required />
             <label className="lh-1 text-14 text-light-1">Password*</label>
           </div>
         </div>
@@ -255,7 +314,7 @@ const SignUpForm = () => {
 
         <div className="col-12">
           <div className="form-input ">
-            <input type="password" value={confirmPassword} onChange={(event) => {setErrors({...errors, confirmPassword:''});setConfirmPassword(event.target.value)}} required />
+            <input type="password" value={confirmPassword} onChange={(event) => {validate('confirmPassword', event.target.value, 'Confirm Password');setConfirmPassword(event.target.value)}} required />
             <label className="lh-1 text-14 text-light-1">Confirm Password*</label>
           </div>
         </div>
@@ -264,7 +323,7 @@ const SignUpForm = () => {
         {/* End .col */}
         <div className="col-12">
           <div className="form-input ">
-            <input type="number" value={phone} onChange={(event) => {setErrors({...errors, phone:''});setPhone(event.target.value)}} required />
+            <input type="number" value={phone} onChange={(event) => {validate('phone', event.target.value, 'Phone');setPhone(event.target.value)}} required />
             <label className="lh-1 text-14 text-light-1">Phone</label>
           </div>
         </div>
@@ -302,7 +361,7 @@ const SignUpForm = () => {
                     id="featurePhotoUpload"
                     accept="image/png, image/jpeg"
                     className="d-none"
-                    onChange={(event) => {setErrors({...errors, photo:''});handlePhotoUpload(event)}}
+                    onChange={(event) => {validate('photo', event.target.file, 'Photo');handlePhotoUpload(event)}}
                   />
                   <div className="text-start mt-10 text-14 text-light-1">
                     PNG or JPG no bigger than 800px wide and tall.
