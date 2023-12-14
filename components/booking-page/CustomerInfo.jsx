@@ -25,7 +25,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import CheckoutForm from './CheckoutForm';
 
-const stripePromise = loadStripe('pk_test_51OEqT5SHKAp1IV0B10FWgzCOFDryZqGYyxVHKEpJbCChoNvv0pIV6kBGBPHkFBAsaYjmgxUgDGdWXHKMq54My5zk00ZVz7aOEi');
+const stripePromise = loadStripe('pk_live_51NkBsQSJdkMUOQFiHKZcdVtkmrljjMBM8Jvif2ZtIwtW7MRgrO5gitixHKzhvzm089k2mkcakFkhWSI1qer4vCAt00TC6iV7et');
 
 
 const CustomerInfo = ({ tour }) => {
@@ -89,46 +89,10 @@ const CustomerInfo = ({ tour }) => {
 
 
   useEffect(() => {
-    let rate = 1;
     if (selectedCurrency) {
       setCurrency(selectedCurrency);
-      rate = selectedCurrency?.rate;
     }
-
-    if (typeof tour !== 'undefined') {
-      console.log(tour?.price);
-      // Create PaymentIntent as soon as the page loads
-      axios.post("http://localhost:8080/create-payment-intent",
-        {
-          //amount: ~~((tour?.price * rate).toFixed(2)),
-          amount: 100,
-          currency: selectedCurrency ? selectedCurrency.currency : 'INR'
-          // name,
-          // amount: ~~amount,
-          // currency: currency.toLowerCase(),
-          // payment_method: paymentMethod.id,
-          // description: "Tour booking - PickMyTours",
-          // shipping: {
-          //     name: name,
-          //     address: {
-          //         line1: address1 + ", " + address2,
-          //         postal_code: zipcode,
-          //         city,
-          //         state,
-          //         country,
-          //     },
-          // },
-        }
-      ).then(response => {
-        console.log(response.data);
-        setClientSecret(response.data.clientSecret);
-      });
-      //   .then((res) => res.json())
-      //   .then(({clientSecret}) => setClientSecret(clientSecret));
-
-    }
-
-  }, [tour, selectedCurrency]);
+  }, [selectedCurrency]);
 
 
   useEffect(() => {
@@ -172,7 +136,7 @@ const CustomerInfo = ({ tour }) => {
       return;
     }
 
-    const result = await axios.post("http://localhost:8080/orders", { 'amount': (tour?.price * selectedCurrency?.rate).toFixed(2), 'currency': selectedCurrency ? selectedCurrency.currency : 'INR' });
+    const result = await axios.post("https://pickmytours.com:8080/orders", { 'amount': (tour?.price * selectedCurrency?.rate).toFixed(2), 'currency': selectedCurrency ? selectedCurrency.currency : 'INR' });
 
     if (!result) {
       alert("Server error. Are you online?");
@@ -225,7 +189,7 @@ const CustomerInfo = ({ tour }) => {
   }
 
   // const paymentHandler = async (e) => {
-  //   const API_URL = 'http://localhost:8080/razropay/';
+  //   const API_URL = 'https://pickmytours.com:8080/razropay/';
   //   //const API_URL = 'httpa://pcikmytours.com:8000/';
   //   e.preventDefault();
   //   const orderUrl = `${API_URL}order`;
@@ -293,6 +257,37 @@ const CustomerInfo = ({ tour }) => {
     setStripeCheckoutPage(false);
   }
 
+  const validateEmailAddress = (emailAddress) => {
+    var atSymbol = emailAddress.indexOf("@");
+    var dotSymbol = emailAddress.lastIndexOf(".");
+    var spaceSymbol = emailAddress.indexOf(" ");
+
+    if ((atSymbol != -1) &&
+      (atSymbol != 0) &&
+      (dotSymbol != -1) &&
+      (dotSymbol != 0) &&
+      (dotSymbol > atSymbol + 1) &&
+      (emailAddress.length > dotSymbol + 1) &&
+      (spaceSymbol == -1)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  const validatePhoneNumber = (inputtxt) => {
+    return true;
+    var phoneno = /^\d{10}$/;
+    if (inputtxt.value.match(phoneno)) {
+      return true;
+    }
+    else {
+      alert("message");
+      return false;
+    }
+  }
+
+
   const addUser = () => {
     let haveError = false;
     let errs = errors;
@@ -311,21 +306,27 @@ const CustomerInfo = ({ tour }) => {
     }
 
     if (email.length == 0) {
-      errs = { ...errs, email: 'email is required' };
+      errs = { ...errs, email: 'Email is required' };
+      haveError = true;
+    } else if (!validateEmailAddress(email)) {
+      errs = { ...errs, email: 'Please enter valid Email' };
       haveError = true;
     } else {
       errs = { ...errs, email: '' };
     }
 
-    if (password.length == 0) {
-      errs = { ...errs, password: 'password is required' };
-      haveError = true;
-    } else {
-      errs = { ...errs, password: '' };
-    }
+    // if (password.length == 0) {
+    //   errs = { ...errs, password: 'Password is required' };
+    //   haveError = true;
+    // } else {
+    //   errs = { ...errs, password: '' };
+    // }
 
     if (phone.length < 10) {
-      errs = { ...errs, phone: 'phoneNumber is required' };
+      errs = { ...errs, phone: 'Phone Number is required' };
+      haveError = true;
+    } else if (!validatePhoneNumber(phone)) {
+      errs = { ...errs, phone: 'Please enter valid Phone Number' };
       haveError = true;
     } else {
       errs = { ...errs, phone: '' };
@@ -378,8 +379,48 @@ const CustomerInfo = ({ tour }) => {
 
     if (!haveError) {
 
-      setStripeCheckoutPage(true);
-      window.scrollTo({ top: 10, behavior: "smooth" });
+      if (tour) {
+        console.log(tour?.price);
+        let rate = 1;
+        if (selectedCurrency) {
+          setCurrency(selectedCurrency);
+          rate = selectedCurrency?.rate;
+        }
+        // Create PaymentIntent as soon as the page loads
+        axios.post("https://pickmytours.com:8080/create-payment-intent",
+          {
+            amount: ~~((tour?.price * rate).toFixed(2) * 100),
+            //amount: 100,
+            currency: selectedCurrency ? selectedCurrency.currency : 'INR'
+            // name,
+            // amount: ~~amount,
+            // currency: currency.toLowerCase(),
+            // payment_method: paymentMethod.id,
+            // description: "Tour booking - PickMyTours",
+            // shipping: {
+            //     name: name,
+            //     address: {
+            //         line1: address1 + ", " + address2,
+            //         postal_code: zipcode,
+            //         city,
+            //         state,
+            //         country,
+            //     },
+            // },
+          }
+        ).then(response => {
+          console.log(response.data);
+          setClientSecret(response.data.clientSecret);
+          setStripeCheckoutPage(true);
+          window.scrollTo({ top: 10, behavior: "smooth" });
+
+        });
+        //   .then((res) => res.json())
+        //   .then(({clientSecret}) => setClientSecret(clientSecret));
+
+      }
+
+
 
       //For Razro payment page
       //displayRazorpay();
@@ -449,25 +490,25 @@ const CustomerInfo = ({ tour }) => {
           {/* End col-12 */}
 
 
-          <div className="col-md-6">
+          {/* <div className="col-md-6">
             <div className="form-input ">
               <input type="password" autoComplete="off" value={password} onChange={(event) => setPassword(event.target.value)} required />
               <label className="lh-1 text-16 text-light-1">Password</label>
             </div>
 
             <span style={{ display: 'block' }} class="error">{errors && errors.password}</span>
-          </div>
+          </div> */}
 
           {/* End col-12 */}
 
-          <div className="col-md-6">
+          {/* <div className="col-md-6">
             <div className="form-input ">
               <input type="password" autoComplete="off" value={ConfirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} required />
               <label className="lh-1 text-16 text-light-1">Confirm Password</label>
             </div>
 
             <span style={{ display: 'block' }} class="error">{errors && errors.conformpassword}</span>
-          </div>
+          </div> */}
 
           {/* End col-12 */}
 
@@ -579,7 +620,14 @@ const CustomerInfo = ({ tour }) => {
       </>
       }
 
-      {!orderPlaced && stripeCheckoutPage && <Elements stripe={stripePromise} options={{ clientSecret: clientSecret }}>
+      {!orderPlaced && stripeCheckoutPage && <Elements stripe={stripePromise} options={{
+        clientSecret, layout: {
+          type: 'accordion',
+          defaultCollapsed: false,
+          radios: true,
+          spacedAccordionItems: false
+        }
+      }}>
         <CheckoutForm placeOrder={placeOrder} tourId={tour?._id} email={email} amount={(tour?.price * selectedCurrency?.rate).toFixed(2)} currency={selectedCurrency ? selectedCurrency.currency : 'INR'} name={firstName + " " + lastName} address1={address1} address2={address2} city={city} state={state} country={country} zipcode={zipcode} />
       </Elements>}
 

@@ -14,6 +14,14 @@ class SignupDataService {
     return http.post("/create-user", data);
   }
 
+  forgetpassword(data) {
+    return http2.post("/forgot-password", data);
+  }
+
+  resetpassword(data) {
+    return http2.post("/reset-password", data);
+  }
+
   login(data) {
     return http2.post("/login", data);
   }
