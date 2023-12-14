@@ -241,7 +241,7 @@ userExpressRoute.post("/login", (req, res) => {
   UserSchema.findOne(check).then((user) => {
     console.log('user', user);
     if (!user) {
-      return res.status(404).send({ message: "User Not found.ddddd" });
+      return res.status(404).send({ message: "User Not found." });
     }
 
     if (user && !user.active) {
@@ -280,6 +280,79 @@ userExpressRoute.post("/login", (req, res) => {
       token: token
     });
   });
+});
+
+
+userExpressRoute.post("/forgot-password", async (req, res) => {
+  const { email } = req.body;
+
+  // Generate a unique token
+  const token = crypto.randomBytes(20).toString('hex');
+
+  const user = await User.findOne({ email });
+
+  if (user) {
+    // Save the token and expiration in the database
+    user.resetToken = token;
+    user.resetTokenExpiration = Date.now() + 3600000; // Token expires in 1 hour
+    await user.save();
+
+
+
+    smtpProtocol = mailer.createTransport({
+      service: "Outlook",
+      auth: {
+        user: "admin@pickmytours.com",
+        pass: "TravelStories@9"
+      }
+    });
+
+    var mailoption = {
+      from: "admin@pickmytours.com",
+      to: email,
+      subject: 'Pick My Tours - Password Reset',
+      text: `Click the following link to reset your password: https://pickmytours.com/reset-password/${token}`,
+    }
+
+    smtpProtocol.sendMail(mailoption, function (error, response) {
+      if (error) {
+        console.error(error);
+        res.status(500).send('Error sending email');
+      } else {
+        console.log('Email sent: ' + response);
+        res.status(200).send('Email sent successfully');
+      }
+      //console.log('Message Sent' + response);
+      smtpProtocol.close();
+    });
+  }else {
+    res.status(404).send('User not found');
+  }
+});
+
+userExpressRoute.post("/reset-password", (req, res) => {
+  const { email, token, newPassword } = req.body;
+
+  // Find the user with the matching email and valid token
+  const user = users.find(
+    (user) =>
+      user.email === email &&
+      user.resetToken === token &&
+      user.resetTokenExpiration > Date.now()
+  );
+
+  if (user) {
+    // Update the user's password (in a real-world scenario, you would hash the new password)
+    user.password = newPassword;
+
+    // Clear the reset token and expiration
+    user.resetToken = null;
+    user.resetTokenExpiration = null;
+
+    return res.status(200).send('Password reset successful');
+  } else {
+    return res.status(401).send('Invalid or expired token');
+  }
 });
 
 // Get single user
