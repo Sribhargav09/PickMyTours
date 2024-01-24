@@ -35,7 +35,17 @@ class SignupDataService {
   }
 
   update(id, data) {
-    return http.put(`/update-user/${id}`, data);
+   console.log(data.photo);
+    if(data.photo){
+      return http.put(`/update-user-wiht-photo/${id}`, data);
+    }else{
+      console.log(data);
+      return http2.put(`/update-user/${id}`, data);
+    }
+  }
+
+  changePassword(id, data) {
+    return http2.put(`/changePassword/${id}`, data);
   }
 
   delete(id) {

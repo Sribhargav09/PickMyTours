@@ -61,9 +61,9 @@ var corsOptionsDelegate = function (req, callback) {
 };
 
 wishlistExpressRoute
-  .route("/getWishList/:id")
+  .route("/getWishList/:id/:userId")
   .get(async (req, res, next) => {
-    await wishListSchema.find({"tourId": req.params.id})
+    await wishListSchema.find({"tourId": req.params.id, userId:req.params.userId})
       .then((result) => {
         res.json({
           data: result,
@@ -90,7 +90,19 @@ wishlistExpressRoute
       .catch((err) => {
         return next(err);
       });
-});  
+});
+
+wishlistExpressRoute.route("/remove-wishlist/:id").delete(async (req, res) => {
+  await wishListSchema.findByIdAndRemove(req.params.id)
+    .then(() => {
+      res.json({
+        msg: "Data successfully Deleted.",
+      });
+    })
+    .catch((err) => {
+      return next(err);
+    });
+});
 
 
 // Create user

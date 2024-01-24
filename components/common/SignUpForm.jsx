@@ -161,7 +161,7 @@ const SignUpForm = () => {
     }
 
     if (!error) {
-      signupServer.create({ firstName, lastName, email, password, phone: phone, role: userRole, photo })
+      signupServer.create({ firstName, lastName, email, password, phone: phone, dob:'', about:'', role: userRole, photo })
         .then(response => {
           console.log(response.data);
           

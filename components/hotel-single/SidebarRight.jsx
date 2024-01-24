@@ -17,7 +17,7 @@ const SidebarRight = ({ hotel }) => {
               </div>
             </div>
             <div className="size-40 flex-center bg-blue-1 rounded-4">
-              <div className="text-14 fw-600 text-white">{hotel?.ratings}</div>
+              {hotel?.ratings > 0 && <div className="text-14 fw-600 text-white">{hotel?.ratings}</div>}
             </div>
           </div>
         </div>
