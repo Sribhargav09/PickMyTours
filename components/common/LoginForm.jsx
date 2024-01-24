@@ -172,7 +172,7 @@ const LoginForm = ({ redirectTo = '', modal = false }) => {
 
 
         <div className="col-12">
-          <a href="#" className="text-14 fw-500 text-blue-1 underline">
+          <a href="/others-pages/forgetpassword" className="text-14 fw-500 text-blue-1 underline">
             Forgot your password?
           </a>
         </div>

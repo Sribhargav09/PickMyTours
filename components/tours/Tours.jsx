@@ -6,7 +6,7 @@ import isTextMatched from "../../utils/isTextMatched";
 import { useEffect, useState } from "react";
 import tourService from "../../services/tour.service";
 
-import { useSelector, useDispatch } from "react-redux";import Dialog from '@mui/material/Dialog';
+import { useSelector, useDispatch } from "react-redux"; import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
@@ -24,7 +24,7 @@ const Tours = () => {
   const [wishMsg, setWishMsg] = useState('');
   const [loader, setLoader] = useState(false);
 
-  
+
   const [loginUser, setLoginUser] = useState(null);
   const [userToken, setUserToken] = useState("");
 
@@ -42,29 +42,15 @@ const Tours = () => {
 
   const [tours, setTours] = useState([]);
 
-  const isInWishList = (tourId) => {
-    console.log(tourId);
-    if(tourId !== '' && loginUser){
-    wishlistService.getByTourId(tourId)
-        .then(response => {
-          response.data.data.forEach((wdata) => {
-            if(wdata.userId === loginUser._id){
-              return true;
-            }else{
-              return false;
-            }
-          })
-        })
-        .catch(e => {
-          return false;
-        });
-      }
+  const handleCloseShare = () => {
+    const share = isShare;
+    setIsShare(!share);
   }
 
-  
-  const handleCloseWish = () => {
-    const wish = isWish;
-    
+  const handleWish = (e, tourId) => {
+    e.preventDefault()
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
     if(loginUser){
       setLoader(true);
         console.log(loginUser);
@@ -82,14 +68,20 @@ const Tours = () => {
         setLoader(false);
         setAddedToWishlist(true);
         setWishMsg("Added ths tour to your wish list Succesfully!");
-        setIsWish(!wish);
+        setIsWish(!isWish);
         
     }else{
       setLoader(false);
-      setIsWish(!wish);
+      setIsWish(!isWish);
     }
-    return false;
+
   }
+
+  const handleCloseWish = () => {
+    setIsWish(!isWish);
+    window.location.reload();   
+  }
+
 
 
   useEffect(() => {
@@ -97,16 +89,64 @@ const Tours = () => {
   }, [selectedCurrency])
 
 
+  const someAsyncOperation = async (item) => {
+    // Simulate an asynchronous operation
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log(`Async operation complete for item: ${item}`);
+    return item;
+  };
+
+
   useEffect(() => {
-    tourService.getAll()
-      .then(response => {
-        console.log(response.data);
-        setTours(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
-  }, [])
+    let toursData = [];
+    const getToursData = async () => {
+
+      try {
+        const response = await tourService.getAll();
+
+
+
+        if (loginUser) {
+          if (response && response.data && response.data.data && response.data.data.length > 0) {
+            toursData = response.data.data;
+
+            const mappedResults = await Promise.all(
+              toursData.map(async (d, index) => {
+                await wishlistService.getList(d._id, loginUser._id)
+                  .then(response => {
+                    console.log(response.data);
+                    if (response && response.data && response.data.data && response.data.data.length > 0) {
+                      toursData[index].isInWishList = true;
+                    } else {
+                      toursData[index].isInWishList = false;
+                    }
+                  })
+                  .catch(e => {
+                    toursData[index].isInWishList = false;
+                  });
+
+                return toursData;
+              })
+            );
+
+            console.log("all complete");
+            console.log(toursData);
+            setTours(toursData);
+          }
+        }else{
+          if (response && response.data && response.data.data && response.data.data.length > 0) {
+            toursData = response.data.data;
+          setTours(toursData);
+          }
+        }
+
+      } catch {}
+    }
+
+    getToursData();
+
+
+  }, [loginUser])
 
   var settings = {
     dots: true,
@@ -172,7 +212,7 @@ const Tours = () => {
   return (
     <>
       <Slider {...settings}>
-        {tours && tours.data && tours.data.slice(0, 4).map((item) => (
+        {tours && tours.map((item) => (
           <div
             key={item?._id}
           >
@@ -200,36 +240,31 @@ const Tours = () => {
                           />
                         </div>
                       </div>
-                })}
+                    })}
                   </Slider>
 
                   <div className="cardImage__wishlist">
-                    
-                  {!isInWishList(item._id) && <button  className={"button -blue-1 bg-white size-30 rounded-full shadow-2"}>
-                    <i className="icon-heart"></i>
-                  </button>}
+                    {!item.isInWishList && <button onClick={(e) => handleWish(e, item?._id)} className={"button -blue-1 bg-white size-30 rounded-full shadow-2"}>
+                      <i className="icon-heart"></i>
+                    </button>}
 
-                  {isInWishList(item._id) &&
-                    <button className={"button -blue-1 bg-white size-30 rounded-full shadow-2"}>
-                    <i style={{color:'red'}} className="icon-heart mr-10"></i></button>}
-                    
+                    {item.isInWishList &&
+                      <i style={{ color: 'red' }} className="icon-heart mr-10"></i>}
+
                   </div>
 
                   <div className="cardImage__leftBadge">
                     <div
-                      className={`py-5 px-15 rounded-right-4 text-12 lh-16 fw-500 uppercase ${
-                        isTextMatched(item?.tag, "likely to sell out*")
-                          ? "bg-dark-1 text-white"
-                          : "bg-blue-1 text-white"
-                      } ${
-                        isTextMatched(item?.tag, "best seller")
+                      className={`py-5 px-15 rounded-right-4 text-12 lh-16 fw-500 uppercase ${isTextMatched(item?.tag, "likely to sell out*")
+                        ? "bg-dark-1 text-white"
+                        : "bg-blue-1 text-white"
+                        } ${isTextMatched(item?.tag, "best seller")
                           ? "bg-blue-1 text-white"
                           : "bg-blue-1 text-white"
-                      }  ${
-                        isTextMatched(item?.tag, "top rated")
+                        }  ${isTextMatched(item?.tag, "top rated")
                           ? "bg-yellow-1 text-dark-1"
                           : "bg-blue-1 text-white"
-                      }`}
+                        }`}
                     >
                       {item?.tag ?? 'Best Seller'}
                     </div>
@@ -286,7 +321,8 @@ const Tours = () => {
         ))}
       </Slider>
 
- 
+
+      
       <Dialog
         open={isWish}
         onClose={handleCloseWish}
@@ -304,7 +340,6 @@ const Tours = () => {
             {loginUser ? wishMsg : <LoginForm modal={true} />}
         </DialogContent>
       </Dialog>
-
     </>
   );
 };

@@ -77,6 +77,10 @@ const CustomerInfo = ({ tour }) => {
 
   const [loader, setLoader] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
+  const [isStripeEnabled, setIsStripeEnabled] = useState(false);
+
+  const [isRazorEnabled, setIsRazorEnabled] = useState(true);
+
 
   const [address, setAddress] = useState({
     country: '',
@@ -188,35 +192,35 @@ const CustomerInfo = ({ tour }) => {
     paymentObject.open();
   }
 
-  // const paymentHandler = async (e) => {
-  //   const API_URL = 'https://pickmytours.com:8080/razropay/';
-  //   //const API_URL = 'httpa://pcikmytours.com:8000/';
-  //   e.preventDefault();
-  //   const orderUrl = `${API_URL}order`;
-  //   const response = await axios.get(orderUrl);
-  //   const { data } = response;
-  //   const options = {
-  //     key: "rzp_test_GEkrv0JEPX9JyB",
-  //     name: "Pick My tours",
-  //     description: "Tours and Travles Wensite",
-  //     order_id: data.id,
-  //     handler: async (response) => {
-  //       try {
-  //        const paymentId = response.razorpay_payment_id;
-  //        const url = `${API_URL}capture/${paymentId}`;
-  //        const captureResponse = await Axios.post(url, {})
-  //        console.log(captureResponse.data);
-  //       } catch (err) {
-  //         console.log(err);
-  //       }
-  //     },
-  //     theme: {
-  //       color: "#686CFD",
-  //     },
-  //   };
-  //   const rzp1 = new window.Razorpay(options);
-  //   rzp1.open();
-  //   };
+  const paymentHandler = async (e) => {
+    const API_URL = 'https://pickmytours.com:8080/razropay/';
+    //const API_URL = 'httpa://pcikmytours.com:8000/';
+    e.preventDefault();
+    const orderUrl = `${API_URL}order`;
+    const response = await axios.get(orderUrl);
+    const { data } = response;
+    const options = {
+      key: "rzp_test_GEkrv0JEPX9JyB",
+      name: "Pick My tours",
+      description: "Tours and Travles Wensite",
+      order_id: data.id,
+      handler: async (response) => {
+        try {
+         const paymentId = response.razorpay_payment_id;
+         const url = `${API_URL}capture/${paymentId}`;
+         const captureResponse = await Axios.post(url, {})
+         console.log(captureResponse.data);
+        } catch (err) {
+          console.log(err);
+        }
+      },
+      theme: {
+        color: "#686CFD",
+      },
+    };
+    const rzp1 = new window.Razorpay(options);
+    rzp1.open();
+    };
 
 
   const router = useRouter();
@@ -284,6 +288,14 @@ const CustomerInfo = ({ tour }) => {
     else {
       alert("message");
       return false;
+    }
+  }
+
+  const validate = (name, value, label) => {
+    if(value === ''){
+      setErrors({...errors, [name]: label +" is required"})
+    }else{
+      setErrors({...errors, [name]:''});
     }
   }
 
@@ -380,50 +392,54 @@ const CustomerInfo = ({ tour }) => {
     if (!haveError) {
 
       if (tour) {
-        console.log(tour?.price);
-        let rate = 1;
-        if (selectedCurrency) {
-          setCurrency(selectedCurrency);
-          rate = selectedCurrency?.rate;
+        if(isStripeEnabled){
+            console.log(tour?.price);
+            let rate = 1;
+            if (selectedCurrency) {
+              setCurrency(selectedCurrency);
+              rate = selectedCurrency?.rate;
+            }
+            // Create PaymentIntent as soon as the page loads
+            axios.post("https://pickmytours.com:8080/create-payment-intent",
+              {
+                amount: ~~((tour?.price * rate).toFixed(2) * 100),
+                //amount: 100,
+                currency: selectedCurrency ? selectedCurrency.currency : 'INR'
+                // name,
+                // amount: ~~amount,
+                // currency: currency.toLowerCase(),
+                // payment_method: paymentMethod.id,
+                // description: "Tour booking - PickMyTours",
+                // shipping: {
+                //     name: name,
+                //     address: {
+                //         line1: address1 + ", " + address2,
+                //         postal_code: zipcode,
+                //         city,
+                //         state,
+                //         country,
+                //     },
+                // },
+              }
+            ).then(response => {
+              console.log(response.data);
+              setClientSecret(response.data.clientSecret);
+              setStripeCheckoutPage(true);
+              window.scrollTo({ top: 10, behavior: "smooth" });
+
+            });
+            //   .then((res) => res.json())
+            //   .then(({clientSecret}) => setClientSecret(clientSecret));
+
+      
         }
-        // Create PaymentIntent as soon as the page loads
-        axios.post("https://pickmytours.com:8080/create-payment-intent",
-          {
-            amount: ~~((tour?.price * rate).toFixed(2) * 100),
-            //amount: 100,
-            currency: selectedCurrency ? selectedCurrency.currency : 'INR'
-            // name,
-            // amount: ~~amount,
-            // currency: currency.toLowerCase(),
-            // payment_method: paymentMethod.id,
-            // description: "Tour booking - PickMyTours",
-            // shipping: {
-            //     name: name,
-            //     address: {
-            //         line1: address1 + ", " + address2,
-            //         postal_code: zipcode,
-            //         city,
-            //         state,
-            //         country,
-            //     },
-            // },
-          }
-        ).then(response => {
-          console.log(response.data);
-          setClientSecret(response.data.clientSecret);
-          setStripeCheckoutPage(true);
-          window.scrollTo({ top: 10, behavior: "smooth" });
 
-        });
-        //   .then((res) => res.json())
-        //   .then(({clientSecret}) => setClientSecret(clientSecret));
-
+        if(isRazorEnabled){
+          //For Razro payment page
+          displayRazorpay();
+        }
+        
       }
-
-
-
-      //For Razro payment page
-      //displayRazorpay();
 
     }
 
@@ -448,7 +464,7 @@ const CustomerInfo = ({ tour }) => {
         <div className="row x-gap-20 y-gap-20 pt-20">
           <div className="col-6">
             <div className="form-input ">
-              <input type="text" value={firstName} onChange={(event) => setFirstName(event.target.value)} required />
+              <input type="text" value={firstName} onChange={(event) => { validate('firstName', event.target.value, 'First Name');setFirstName(event.target.value)}} required />
               <label className="lh-1 text-16 text-light-1">First Name</label>
             </div>
 
@@ -457,7 +473,7 @@ const CustomerInfo = ({ tour }) => {
 
           <div className="col-6">
             <div className="form-input ">
-              <input type="text" value={lastName} onChange={(event) => setLastName(event.target.value)} required />
+              <input type="text" value={lastName} onChange={(event) => { validate('lastName', event.target.value, 'Last Name');setLastName(event.target.value)}} required />
               <label className="lh-1 text-16 text-light-1">Last Name</label>
             </div>
 
@@ -468,7 +484,7 @@ const CustomerInfo = ({ tour }) => {
 
           <div className="col-md-6">
             <div className="form-input ">
-              <input type="text" value={email} onChange={(event) => setEmail(event.target.value)} required />
+              <input type="text" value={email} onChange={(event) => { validate('email', event.target.value, 'Email');setEmail(event.target.value)}} required />
               <label className="lh-1 text-16 text-light-1">Email</label>
             </div>
 
@@ -480,7 +496,7 @@ const CustomerInfo = ({ tour }) => {
 
           <div className="col-md-6">
             <div className="form-input ">
-              <input type="text" autoComplete="off" value={phone} onChange={(event) => setPhone(event.target.value)} required />
+              <input type="text" autoComplete="off" value={phone} onChange={(event) => { validate('phone', event.target.value, 'Phone');setPhone(event.target.value)}} required />
               <label className="lh-1 text-16 text-light-1">Phone Number</label>
             </div>
 
@@ -514,7 +530,7 @@ const CustomerInfo = ({ tour }) => {
 
           <div className="col-12">
             <div className="form-input ">
-              <input type="text" required value={address1} onChange={(event) => setAddress1(event.target.value)} />
+              <input type="text" required value={address1} onChange={(event) => { validate('address1', event.target.value, 'Address1');setAddress1(event.target.value)}} />
               <label className="lh-1 text-16 text-light-1">
                 Address line 1
               </label>
@@ -526,7 +542,7 @@ const CustomerInfo = ({ tour }) => {
 
           <div className="col-12">
             <div className="form-input ">
-              <input type="text" required value={address2} onChange={(event) => setAddress2(event.target.value)} />
+              <input type="text" required value={address2} onChange={(event) => { validate('address2', event.target.value, 'Address2');setAddress2(event.target.value)}} />
               <label className="lh-1 text-16 text-light-1">
                 Address line 2
               </label>
@@ -538,7 +554,7 @@ const CustomerInfo = ({ tour }) => {
 
           <div className="col-md-4">
             <div className="form-input ">
-              <input type="text" required value={state} onChange={(event) => setState(event.target.value)} />
+              <input type="text" required value={state} onChange={(event) => { validate('state', event.target.value, 'State');setState(event.target.value)}} />
               <label className="lh-1 text-16 text-light-1">
                 State
               </label>
@@ -549,7 +565,7 @@ const CustomerInfo = ({ tour }) => {
 
           <div className="col-md-4">
             <div className="form-input ">
-              <input type="text" required value={city} onChange={(event) => setCity(event.target.value)} />
+              <input type="text" required value={city} onChange={(event) => { validate('city', event.target.value, 'City');setCity(event.target.value)}} />
               <label className="lh-1 text-16 text-light-1">
                 City
               </label>
@@ -561,7 +577,7 @@ const CustomerInfo = ({ tour }) => {
 
           <div className="col-md-4">
             <div className="form-input ">
-              <input type="text" required value={zipcode} onChange={(event) => setZipcode(event.target.value)} />
+              <input type="text" required value={zipcode} onChange={(event) => { validate('zipcode', event.target.value, 'Zipcode');setZipcode(event.target.value)}} />
               <label className="lh-1 text-16 text-light-1">
                 ZIP code/Postal code
               </label>
@@ -573,7 +589,7 @@ const CustomerInfo = ({ tour }) => {
 
           <div className="col-12">
             <div className="form-input ">
-              <input type="text" required value={country} onChange={(event) => setCountry(event.target.value)} />
+              <input type="text" required value={country} onChange={(event) => { validate('country', event.target.value, 'Country');setCountry(event.target.value)}} />
               <label className="lh-1 text-16 text-light-1">
                 Country
               </label>

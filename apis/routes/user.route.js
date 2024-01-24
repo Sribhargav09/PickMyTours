@@ -129,7 +129,7 @@ userExpressRoute.post("/create-user", upload.fields([{ name: 'photo', maxCount: 
             from: "admin@pickmytours.com",
             to: req.body.email,
             subject: "Veriy your Email Address - PickMyTours",
-            html: '<body style="background-color:grey"><p>The verificaiton code to verify your emil address to complete registraiton is as below</p><div><strong>' + req.body.code + '</strong></div></body>'
+            html: '<body style="background-color:grey"><p>The verificaiton code to verify your email address to complete registraiton is as below</p><div><strong>' + req.body.code + '</strong></div></body>'
           }
 
           smtpProtocol.sendMail(mailoption, function (err, response) {
@@ -343,7 +343,7 @@ userExpressRoute.post("/reset-password", (req, res) => {
 
   if (user) {
     // Update the user's password (in a real-world scenario, you would hash the new password)
-    user.password = newPassword;
+    user.password = bcrypt.hashSync(newPassword, 8);
 
     // Clear the reset token and expiration
     user.resetToken = null;
@@ -371,18 +371,111 @@ userExpressRoute.route("/user/:id").get(async (req, res, next) => {
 });
 
 // Update user
-userExpressRoute.route("/update-user/:id").put(async (req, res, next) => {
-  await UserSchema.findByIdAndUpdate(req.params.id, req.body, { useFindAndModify: false })
-    .then((result) => {
-      res.json({
-        data: result,
-        msg: "Data successfully updated.",
-      });
-    })
-    .catch((err) => {
-      return next(err);
-    });
+userExpressRoute.route("/update-user/:id").put(async (req, res) => {
+
+  const _id = req.params.id;
+
+  console.log(_id);
+  console.log(req.body);
+
+  try {
+    // const realUser = await UserSchema.findOne({ _id });
+    // console.log(realUser);
+
+   const updatedDetails = req.body;
+   delete updatedDetails.photo;
+  //  updatedDetails.password = realUser.password;
+  //  updatedDetails.role = realUser.role;
+  //  updatedDetails.code = realUser.code;
+  //  updatedDetails.active = realUser.active;
+    
+  console.log(updatedDetails);
+
+    // Update user details in MongoDB
+    const user = await UserSchema.findOneAndUpdate({ _id }, updatedDetails, { new: true });
+    res.json({ msg: 'User details updated successfully', data:user });
+  } catch (error) {
+    console.error('Error updating user details:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+
 });
+
+userExpressRoute.put("/update-user-wiht-photo/:id", upload.fields([{ name: 'photo', maxCount: 1 }]), async (req, res, next) => {
+
+  const url = req.protocol + '://' + req.get('host');
+
+  if (req.files && req.files['photo']) {
+    req.body.photo = url + '/users/' + req.files['photo'][0].filename;
+  } else {
+    req.body.photo = url + '/users/' + 'avatar.png';
+  }
+  const _id = req.params.id;
+
+  console.log(_id);
+  console.log(req.body);
+
+  try {
+    // const realUser = await UserSchema.findOne({ _id });
+    // console.log(realUser);
+
+   const updatedDetails = req.body;
+  //  updatedDetails.password = realUser.password;
+  //  updatedDetails.role = realUser.role;
+  //  updatedDetails.code = realUser.code;
+  //  updatedDetails.active = realUser.active;
+    
+  console.log(updatedDetails);
+
+    // Update user details in MongoDB
+    const user = await UserSchema.findOneAndUpdate({ _id }, updatedDetails, { new: true });
+    res.json({ msg: 'User details updated successfully', data:user });
+  } catch (error) {
+    console.error('Error updating user details:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+
+});
+
+userExpressRoute.put('/changePassword/:id', async (req, res) => {
+  const _id = req.params.id;
+  const { currentPassword, newPassword } = req.body;
+
+  try {
+    const user = await UserSchema.findOne({ _id });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    console.log(currentPassword);
+    console.log(user.password);
+
+    var passwordIsValid = bcrypt.compareSync(
+      currentPassword,
+      user.password
+    );
+
+    
+    console.log(passwordIsValid);
+
+    // Check if the current password matches
+    if (!passwordIsValid) {
+      return res.status(401).json({ error: 'Incorrect current password' });
+    }
+
+    // Update the password
+    user.password = bcrypt.hashSync(newPassword, 8);
+
+    await user.save();
+
+    res.json({ msg: 'Password updated successfully', data:user });
+  } catch (error) {
+    console.error('Error updating user password:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 // userExpressRoute.route("/update-user/:id")
 //   .get((req, res) => {

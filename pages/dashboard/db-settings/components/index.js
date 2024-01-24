@@ -29,11 +29,11 @@ const Index = () => {
     },
     {
       label: "Location Information",
-      content: <LocationInfo />,
+      content: <LocationInfo loginUser={loginUser} />,
     },
     {
       label: "Change Password",
-      content: <PasswordInfo />,
+      content: <PasswordInfo loginUser={loginUser} />,
     },
   ];
 

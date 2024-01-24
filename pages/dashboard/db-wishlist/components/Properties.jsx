@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { hotelsData } from "../../../../data/hotels";
 import { useSelector, useDispatch } from "react-redux";
+import wishlistService from "../../../../services/wishlist.service";
 
 
 const Properties = ({ tours }) => {
@@ -25,6 +26,21 @@ const Properties = ({ tours }) => {
     setLoginUser(JSON.parse(sessionStorage.getItem("loginUser")));
     setUserToken(sessionStorage.getItem("token"));
   }, []);
+
+  
+  const deleteWishList = (id) => {
+    wishlistService.delete(id)
+      .then(response => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+        
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }
+
 
 
   return (
@@ -124,9 +140,7 @@ const Properties = ({ tours }) => {
                     </div>
                   </div>
                   <div className="col-auto">
-                    <div className="flex-center text-white fw-600 text-14 size-40 rounded-4 bg-blue-1">
-                      {item?.ratings}
-                    </div>
+                  <div class="size-40 bg-white rounded-4 flex-center cursor-pointer"><i onClick={() => deleteWishList(item?.wishListId)} class="icon-trash text-16"></i></div>
                   </div>
                 </div>
 

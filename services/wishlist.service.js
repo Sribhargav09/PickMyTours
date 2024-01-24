@@ -6,12 +6,16 @@ class WishlistDataService {
     return http2.post("/addtowishlist", data);
   }
 
-  getByTourId(id) {
-    return http2.get(`/getWishList/${id}`);
+  getList(tourId, userId) {
+    return http2.get(`/getWishList/${tourId}/${userId}`);
   }
 
   getByUserId(id) {
     return http2.get(`/getUsersWishList/${id}`);
+  }
+
+  delete(id) {
+    return http2.delete(`/remove-wishlist/${id}`);
   }
 }
 

@@ -55,6 +55,11 @@ const TourSingleV1Dynamic = () => {
   const [loader, setLoader] = useState(false);
   const [addedToWishlist, setAddedToWishlist] = useState(false);
 
+  useEffect(() => {
+    if(router && router.query && router.query.id){
+      setTourId(router.query.id);
+    }
+  }, [router]);
 
   useEffect(() => {
     setLoginUser(JSON.parse(sessionStorage.getItem("loginUser")));
@@ -64,13 +69,12 @@ const TourSingleV1Dynamic = () => {
   useEffect(() => {
     console.log(tourId);
     if(tourId !== '' && loginUser){
-    wishlistService.getByTourId(tourId)
+    wishlistService.getList(tourId, loginUser._id)
         .then(response => {
-          response.data.data.forEach((wdata) => {
-            if(wdata.userId === loginUser._id){
-              setAddedToWishlist(true);
-            }
-          })
+          console.log(response);
+          if(response && response.data && response.data.data&& response.data.data.length > 0){
+            setAddedToWishlist(true);
+          }
         })
         .catch(e => {
           
@@ -84,8 +88,8 @@ const TourSingleV1Dynamic = () => {
     setIsShare(!share);
   }
 
-  const handleCloseWish = () => {
-    const wish = isWish;
+  const handleWish = () => {
+
     
     if(loginUser){
       setLoader(true);
@@ -104,13 +108,17 @@ const TourSingleV1Dynamic = () => {
         setLoader(false);
         setAddedToWishlist(true);
         setWishMsg("Added ths tour to your wish list Succesfully!");
-        setIsWish(!wish);
+        setIsWish(!isWish);
         
     }else{
       setLoader(false);
-      setIsWish(!wish);
+      setIsWish(!isWish);
     }
-    
+
+  }
+
+  const handleCloseWish = () => {
+    setIsWish(!isWish);   
   }
 
   const getFieldsData = (field) => {
@@ -341,7 +349,7 @@ const TourSingleV1Dynamic = () => {
                 </div>
 
                 <div className="col-auto">
-                  {!addedToWishlist && <button onClick={handleCloseWish} className={"button px-15 py-10 -blue-1 bg-light-2"}>
+                  {!addedToWishlist && <button onClick={() => handleWish()} className={"button px-15 py-10 -blue-1 bg-light-2"}>
                     <i className="icon-heart mr-10"></i>
                     Save
                   </button>}
