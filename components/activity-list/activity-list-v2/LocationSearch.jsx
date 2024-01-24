@@ -32,7 +32,11 @@ const SearchBar = () => {
     },
   ];
 
-  const handleOptionClick = (item) => {
+  const handleOptionClick = (e, item) => {
+    e.preventDefault()
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+
     setSearchValue(item.name);
     setSelectedItem(item);
   };
@@ -76,7 +80,7 @@ const SearchBar = () => {
                   }`}
                   key={item.id}
                   role="button"
-                  onClick={() => handleOptionClick(item)}
+                  onClick={(e) => handleOptionClick(e, item)}
                 >
                   <div className="d-flex">
                     <div className="icon-location-2 text-light-1 text-20 pt-4" />

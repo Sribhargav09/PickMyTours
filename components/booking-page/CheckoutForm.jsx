@@ -13,6 +13,7 @@ const CheckoutForm = ({ placeOrder, tourId, amount, currency, name, email, addre
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
+    const [isStripeEnabled, setIsStripeEnabled] = useState(false);
 
 
 
@@ -32,8 +33,10 @@ const CheckoutForm = ({ placeOrder, tourId, amount, currency, name, email, addre
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        if (!stripe || !elements) {
-            return;
+        if(isStripeEnabled){
+            if (!stripe || !elements) {
+                return;
+            }
         }
 
         setLoading(true);
@@ -41,44 +44,44 @@ const CheckoutForm = ({ placeOrder, tourId, amount, currency, name, email, addre
         try {
 
             // Create the PaymentIntent and obtain clientSecret
-            const res = await fetch('https://pickmytours.com:8080/create-payment-intent', {
-                method: 'POST',
-            });
-            const { client_secret: clientSecret } = await res.json();
+            if(isStripeEnabled){
+                const res = await fetch('https://pickmytours.com:8080/create-payment-intent', {
+                    method: 'POST',
+                });
+                const { client_secret: clientSecret } = await res.json();
 
-            const { error, paymentIntent } = await stripe.confirmPayment({
-                elements,
-                clientSecret,
-                confirmParams: {
-                    return_url: `https://pickmytours.com/tour/${tourId}`,
-                },
-                redirect: 'if_required'
+                const { error, paymentIntent } = await stripe.confirmPayment({
+                    elements,
+                    clientSecret,
+                    confirmParams: {
+                        return_url: `https://pickmytours.com/tour/${tourId}`,
+                    },
+                    redirect: 'if_required'
 
-            });
+                });
 
-            console.log(error);
-            console.log(paymentIntent);
+                console.log(error);
+                console.log(paymentIntent);
 
-            // This point will only be reached if there is an immediate error when
-            // confirming the payment. Otherwise, your customer will be redirected to
-            // your `return_url`. For some payment methods like iDEAL, your customer will
-            // be redirected to an intermediate site first to authorize the payment, then
-            // redirected to the `return_url`.
+                // This point will only be reached if there is an immediate error when
+                // confirming the payment. Otherwise, your customer will be redirected to
+                // your `return_url`. For some payment methods like iDEAL, your customer will
+                // be redirected to an intermediate site first to authorize the payment, then
+                // redirected to the `return_url`.
 
-            if (error && error.type === "card_error" || error && error.type === "validation_error") {
-                setErrorMessage(error.message);
-            } else if (paymentIntent && paymentIntent.status === "succeeded") {
-                setMessage("Payment succeeded");
-                // handleSuccess();
+                if (error && error.type === "card_error" || error && error.type === "validation_error") {
+                    setErrorMessage(error.message);
+                } else if (paymentIntent && paymentIntent.status === "succeeded") {
+                    setMessage("Payment succeeded");
+                    // handleSuccess();
 
-                placeOrder({ id: paymentIntent.id });
-            } else {
-                setErrorMessage("Payment failed");
-                // handleOther();
+                    placeOrder({ id: paymentIntent.id });
+                } else {
+                    setErrorMessage("Payment failed");
+                    // handleOther();
+                }
+                setLoading(false);
             }
-            setLoading(false);
-
-
 
 
 

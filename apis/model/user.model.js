@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 let userSchema = new Schema(
   {
-    firstname: {
+    firstName: {
       type: String,
     },
-    lastname: {
+    lastName: {
       type: String,
     },
     email: {
@@ -45,6 +45,9 @@ let userSchema = new Schema(
       type: String
     },
     zipcode: {
+      type: String
+    },
+    country: {
       type: String
     },
     active: {

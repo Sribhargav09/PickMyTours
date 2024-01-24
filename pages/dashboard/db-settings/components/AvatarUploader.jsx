@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
-const AvatarUploader = ({photo}) => {
+const AvatarUploader = ({photo, setPhoto}) => {
   const [image, setImage] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -13,7 +13,7 @@ const AvatarUploader = ({photo}) => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
-
+    console.log(file);
     if (!file) {
       setError("Please select an image.");
       setSuccess(false);
@@ -34,6 +34,7 @@ const AvatarUploader = ({photo}) => {
 
     reader.onload = () => {
       setImage(reader.result);
+      setPhoto(file);
       setSuccess(true);
       setError("");
     };
@@ -49,7 +50,7 @@ const AvatarUploader = ({photo}) => {
             <img
               width={200}
               height={200}
-              src={photo}
+              src={image}
               alt="avatar"
               className="img-ratio rounded-4"
             />
@@ -67,7 +68,7 @@ const AvatarUploader = ({photo}) => {
             <Image
               width={200}
               height={200}
-              src="/img/misc/avatar-1.png"
+              src="/img/misc/avatar.png"
               alt="image"
               className="img-ratio rounded-4"
             />
@@ -102,7 +103,7 @@ const AvatarUploader = ({photo}) => {
             style={{ display: "none" }}
           />
         </div>
-        {error && !success && <div className="text-red-1 mt-1">{error}</div>}
+        {error && !success && <span className="text-red-1 mt-1 error">{error}</span>}
       </div>
     </div>
   );

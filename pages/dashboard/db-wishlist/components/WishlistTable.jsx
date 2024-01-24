@@ -42,10 +42,12 @@ const WishlistTable = () => {
       .then(response => {
        const bts = [];
        response.data.data.forEach((t) => {
-            const bnks = bookings.filter((bt) => bt.tourId === t._id);
-            if(bnks && bnks.length > 0){
+          bookings.map((bt) => { 
+            if(bt.tourId === t._id){
+              t.wishListId = bt._id;
               bts.push(t);
             }
+          });
         });
         console.log(bts)
         setBookingTours(bts);
@@ -111,7 +113,7 @@ const WishlistTable = () => {
           </div>
         </div>
       </div>
-      <Pagination />
+      {/* <Pagination /> */}
     </>
   );
 };
